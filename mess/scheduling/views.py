@@ -20,7 +20,7 @@ from mess.membership import models as m_models
 from mess.core.permissions import has_elevated_perm
 
 today = datetime.date.today()
-todaytime = datetime.datetime(today.year,today.month,today.day)
+todaytime = datetime.datetime.now()
 
 @login_required
 def myschedule(request):
@@ -517,8 +517,8 @@ def switch(request):
         return HttpResponse('Sorry.  You are not assigned to that task.')
     if original.makeup:
         return HttpResponse('Sorry.  Cannot switch a make-up shift.')
-    SOONEST_SWITCH = datetime.timedelta(11)
-    earliest_switch = datetime.datetime.now() + SOONEST_SWITCH
+    SOONEST_SWITCH = datetime.timedelta(1)
+    earliest_switch = datetime.datetime.now()# + SOONEST_SWITCH
     if original.time < earliest_switch:
         return HttpResponse('Sorry.  Cannot switch shifts within %s' % SOONEST_SWITCH)
     if request.method == 'POST':
@@ -534,29 +534,27 @@ def switch(request):
         switch.save()
         return HttpResponseRedirect(reverse('myschedule'))
     form = forms.PickTaskForm()
-    # require switched task to be sooner than original.
-    # try to switch to one-time task of same job.
+
+    # How switching works: 
+    #   - Member can choose any available shift for same job 14 days before or after their original shift
+    #   - However, if the original shift is less than 14 days away, the earliest possible switch is the 
+    #     one day after the switch is made
+    #   - One big issue: currently members can currently switch for shifts that are part of recurring jobs
+    #     and so it's possible (if that recurring job gets filled by another member) that two members
+    #     will be assigned for the same shift on the same day. Dana and I are just going to assume this 
+    #     will be rare for now - Tom Magee
+    earliest_date = original.time - datetime.timedelta(14)
+    if earliest_date < earliest_switch:
+        earliest_date = earliest_switch
     possible_switches = models.Task.objects.filter(
-                time__range=(earliest_switch, original.time),
-                hours=original.hours, job=original.job, excused=False,
-                account__isnull=True, member__isnull=True, 
-                recur_rule__isnull=True)
-    # else try to switch to one-time task of any job.
-    if possible_switches.count() == 0:
-        possible_switches = models.Task.objects.filter(
-                time__range=(earliest_switch, original.time),
-                hours=original.hours, excused=False,
-                account__isnull=True, member__isnull=True,
-                recur_rule__isnull=True)
-    # else try to create one-time fill within next 4 weeks
-    if possible_switches.count() == 0:
-        final_time_for_onetimefill = min(original.time, 
-                todaytime + datetime.timedelta(28))
-        possible_switches = models.Task.objects.filter(
-                time__range=(earliest_switch, final_time_for_onetimefill),
-                hours=original.hours, excused=False,
-                account__isnull=True, member__isnull=True)
-    form.fields['task'].queryset = possible_switches[:10]
+                time__range=(earliest_date, original.time + datetime.timedelta(14)),
+                hours=original.hours, 
+                excused=False,
+                job=original.job, 
+                account__isnull=True, 
+                member__isnull=True,
+                )
+    form.fields['task'].queryset = possible_switches
     return render_to_response('scheduling/switch.html', locals(),
                               context_instance=RequestContext(request))
 
