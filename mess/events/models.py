@@ -30,7 +30,7 @@ class Event (models.Model):
         return self.name
 
     class Meta:
-        ordering = ['start']
+        ordering = ['-start']
 
 class Orientation(Event):
     facilitator = models.ForeignKey('membership.Member', related_name='facilitators', null=True)
