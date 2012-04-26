@@ -29,6 +29,10 @@ class Event (models.Model):
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        ordering = ['start']
+
 class Orientation(Event):
     facilitator = models.ForeignKey('membership.Member', related_name='facilitators', null=True)
     cofacilitator = models.ForeignKey('membership.Member', related_name='cofacilitators', null=True)
+
