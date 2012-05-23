@@ -20,11 +20,6 @@ import time
 import md5
 from decimal import Decimal 
 
-def json_dump(value):
-    # Simple json uses single quotes with embedded arrays, 
-    # which is not permissible in json
-    return simplejson.dumps(value).replace("'","\\\"") 
-
 def wrong_secret(request):
     if not request.GET.has_key('secret'):
         return HttpResponseServerError('Invalid parameters for HTTP request')
@@ -49,8 +44,7 @@ def account(request, account_id):
         return wrong_secret(request)
 
     account = get_object_or_404(m_models.Account, id=account_id)
-    result = json_dump(getacctdict(account))
-    
+    result = simplejson.dumps(getacctdict(account))
     return HttpResponse(result, mimetype='application/json')
 
 def accounts(request):
@@ -60,7 +54,7 @@ def accounts(request):
         return wrong_secret(request)
 
     accounts = [getacctdict(account) for account in m_models.Account.objects.all()]
-    result = json_dump(accounts)
+    result = simplejson.dumps(accounts)
     return HttpResponse(result, mimetype='application/json')
 
 # helper method
@@ -85,7 +79,6 @@ def getacctdict(account):
         'balance_limit':str(account.max_allowed_to_owe()),
         'balance':str(account.balance),
         'discount':str(account.discount), 
-        'discounts':str(account.discounts), 
         'json_flags':account.frozen_flags(),
         'html_flags':acct_flags,
         'receipt_notes':'Thank you for shopping!',
@@ -98,7 +91,7 @@ def member(request, member_id):
         return wrong_secret(request)
 
     member = get_object_or_404(m_models.Member, id=member_id)
-    result = json_dump(getmemberdict(member))
+    result = simplejson.dumps(getmemberdict(member))
     return HttpResponse(result, mimetype='application/json')
 
 def members(request):
@@ -108,7 +101,7 @@ def members(request):
         return wrong_secret(request)
 
     members = [getmemberdict(member) for member in m_models.Member.objects.all()]
-    result = json_dump(members)
+    result = simplejson.dumps(members)
     return HttpResponse(result, mimetype='application/json')
 
 # helper method

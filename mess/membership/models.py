@@ -380,36 +380,23 @@ class Account(models.Model):
 
     @property
     def discount(self):
-        return sum(self.discounts.values())
-
-    @property
-    def discounts(self):
+        # active working members at 10%
         # active nonworking members at 5%
         # LOA members and proxy shoppers not included
+        totaldiscount = 0.0
         memberset = self.billable_members()
-        member_discount =  working_member_discount = 0.0 # must be a float
-        discounts = {} # We return a dictionary of discounts now that there is more than one discount
-
-        if memberset.count() > 0:
-            for m in memberset:
-
-                # 'x' status only applies to non-members who get no discounts
-                if m.work_status != 'x':
-                    member_discount += 5
-
-                    # 'n' status = non-working member - they don't get working member discount
-                    if m.work_status != 'n':
-                        working_member_discount += 5
-
-
-
-        if member_discount:
-            discounts['Member Discount'] = round(member_discount / memberset.count(), 2)
-
-        if working_member_discount: 
-            discounts['Working Member Discount'] = round(working_member_discount / memberset.count(), 2)
-
-        return discounts
+        if memberset.count() == 0:
+            return 0
+        for m in memberset:
+            if m.work_status == 'x':
+                totaldiscount = 0
+            elif m.work_status != 'n':
+                totaldiscount += 10
+            else: 
+                totaldiscount += 5
+        rounded = round(totaldiscount / memberset.count(), 2)
+        # no decimals if can be displayed as integer
+        return rounded if int(rounded) != rounded else int(rounded)
 
 
     def autocomplete_label(self):
