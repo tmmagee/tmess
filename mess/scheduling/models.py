@@ -11,7 +11,9 @@ todaytime = datetime.datetime(today.year, today.month, today.day)
 JOB_TYPES = (
     ('s','Staff'),
     ('p','Paid'),
-    ('m','Member'),
+    ('m','Member: Closed'),
+    ('o','Member: Open'),
+    ('x','Disabled'),
 )
 FREQUENCIES = (
     ('d', 'Daily'),
