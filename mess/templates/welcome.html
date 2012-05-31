@@ -9,6 +9,14 @@
   <div id="left-column">
     <div id="primary-content-wrapper">
       <h2>Hello, {{ user.first_name }}!</h2>
+      <h3><strong>SIGN UP FOR A MEMBER WORKSHIFT!!!</strong></h3>
+      <p>Interested in becoming a working member or changing your existing workshift? 
+      <a href="{% url member-interest-edit user.username %}">Click here</a> to update 
+      your member profile with your workshift interests and skillset,  someone from 
+      the Membership Department will contact you shortly to help match you up with the 
+      workshift that works best for you! Please note that we will try to best match 
+      your interests to Mariposa's most pressing needs. Our most needed shifts are 
+      indicated by the words "Help Wanted".
       <h3>Here are the most recent conversations on the <a href="/forum/menu">Forum</a></h3>
       <ul>
       {% for t in threads %}

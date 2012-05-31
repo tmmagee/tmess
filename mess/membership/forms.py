@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 
 from mess.membership import models
 from mess.events import models as e_models
+from mess.scheduling import models as s_models
 from mess.autocomplete import AutoCompleteWidget
 import datetime
 
@@ -50,7 +51,45 @@ class RelatedMemberForm(forms.ModelForm):
 class MemberForm(forms.ModelForm):
     class Meta:
         model = models.Member
-        exclude = ('status', 'user', 'equity_held')
+        exclude = ('status', 'user', 'equity_held', 'job_interests', 'skills', 'availability', 'extra_info')
+
+def availability_choice_field(availability_choices):
+    return forms.MultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple,
+        choices=availability_choices,
+        required=False,
+        )
+
+class MemberInterestForm(forms.ModelForm):
+    class Meta:
+        model = models.Member
+        fields = ('job_interests', 'skills', 'extra_info')
+
+    job_interests = forms.ModelMultipleChoiceField(
+            widget=forms.CheckboxSelectMultiple,
+            queryset=s_models.Job.objects.all().filter(type='o').order_by('name'),
+            required=False,
+            )
+
+    skills = forms.ModelMultipleChoiceField(
+            widget=forms.CheckboxSelectMultiple,
+            queryset=s_models.Skill.objects.all().order_by('name'),
+            required=False,
+            )
+
+    availability_sunday = availability_choice_field(models.MEMBER_AVAILABILITY_SUNDAY)
+    availability_monday = availability_choice_field(models.MEMBER_AVAILABILITY_MONDAY)
+    availability_tuesday = availability_choice_field(models.MEMBER_AVAILABILITY_TUESDAY)
+    availability_wednesday = availability_choice_field(models.MEMBER_AVAILABILITY_WEDNESDAY)
+    availability_thursday = availability_choice_field(models.MEMBER_AVAILABILITY_THURSDAY)
+    availability_friday = availability_choice_field(models.MEMBER_AVAILABILITY_FRIDAY)
+    availability_saturday = availability_choice_field(models.MEMBER_AVAILABILITY_SATURDAY)
+
+    extra_info = forms.CharField(
+            widget=forms.Textarea(attrs={"width":"800px"}),
+            required=False,
+            )
+
 
 class UserEmailForm(forms.ModelForm):
     class Meta:

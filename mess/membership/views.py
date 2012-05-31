@@ -8,7 +8,7 @@ from django.forms.formsets import formset_factory
 from django.forms.models import modelformset_factory
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
-from django.template import RequestContext
+from django.template import Context, RequestContext
 from django.template.loader import get_template
 from django.conf import settings
 from django.core import mail
@@ -33,6 +33,7 @@ RECORD_STATE_ACTIVE = '1'
 RECORD_STATE_INACTIVE = '0'
 
 MEMBER_COORDINATOR_EMAIL = 'membership@mariposa.coop'
+DONOTREPLY_EMAIL = 'do-not-reply@mariposa.coop'
 
 @login_required
 def members(request):
@@ -100,6 +101,48 @@ def member(request, username):
     template = get_template('membership/member.html')
     return HttpResponse(template.render(context))
 
+def get_member_availability(member_interest_form):
+    '''
+    Pulls the member availability bit array from the member_interest_form and returns it
+    '''
+    member_availability = 0
+
+    availability_selections = member_interest_form.cleaned_data["availability_sunday"] + member_interest_form.cleaned_data["availability_monday"] + member_interest_form.cleaned_data["availability_tuesday"] + member_interest_form.cleaned_data["availability_wednesday"] + member_interest_form.cleaned_data["availability_thursday"] + member_interest_form.cleaned_data["availability_friday"] + member_interest_form.cleaned_data["availability_saturday"]
+
+    for selection in availability_selections:
+        member_availability |= int(selection) 
+
+    return member_availability
+
+def availability_integer_to_array(availability_bit_array, availability_tuple):
+    if availability_bit_array is None:
+        availability_bit_array = 0
+
+    availability_array = []
+
+    for value in availability_tuple:
+        value = value[0]
+        if availability_bit_array & value:
+            availability_array.append(unicode(value))
+
+    return availability_array
+
+def set_member_availability(member, member_interest_form):
+    '''
+    Uses a member's 'availability' bit array to set the appropriate 
+    availabilty checkbox values in the member interest form
+    '''
+
+    if not member.availability:
+        member.availability = 0
+    member_interest_form.initial['availability_sunday'] = availability_integer_to_array(member.availability, models.MEMBER_AVAILABILITY_SUNDAY)
+    member_interest_form.initial['availability_monday'] = availability_integer_to_array(member.availability, models.MEMBER_AVAILABILITY_MONDAY)
+    member_interest_form.initial['availability_tuesday'] = availability_integer_to_array(member.availability, models.MEMBER_AVAILABILITY_TUESDAY)
+    member_interest_form.initial['availability_wednesday'] = availability_integer_to_array(member.availability, models.MEMBER_AVAILABILITY_WEDNESDAY)
+    member_interest_form.initial['availability_thursday'] = availability_integer_to_array(member.availability, models.MEMBER_AVAILABILITY_THURSDAY)
+    member_interest_form.initial['availability_friday'] = availability_integer_to_array(member.availability, models.MEMBER_AVAILABILITY_FRIDAY)
+    member_interest_form.initial['availability_saturday'] = availability_integer_to_array(member.availability, models.MEMBER_AVAILABILITY_SATURDAY)
+
 @login_required
 def member_form(request, username=None):
     '''
@@ -126,8 +169,8 @@ def member_form(request, username=None):
             return HttpResponseRedirect(reverse('accounts'))
         user_form = forms.UserForm(request.POST, prefix='user', instance=user)
         user_email_form = forms.UserEmailForm(request.POST, instance=user)
-        member_form = forms.MemberForm(request.POST, prefix='member', 
-                instance=member)
+        member_form = forms.MemberForm(request.POST, prefix='member', instance=member)
+        member_interest_form = forms.MemberInterestForm(request.POST, prefix='member_interest', instance=member)
         if has_elevated_perm(request, 'membership', 'add_member'):
             related_account_formset = forms.RelatedAccountFormSet(request.POST, 
                     instance=member, prefix='related_account')
@@ -142,9 +185,12 @@ def member_form(request, username=None):
                     related_account_formset.is_valid() and 
                     LOA_formset.is_valid()): 
                 user = user_form.save()
+
                 member = member_form.save(commit=False)
                 member.user = user
                 member.save()
+                member_form.save_m2m()
+
                 for formset in (related_account_formset, LOA_formset): 
                     _setattr_formset_save(request, formset, 'member', member)
                 if not edit:
@@ -158,6 +204,20 @@ def member_form(request, username=None):
                 user = user_email_form.save()
             else:
                 is_errors = True
+
+            if member_interest_form.is_valid():
+                member_instance = member_interest_form.save(commit=False)
+                member_instance.availability = get_member_availability(member_interest_form)
+                member_instance.save()
+                member_interest_form.save_m2m()
+
+                # We notify the member coordinator if a non-staff user has updated
+                # their own profile
+                if not request.user.is_staff and request.user.id == member_instance.user.id:
+                    notify_member_coordinator(member_instance)
+            else:
+                is_errors = True
+
         # must be after member.save() in case member is newly added
         if address_formset.is_valid() and phone_formset.is_valid() and not is_errors:
             for formset in (address_formset, phone_formset):
@@ -175,6 +235,8 @@ def member_form(request, username=None):
         user_form = forms.UserForm(instance=user, prefix='user')
         user_email_form = forms.UserEmailForm(instance=user)
         member_form = forms.MemberForm(instance=member, prefix='member')
+        member_interest_form = forms.MemberInterestForm(instance=member, prefix='member_interest')
+        set_member_availability(member, member_interest_form)
         related_account_formset = forms.RelatedAccountFormSet(instance=member, 
                 prefix='related_account')
         address_formset = forms.AddressFormSet(instance=member, 
@@ -187,6 +249,7 @@ def member_form(request, username=None):
     context['user_form'] = user_form
     context['user_email_form'] = user_email_form
     context['member_form'] = member_form
+    context['member_interest_form'] = member_interest_form
     if has_elevated_perm(request, 'membership', 'add_member'):
         context['formsets'] = [
             (related_account_formset, 'Accounts'), 
@@ -202,6 +265,58 @@ def member_form(request, username=None):
     context['is_errors'] = is_errors
     context['edit'] = edit
     template = get_template('membership/member_form.html')
+    return HttpResponse(template.render(context))
+
+def notify_member_coordinator(member):
+    email_template = get_template('membership/emails/member_update.html')
+
+    send_mess_email(
+            "%s updated their member profile" % member.user.get_full_name(),
+            MEMBER_COORDINATOR_EMAIL, 
+            DONOTREPLY_EMAIL, 
+            email_template.render(Context({"member": member})),
+            )
+
+@login_required
+def member_interest_form(request, username=None):
+    '''
+    edit member workshift interests and skills
+    '''
+    context = RequestContext(request)
+    edit = bool(username)
+    if edit:
+        user = get_object_or_404(User, username=username)
+        member = user.get_profile()
+    else:
+        return HttpResponseRedirect(reverse('welcome'))
+
+    if request.method == 'POST':
+        if 'cancel' in request.POST:
+            return HttpResponseRedirect(reverse('welcome'))
+
+        member_interest_form = forms.MemberInterestForm(request.POST, prefix='member_interest', instance=member)
+
+        if member_interest_form.is_valid():
+            member_instance = member_interest_form.save(commit=False)
+            member_instance.availability = get_member_availability(member_interest_form)
+            member_instance.save()
+            member_interest_form.save_m2m()
+
+            # We notify the member coordinator if a non-staff user has updated
+            # their own profile
+            if not request.user.is_staff and request.user.id == member_instance.user.id:
+                notify_member_coordinator(member_instance)
+
+            return HttpResponseRedirect(reverse('welcome'))
+
+    else:
+        member_interest_form = forms.MemberInterestForm(instance=member, prefix='member_interest')
+
+        set_member_availability(member, member_interest_form)
+
+    context['member'] = member
+    context['member_interest_form'] = member_interest_form
+    template = get_template('membership/member_interest_form.html')
     return HttpResponse(template.render(context))
 
 @login_required

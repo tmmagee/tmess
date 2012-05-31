@@ -43,6 +43,27 @@
           {% endif %}
         </div>
         {% include 'membership/snippets/formsets.html' %}
+        <div class="section member-interest inline">
+          <h3>Workshift Interests (<a href="{% url job-descriptions %}" target="_blank">Descriptions</a>)</h3>
+          {{ member_interest_form.job_interests.errors }}
+          {{ member_interest_form.job_interests }}
+        </div>
+        <div class="section member-interest inline">
+          <h3>Skills and Resources</h3>
+          {{ member_interest_form.skills.errors }}
+          {{ member_interest_form.skills }}
+        </div>
+        <div class="section member-interest">
+          <h3>Workshift Availability</h3>
+          {% include "membership/snippets/workshift_availability.html" %}
+        </div>
+        <div class="section">
+          <h3>Extra Information</h3>
+          <p><strong>Please list any scheduling constraints or preferences you have that we need to consider in setting you up with a work shift:</strong></p>
+          {{ member_interest_form.extra_info.errors }}
+          {{ member_interest_form.extra_info }}
+        </div>
+
         <div class="save">
           <input type="submit" class="button" value="Save" /> 
           <input type="submit" class="button" name="cancel" value="Cancel" />
