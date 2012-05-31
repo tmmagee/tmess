@@ -73,7 +73,7 @@ class MemberInterestForm(forms.ModelForm):
 
     skills = forms.ModelMultipleChoiceField(
             widget=forms.CheckboxSelectMultiple,
-            queryset=s_models.Skill.objects.all().order_by('name'),
+            queryset=s_models.Skill.objects.all().filter(type='o').order_by('name'),
             required=False,
             )
 
