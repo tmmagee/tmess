@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% load markup %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+  <div id="double-column">
+    <div id="primary-content-wrapper">
+      <h2>[<a href="" onclick="window.close()">Close Window</a>]</h2>
+      {% for item in items %}
+        <h2>{{ item.name }}</h2>
+        <p>{{ item.description|textile }}</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock content %}
