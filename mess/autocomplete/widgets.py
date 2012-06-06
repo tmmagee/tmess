@@ -22,9 +22,9 @@ class AutoCompleteWidget(widgets.Widget):
 
     class Media:
         css = {'all':
-            ("//yui.yahooapis.com/2.6.0/build/autocomplete/assets/skins/sam/autocomplete.css",)
+                ("http://yui.yahooapis.com/2.6.0/build/autocomplete/assets/skins/sam/autocomplete.css",)
         }
-        js = ('//yui.yahooapis.com/combo'
+        js = ('http://yui.yahooapis.com/combo'
               '?2.6.0/build/yahoo-dom-event/yahoo-dom-event.js'
               # decomment to enable animation.
               #'&2.6.0/build/animation/animation-min.js'
