@@ -2,6 +2,7 @@ import datetime
 import string
 from decimal import Decimal
 
+from django import forms
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
@@ -74,6 +75,48 @@ EQUITY_PAID_OPTIONS = (
     ('0','I will pay at orientation'),
 )
 
+MEMBER_AVAILABILITY_SUNDAY = (
+    (0x1, 'Morning'),
+    (0x2, 'Afternoon'),
+    (0x4, 'Evening'),
+)
+
+MEMBER_AVAILABILITY_MONDAY = (
+    (0x8, 'Morning'),
+    (0x10, 'Afternoon'),
+    (0x20, 'Evening'),
+)
+
+MEMBER_AVAILABILITY_TUESDAY = (
+    (0x40, 'Morning'),
+    (0x80, 'Afternoon'),
+    (0x100, 'Evening'),
+)
+
+MEMBER_AVAILABILITY_WEDNESDAY = (
+    (0x200, 'Morning'),
+    (0x400, 'Afternoon'),
+    (0x800, 'Evening'),
+)
+
+MEMBER_AVAILABILITY_THURSDAY = (
+    (0x1000, 'Morning'),
+    (0x2000, 'Afternoon'),
+    (0x4000, 'Evening'),
+)
+
+MEMBER_AVAILABILITY_FRIDAY = (
+    (0x8000, 'Morning'),
+    (0x10000, 'Afternoon'),
+    (0x20000, 'Evening'),
+)
+
+MEMBER_AVAILABILITY_SATURDAY = (
+    (0x40000, 'Morning'),
+    (0x80000, 'Afternoon'),
+    (0x100000, 'Evening'),
+)
+
 today = datetime.date.today()
 
 class MemberManager(models.Manager):
@@ -116,6 +159,17 @@ class Member(models.Model):
     referring_member = models.ForeignKey('self', blank=True, null=True)
     orientation = models.ForeignKey('events.Orientation', blank=True, null=True)
 
+    job_interests = models.ManyToManyField(s_models.Job)
+    skills = models.ManyToManyField(s_models.Skill)
+
+    # This field will actually just capture a bit array that captures a member's
+    # availability choices. Bit array is captured in MEMBER_AVAILABILITY dictionary
+    # declared above
+    availability = models.IntegerField(null=True)
+
+    # This field will hold extra information
+    extra_info = models.CharField(max_length=255, blank=True, null=True)
+
     objects = MemberManager()
 
     def __unicode__(self):
@@ -155,10 +209,6 @@ class Member(models.Model):
         if remaining_to_target < 0:
             remaining_to_target = Decimal("0.00")
         return min(self.equity_increment, remaining_to_target)
-
-    def skills(self):
-        return s_models.Skill.objects.filter(
-            trained_by__task__in=self.task_set.worked()).distinct()
 
     def untrained(self):
         return s_models.Skill.objects.exclude(

@@ -120,7 +120,7 @@ h2.accountmembersection {margin-top:0.8em;}
 		margin:15px 0;
                 font-size:1.1em;
 		}
-		form.standard input[type="text"], form.standard input[type="password"], form.standard select, form.standard textarea {
+		form.standard input[type="text"], form.standard input[type="password"], form.standard select {
 			width:225px;
 			padding:3px;
 			}
@@ -149,6 +149,7 @@ h2.accountmembersection {margin-top:0.8em;}
                 border: 1px solid #bbb;
                 margin: 10px;
                 padding: 10px;
+                overflow: auto;
                 }
             form.standard div.save {
                 margin: 10px;
@@ -158,6 +159,10 @@ h2.accountmembersection {margin-top:0.8em;}
                     margin-left: 650px;
                     }
                 form.standard div.section h3 {
+                    margin-bottom: 1em;
+                    }	
+                form.standard div.section h4 {
+                  margin-top: 1em;
                     }	
 			div.sorter {background:#f2f2f2; border:1px solid #ccc;padding:1em 1em 0 1em;float:left;}
 			
@@ -886,4 +891,44 @@ td {
 ul.ceasefire, table.ceasefire ul {
   list-style: none;
 }
+
+table thead tr th {
+  font-size: 1.5em;
+  padding-bottom: .5em;
+}
+
+.member-interest table {
+  margin-left: 1em;
+}
+
+.member-interest ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* .section .member-interest {
+  width = 400px;
+}
+
+ .member-interest ul {
+  margin: 0 auto;
+  width = 400px;
+} */
+
+.member-interest ul li {
+  height: 40px;
+  width: 200px;
+} 
+
+.member-interest table tbody tr td ul li {
+  height: 20px;
+  width: auto;
+}
+
+.inline ul li {
+  display: inline;
+  float: left;
+}
+
 

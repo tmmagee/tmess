@@ -45,6 +45,7 @@ urlpatterns = patterns('mess.membership.views',
     url(r'^members/add$', 'member_form', name='member-add'),
     url(r'^members/(\w+)$', 'member', name='member'),
     url(r'^members/(\w+)/edit$', 'member_form', name='member-edit'),
+    url(r'^members/(\w+)/edit/interest$', 'member_interest_form', name='member-interest-edit'),
     url(r'^formset-form/(\w+)$', 'formset_form', name='membership-formset-form'),
 
     url(r'^(?P<username>\w+)/add_(?P<medium>\w+)/$', 'contact_form', name='membership-add-contact'),

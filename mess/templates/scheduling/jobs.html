@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load markup %}
+
 {% block content %}
 <div id="double-column">
   {% include "scheduling/snippets/page_menu.html" %}
@@ -23,9 +25,9 @@
       {% for job in jobs %}
       <tr class="{% cycle 'odd' 'even' %}">
         <td>
-          <a href='{% url job-edit job_id=job.id %}'>{{ job }}</a>
+          <a href='{% url job-edit job_id=job.id %}'>{{ job|textile }}</a>
         </td>
-        <td>{{ job.desc }} </td>
+        <td>{{ job.desc|textile }} </td>
         <td>{{ job.get_type_display }}</td>        
         <td>{{ job.freeze_days }}</td>
         <td>{{ job.hours_multiplier }}</td>

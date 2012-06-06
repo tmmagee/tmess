@@ -1,5 +1,7 @@
 {% extends "membership/base.html" %}
 
+{% load markup %}
+
 {% block head %}
   <script type="text/javascript" src="{{ MEDIA_URL }}yui/yahoo/yahoo-min.js"></script>
   <script type="text/javascript" src="{{ MEDIA_URL }}yui/event/event-min.js"></script>
@@ -13,12 +15,7 @@
     {% include "membership/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
       <h2>
-        {% if edit %}
-          Edit member: {{ member.user.get_full_name }} 
-          ({{ member.user.username }})
-        {% else %}
-          Add new member
-        {% endif %}
+        Workshift Interests and Skills: {{ member.user.get_full_name }} 
       </h2>
       <form class="standard" method="post">
         {% csrf_token %}
@@ -28,25 +25,10 @@
             <p>Please see specific errors in the form below.</p>
           </div>
         {% endif %}
-        <div class="section">
-          {% if user.is_staff or is_staff_assistant %}
-          <h3>Main</h3>
-          <table>
-            {{ user_form }}
-            {{ member_form }}
-          </table>
-          {% else %}
-          <h3>Email</h3>
-          <table>
-            {{ user_email_form }}
-          </table>
-          {% endif %}
-        </div>
-        {% include 'membership/snippets/formsets.html' %}
         <div class="section member-interest inline">
           <h3>Workshift Interests (<a href="{% url job-descriptions %}" target="_blank">Descriptions</a>)</h3>
           {{ member_interest_form.job_interests.errors }}
-          {{ member_interest_form.job_interests }}
+          {{ member_interest_form.job_interests|textile }}
         </div>
         <div class="section member-interest inline">
           <h3>Skills and Resources</h3>
@@ -63,24 +45,13 @@
           {{ member_interest_form.extra_info.errors }}
           {{ member_interest_form.extra_info }}
         </div>
-
         <div class="save">
           <input type="submit" class="button" value="Save" /> 
           <input type="submit" class="button" name="cancel" value="Cancel" />
-          {%comment%} Just deactivate members rather than delete them
-          {% if user.is_staff %}
-          <input type="submit" class="button" name="delete" value="Delete" onclick="return confirm('Do you really wish to delete member &quot;{{ member.user.username }}&quot; forever and ever?');" id="delete" />
-          {% endif %}
-          {%endcomment%}
         </div>
       </form>
     </div>
   </div>
-  <!--
-  <div id="right-column">
-    Content here.
-  </div>
-  -->
 {% endblock %}
 
 {% block pop_up %}

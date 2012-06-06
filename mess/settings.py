@@ -94,6 +94,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.messages',
+    'django.contrib.markup',
     'mess.autocomplete',
     'mess.accounting',
     'mess.core',

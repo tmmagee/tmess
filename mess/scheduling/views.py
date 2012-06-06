@@ -427,7 +427,7 @@ def idealize(actualshifts, idealshifts):
 
 def jobs(request):
     context = {
-        'jobs': models.Job.objects.all()
+        'jobs': models.Job.objects.all().exclude(type='x')
     }
     return render_to_response('scheduling/jobs.html', context,
                                 context_instance=RequestContext(request))
@@ -468,6 +468,13 @@ def job_edit(request, job_id=None):
     }
     return render_to_response('scheduling/job_form.html', context,
                                 context_instance=RequestContext(request))
+
+@login_required
+def job_descriptions(request):
+    context = RequestContext(request)
+    context['title'] = "Job Descriptions"
+    context['items'] = models.Job.objects.all().filter(type='o').order_by('name')
+    return render_to_response('scheduling/item_descriptions.html', context)
 
 def generate_reminder(day):
     '''generates tasks that receive reminder on a given day.
@@ -612,7 +619,7 @@ def skills(request):
     context = RequestContext(request)
 
     # allow new skill to be added, i.e. include little form
-    ret_resp = HttpResponseRedirect(reverse('skills'))
+    ret_resp = HttpResponseRedirect(reverse('scheduling-skills'))
     if request.method == 'POST':    #form was submitted
         if 'cancel' in request.POST:
             return ret_resp
@@ -623,13 +630,13 @@ def skills(request):
     else:
         skill_form = forms.SkillForm()
 
-    context['skills'] = models.Skill.objects.all()
+    context['skills'] = models.Skill.objects.all().exclude(type='x')
     context['skill_form'] = skill_form
     template = loader.get_template('scheduling/skills.html')
     return HttpResponse(template.render(context))
 
 def skill_edit(request, skill_id=None):
-    ret_resp = HttpResponseRedirect(reverse('skills'))
+    ret_resp = HttpResponseRedirect(reverse('scheduling-skills'))
     is_errors = False
     if skill_id:
         skill = get_object_or_404(models.Skill, id=skill_id)
@@ -659,6 +666,12 @@ def skill_edit(request, skill_id=None):
     return render_to_response('scheduling/skill_form.html', context,
                                 context_instance=RequestContext(request))
 
+@login_required
+def skill_descriptions(request):
+    context = RequestContext(request)
+    context['title'] = "Skill Descriptions"
+    context['items'] = models.Skill.objects.all().order_by('name')
+    return render_to_response('scheduling/item_descriptions.html', context)
 
 # unused below
 

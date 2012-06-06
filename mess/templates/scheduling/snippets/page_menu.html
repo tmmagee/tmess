@@ -9,6 +9,7 @@
     {% if request.user.is_staff %}
     <li><a href="{% if date %}{% url scheduling-reminder date|date:"Y-m-d" %}{% else %}{% url scheduling-reminder-today %}{% endif %}"{% if location.path|match:'/scheduling/reminder' %} class="active"{% endif %}>Reminder Email</a></li>
     <li><a href="{% url scheduling-jobs %}"{% if location.path|match:'/scheduling/jobs' %} class="active"{% endif %}>Jobs</a></li>
+    <li><a href="{% url scheduling-skills %}"{% if location.path|match:'/scheduling/skills' %} class="active"{% endif %}>Skills</a></li>
     {% endif %}
     <li><a href="{% url scheduling-rotation %}"{% if location.path|match:'/scheduling/rotation' %} class="active"{% endif %}>Wall Calendar</a></li>
     <li class="last-item"><a href="{% url myschedule %}"{% if location.path|match:'/scheduling/myschedule' %} class="active"{% endif %}>My Schedule</a></li>

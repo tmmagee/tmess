@@ -15,6 +15,13 @@ JOB_TYPES = (
     ('o','Member: Open'),
     ('x','Disabled'),
 )
+
+SKILL_TYPES = (
+    ('m','Member: Closed'),
+    ('o','Member: Open'),
+    ('x','Disabled'),
+)
+
 FREQUENCIES = (
     ('d', 'Daily'),
     ('w', 'Weekly'),
@@ -33,6 +40,7 @@ class Skill(models.Model):
     Skills needed to perform jobs
     """
     name = models.CharField(max_length=100, unique=True)
+    type = models.CharField(max_length=1, choices=SKILL_TYPES, default='m')
     
 #   not a good idea here due to circular import problem
 #   def members(self):
