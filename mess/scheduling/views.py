@@ -49,6 +49,7 @@ def myschedule(request):
                            hours=my_shift.hours,
                            member__isnull=False)
     unassigned = models.Task.objects.filter(member__isnull=True,
+                 job=my_shift.job,
                  excused=False,
                  time__range=(today,today+datetime.timedelta(20)))
 
