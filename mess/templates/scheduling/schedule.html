@@ -49,11 +49,13 @@
   <div id="double-column">
     {% include "scheduling/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
+      {% if request.user.is_staff %}
       <form onsubmit="taskAdd(); return false">
         <div class="add-button">
           <input type="submit" value="Add a task" />
         </div>
       </form>
+      {% endif %}
       <h2>
         <a href="{% url scheduling-schedule previous_date|date:"Y-m-d" %}">&larr;</a> 
         {{ date|date:"l, F jS, Y" }} 
@@ -80,7 +82,7 @@
         </tr>
         {% for task in tasks %}
         <tr class="task-display {% cycle "odd" "even" %}{% if task.form.errors %} hidden{% endif %}{% ifequal task.id jump_to_task_id %} hidden{% endifequal %}">
-          <td class="time clickable">
+          <td class="time{% if request.user.is_staff %} clickable{% endif %}">
           {% if task.job.deadline %}
             {{ task.time|date:"P" }} deadline for {{ task.hours }} hour task
           {% else %}
@@ -91,8 +93,8 @@
           (recurs every {{ task.get_recurrence_display }}{% if task.recur_rule.until %}<br />until {{ task.recur_rule.until|date:"F jS" }}{% endif %})
           {% endif %}
           </td>
-          <td class="clickable">{{ task.job }}</td>
-          <td class="clickable">
+          <td {% if request.user.is_staff %}class="clickable"{% endif %}>{{ task.job }}</td>
+          <td {% if request.user.is_staff %}class="clickable"{% endif %}>
             {% if task.assigned %}
             <a href="{% url member task.member.user.username %}">{{ task.member }}</a> 
             (<a href="{% url account task.account.id %}">{{ task.account }}</a>)
@@ -106,14 +108,16 @@
             {% if task.excused %}
               {% if task.assigned %}Excused{% else %}One-Time Filled{% endif %}
             {% else %}
-              {% if task.recur_rule or task.assigned %}
-                <form method="post">
-                  {% csrf_token %}
-                  <input type="hidden" name="task-index" value="{{ task.form.prefix }}">
-                  <input type="submit" name="duplicate" value="{% if task.assigned %}Excuse and Duplicate{% else %}One-Time Fill{% endif %}">
-                </form>
+              {% if request.user.is_staff %}
+                {% if task.recur_rule or task.assigned %}
+                  <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="task-index" value="{{ task.form.prefix }}">
+                    <input type="submit" name="duplicate" value="{% if task.assigned %}Excuse and Duplicate{% else %}One-Time Fill{% endif %}">
+                  </form>
+                {% endif %}
               {% endif %}
-              {% if task.assigned %}
+              {% if task.assigned and request.user.is_staff %}
                 <a href="{% url trade %}?original={{ task.id }}">trade</a>
               {% endif %}
             {% endif %}
