@@ -49,6 +49,7 @@
     </li>
   </ul>
 
+  {% if unassigned %}
   <h2>Help Wanted For These Shifts</h2>
   <p>If you owe hours or want to bank hours for the future sign up below. Please note: signing up here will not excuse you from an upcoming shift. If you need to be excused from a shift, try to trade with someone on the list, or use the switch shift button under the right column.</p>
   <ul>
@@ -66,5 +67,6 @@
     </li>
   {% endfor %}
   </ul>
+  {% endif %}
 </div>
 {% endblock %}
