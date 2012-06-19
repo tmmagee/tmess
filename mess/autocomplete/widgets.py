@@ -22,16 +22,24 @@ class AutoCompleteWidget(widgets.Widget):
 
     class Media:
         css = {'all':
-                ("http://yui.yahooapis.com/2.6.0/build/autocomplete/assets/skins/sam/autocomplete.css",)
+                ("/media/yui/autocomplete/assets/skins/sam/autocomplete.css",)
         }
-        js = ('http://yui.yahooapis.com/combo'
-              '?2.6.0/build/yahoo-dom-event/yahoo-dom-event.js'
-              # decomment to enable animation.
-              #'&2.6.0/build/animation/animation-min.js'
-              '&2.6.0/build/connection/connection-min.js'
-              '&2.6.0/build/datasource/datasource-min.js'
-              '&2.6.0/build/autocomplete/autocomplete-min.js',
-              'js/autocomplete.js')
+        js = [
+            '/media/yui/yahoo-dom-event/yahoo-dom-event.js',
+            '/media/yui/animation/animation-min.js',
+            '/media/yui/connection/connection-min.js',
+            '/media/yui/datasource/datasource-min.js',
+            '/media/yui/autocomplete/autocomplete-min.js',
+            '/media/js/autocomplete.js',
+        ]
+#        js = ('/media/yui/combo'
+#              '?2.6.0/build/yahoo-dom-event/yahoo-dom-event.js'
+#              # decomment to enable animation.
+#              #'&2.6.0/build/animation/animation-min.js'
+#              '&2.6.0/build/connection/connection-min.js'
+#              '&2.6.0/build/datasource/datasource-min.js'
+#              '&2.6.0/build/autocomplete/autocomplete-min.js',
+#              'js/autocomplete.js')
 
     def __init__(self, ac_name, force_selection=True, view_name='autocomplete', attrs=None, canroundtrip=False):
         super(AutoCompleteWidget, self).__init__(attrs)
