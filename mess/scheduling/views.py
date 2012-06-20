@@ -48,10 +48,13 @@ def myschedule(request):
                            time__range=(today,today+datetime.timedelta(42)),
                            hours=my_shift.hours,
                            member__isnull=False)
-    unassigned = models.Task.objects.filter(member__isnull=True,
+        unassigned = models.Task.objects.filter(member__isnull=True,
                  job=my_shift.job,
                  excused=False,
                  time__range=(today,today+datetime.timedelta(20)))
+    else:
+        similar_assigned = []
+        unassigned = []
 
     context["is_workingmember"] = member.work_status == 'w' or member.work_status == 'c'
 
