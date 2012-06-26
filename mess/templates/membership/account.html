@@ -85,14 +85,16 @@
       {% endif %}
 
       {% if account.accountmember_set.inactive %}
-        <h2 class="accountmembersection">Departed</h2>
-        <div class="profile profile-inactive">
-          {% with "departed" as section %}
-          {% for am in account.accountmember_set.inactive %}
-            {% include "membership/snippets/accountmember.html" %}
-          {% endfor %}
-          {% endwith %}
-        </div>
+        {% if user.is_staff or is_staff_assistant %}
+          <h2 class="accountmembersection">Departed</h2>
+          <div class="profile profile-inactive">
+            {% with "departed" as section %}
+              {% for am in account.accountmember_set.inactive %}
+                {% include "membership/snippets/accountmember.html" %}
+              {% endfor %}
+            {% endwith %}
+          </div>
+        {% endif %}
       {% endif %}
 
       <div id="transactions">
