@@ -90,7 +90,7 @@ def transaction(request):
         if request.GET['getcashierinfo'] == 'members':
             template = get_template('accounting/snippets/members.html')
         elif request.GET['getcashierinfo'] == 'transactions':
-            context['transactions'] = account.transaction_set.all()
+            context['transactions'] = account.transaction_set.order_by('-id')[:20]
             template = get_template('accounting/snippets/transactions.html')
         elif request.GET['getcashierinfo'] == 'acctinfo':
             template = get_template('accounting/snippets/acctinfo.html')
