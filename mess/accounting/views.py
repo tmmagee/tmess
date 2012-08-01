@@ -106,10 +106,10 @@ def transaction(request):
     else:
         form = forms.TransactionForm()
     today = datetime.date.today()
-    #transactions = models.Transaction.objects.filter(
-    #        timestamp__range=(today,today+datetime.timedelta(1)))
+    transactions = models.Transaction.objects.filter(
+            timestamp__range=(today,today+datetime.timedelta(1))).order_by('-id')[:20]
     context = {
-    #    'transactions':transactions,
+        'transactions':transactions,
         'form':form,
         'can_reverse':True,
     }
