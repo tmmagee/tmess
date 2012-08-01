@@ -134,7 +134,7 @@ def cashsheet_input(request):
             return HttpResponse(account.hours_balance)
         elif request.GET['getcashierinfo'] == 'transactions':
             context = RequestContext(request)
-            context['transactions'] = account.transaction_set.all().order_by('-timestamp')[:25]
+            context['transactions'] = account.transaction_set.order_by('-timestamp')[:25]
             template = get_template('accounting/snippets/transactions.html')
             return HttpResponse(template.render(context))
         else: # request.GET['getcashierinfo'] == 'acct_flags':
