@@ -558,6 +558,7 @@ class Account(models.Model):
         else:
             return False
 
+    # this is no longer used by accounting.models, and can probably be removed
     def balance_on(self, time):
         newest_trans = self.transaction_set.filter(
                        timestamp__lt=time).order_by('-timestamp')

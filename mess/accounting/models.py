@@ -1,6 +1,6 @@
 from datetime import date
 
-from django.db import models
+from django.db import models, connection, transaction
 from django.db.transaction import commit_on_success
 from django.core import exceptions
 from django.contrib.auth.models import User
@@ -281,11 +281,14 @@ def total_balances_on(time):
             where account_id=t.account_id and timestamp > t.timestamp
             and timestamp < %s )
         But I can't figure how to translate that kind of SQL into Django...
+
+    Ok, here we go.  This selects the most recent transaction for each account prior to the cutoff, and sums them:
+    select sum(t.account_balance) from membership_account a join accounting_transaction t on t.id=(select id from accounting_transaction where account_id=a.id and timestamp < '2012-08-01' order by timestamp desc limit 1);
     '''
-    total = 0
-    for account in m_models.Account.objects.all():
-        total += account.balance_on(time) or 0
-    return total
+    cursor = connection.cursor()
+    cursor.execute("select sum(t.account_balance) from membership_account a join accounting_transaction t on t.id=(select id from accounting_transaction where account_id=a.id and timestamp < %s order by timestamp desc limit 1)", [time])
+    row = cursor.fetchone()
+    return row[0]
 
 @commit_on_success
 def commit_potential_bills(accounts, bill_type, entered_by):
