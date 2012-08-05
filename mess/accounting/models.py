@@ -89,8 +89,33 @@ class Transaction(models.Model):
                           self.timestamp.strftime('%Y-%m-%d %H:%M:%S'))
 
     def save(self, *args, **kwargs):
+        """ There is a bad race condition here, if the account balance
+        is updated after a second process has already read it.
+        My ham-fisted approach: locks on Transaction, Account and Member tables
+
+        The "exclusive" lock type does not lock against select statements
+        so reporting shouldn't cause interference here.  It locks
+        against update/insert/delete statements and against any other
+        "exclusive" lock, such as that held by another process here.
+        However, the "exclusive" lock type didn't seem to solve the problem
+        so I'm dropping the ACCESS EXCLUSIVE bomb, which is the most powerful
+        postgresql lock.  Aaand it still doesn't seem to solve the problem.
+        Rats.
+
+         See also:
+http://www.caktusgroup.com/blog/2009/05/26/explicit-table-locking-with-postgresql-and-django/
+http://www.postgresql.org/docs/8.3/interactive/sql-lock.html
+
+        You can test this by running   data_migration/tensalesatonce.js
+        """
+        cursor = connection.cursor()
+        cursor.execute('LOCK TABLE membership_account IN ACCESS EXCLUSIVE MODE')
+        cursor.execute('LOCK TABLE membership_member IN ACCESS EXCLUSIVE MODE')
+        cursor.execute('LOCK TABLE accounting_transaction IN ACCESS EXCLUSIVE MODE')
+
         if not self.member:
             raise Exception('all new transactions must have member')
+
         # purchase_amount and purchase_type must appear together
         if bool(self.purchase_amount) is not bool(self.purchase_type):
             self.purchase_amount = 0
