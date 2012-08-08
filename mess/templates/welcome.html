@@ -40,6 +40,7 @@
     <ul class="quick-info">
       <li><b>Equity held:</b> {{ user.get_profile.equity_held }}</li>
       <li><b>Equity due:</b> {{ user.get_profile.equity_due }}</li>
+      {% if user.get_profile.get_primary_account.id %}<!-- require account id to dilsplay Paypal links -->
       <li>
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
           <input type="hidden" name="cmd" value="_xclick">
@@ -74,6 +75,7 @@
           <input type="submit" value="add equity with Paypal">
         </form>
       </li>
+      {% endif %}
     </ul>
     {% for account in user.get_profile.accounts.all %}
     <h2><a href="{{ account.get_absolute_url }}">{{ account }}</a></h2>
