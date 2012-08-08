@@ -88,30 +88,34 @@ class Transaction(models.Model):
         return u'%s %s' % (self.account, 
                           self.timestamp.strftime('%Y-%m-%d %H:%M:%S'))
 
+    @transaction.commit_on_success
     def save(self, *args, **kwargs):
-        """ There is a bad race condition here, if the account balance
+        """ There is a race condition here, if the account balance
         is updated after a second process has already read it.
         My ham-fisted approach: locks on Transaction, Account and Member tables
 
         The "exclusive" lock type does not lock against select statements
-        so reporting shouldn't cause interference here.  It locks
-        against update/insert/delete statements and against any other
+        so it shouldn't cause too much interference with everything else.  
+        It locks against update/insert/delete statements and against any other
         "exclusive" lock, such as that held by another process here.
-        However, the "exclusive" lock type didn't seem to solve the problem
-        so I'm dropping the ACCESS EXCLUSIVE bomb, which is the most powerful
-        postgresql lock.  Aaand it still doesn't seem to solve the problem.
-        Rats.
+
+        Django hydrates the account and member objects before this can lock
+        them, so we rehydrate them while locked to ensure we the newest
+        balances are used for the update.  Also, to keep the whole function in
+        a single SQL transaction, we use @transaction.commit_on_success
 
          See also:
 http://www.caktusgroup.com/blog/2009/05/26/explicit-table-locking-with-postgresql-and-django/
 http://www.postgresql.org/docs/8.3/interactive/sql-lock.html
+https://docs.djangoproject.com/en/dev/topics/db/transactions/
 
         You can test this by running   data_migration/tensalesatonce.js
+        (just fix the secret)
         """
         cursor = connection.cursor()
-        cursor.execute('LOCK TABLE membership_account IN ACCESS EXCLUSIVE MODE')
-        cursor.execute('LOCK TABLE membership_member IN ACCESS EXCLUSIVE MODE')
-        cursor.execute('LOCK TABLE accounting_transaction IN ACCESS EXCLUSIVE MODE')
+        cursor.execute('LOCK TABLE membership_account IN EXCLUSIVE MODE')
+        cursor.execute('LOCK TABLE membership_member IN EXCLUSIVE MODE')
+        cursor.execute('LOCK TABLE accounting_transaction IN EXCLUSIVE MODE')
 
         if not self.member:
             raise Exception('all new transactions must have member')
@@ -126,16 +130,21 @@ http://www.postgresql.org/docs/8.3/interactive/sql-lock.html
 
         if self.purchase_type == 'O':  
             print self.purchase_amount
-            self.member.equity_held += self.purchase_amount
+            # rehydrate the value of self.member.equity_held:
+            rehydratedmember = m_models.Member.objects.get(id=self.member.id)
+            self.member.equity_held = (rehydratedmember.equity_held + 
+                            self.purchase_amount)
 
             # Per Dan's instructions, only update equity_due if the transaction is for a 
             # positive amount
             if self.purchase_amount > 0:
-                self.member.equity_due -= self.purchase_amount
+                self.member.equity_due = (rehydratedmember.equity_due - 
+                        self.purchase_amount)
 
             if self.member.equity_due < 0:
                 self.member.equity_due = 0
-        balance = self.account.balance
+        rehydratedaccount = m_models.Account.objects.get(id=self.account.id)
+        balance = rehydratedaccount.balance
         new_balance = balance + self.purchase_amount - self.payment_amount
         self.account.balance = self.account_balance = new_balance
         # put account and member save after transaction save so balance isn't
