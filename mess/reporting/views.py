@@ -604,9 +604,7 @@ def trans_summary(request):
     if request.GET.has_key('start'):
         form = forms.TransactionFilterForm(request.GET)
     else:
-        form = forms.TransactionFilterForm(data=
-                {'start':datetime.datetime.today().date(),
-                 'end':datetime.datetime.today().date() + timedelta(1)})
+        form = forms.TransactionFilterForm()
 #        if storedays:
 #            form = forms.TransactionFilterForm(data=
 #                {'start':storedays[0].start,
