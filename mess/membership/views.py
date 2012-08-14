@@ -383,7 +383,7 @@ def account(request, id):
         return HttpResponseRedirect(reverse('welcome'))
     context = RequestContext(request)
     context['account'] = account
-    transactions = account.transaction_set.filter(timestamp__gte=datetime.date.today()).order_by('-id')
+    transactions = account.transaction_set.order_by('-id')[:1000]
     context['transactions'] = transactions
     template = get_template('membership/account.html')
     return HttpResponse(template.render(context))
