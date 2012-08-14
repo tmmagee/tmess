@@ -26,6 +26,10 @@ class ListFilterForm(forms.Form):
     output = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows':6, 'wrap':'off'}))
 
 class TransactionFilterForm(forms.Form):
+    account = forms.ModelChoiceField(m_models.Account.objects.all(),
+        widget=AutoCompleteWidget('account_spiffy',
+            view_name='membership-autocomplete', canroundtrip=True),
+        required=False)
     start = forms.DateTimeField(initial=datetime.date.today())
     end = forms.DateTimeField(initial=datetime.date.today()+datetime.timedelta(1))
     list_each = forms.BooleanField(required=False)
