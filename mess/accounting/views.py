@@ -47,8 +47,14 @@ def listen_to_paypal(request):
         already_did_transaction = models.Transaction.objects.filter(note__contains=txn_id).count()
         if not already_did_transaction:
             (credit_or_equity, a, account_id, m, member_id) = item_number.split('-')
-            account = m_models.Account.objects.get(id=account_id)
-            member = m_models.Member.objects.get(id=member_id)
+            # this "if" part can be erased after August 2012; just put it in to fix one rogue transaction
+            if item_number=='Equity-Account-None-Member-3787':
+                account = m_models.Account.objects.get(id=2972)
+                member = m_models.Member.objects.get(id=2290)
+            else:
+                account = m_models.Account.objects.get(id=account_id)
+                member = m_models.Member.objects.get(id=member_id)
+
             if credit_or_equity == 'Credit':
                 transaction = models.Transaction.objects.create(
                     account=account,
