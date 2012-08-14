@@ -599,7 +599,7 @@ def hours_balance_changes(request):
 
 def trans_summary(request):
     """View to summarize transactions by type."""
-    storedays = a_models.StoreDay.objects.all().order_by('-start')
+#    storedays = a_models.StoreDay.objects.all().order_by('-start')
 
     if request.GET.has_key('start'):
         form = forms.TransactionFilterForm(request.GET)
