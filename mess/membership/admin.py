@@ -23,9 +23,9 @@ class AccountMemberAdmin(admin.ModelAdmin):
     search_fields = ('account__name', 'member__user__username')
 
 
-admin.site.register(models.Member, MemberAdmin)
-admin.site.register(models.Account, AccountAdmin)
-admin.site.register(models.AccountMember, AccountMemberAdmin)
+#admin.site.register(models.Member, MemberAdmin)
+#admin.site.register(models.Account, AccountAdmin)
+#admin.site.register(models.AccountMember, AccountMemberAdmin)
 admin.site.register(models.Address)
 admin.site.register(models.Phone)
 admin.site.register(models.MemberSignUp)
