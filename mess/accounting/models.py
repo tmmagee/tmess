@@ -30,7 +30,7 @@ PAYMENT_CHOICES = (
     ('Y','Paypal'),
     ('A','Cash with Change'),
     ('B','Cash to Balance'),
-    ('T','Gift Certificate'),
+    ('T','Gift Card'),
     ('O','Coupon'),
 )
 
