@@ -72,7 +72,7 @@ EQUITY_PAID_OPTIONS = (
     ('100','$100 (Partial Equity)'),
     ('300','$300 (Additional Equity)'),
     ('500','$500 (Additional Equity)'),
-    ('0','I will pay at orientation'),
+    ('0','I will pay my equity later'),
 )
 
 MEMBER_AVAILABILITY_SUNDAY = (
