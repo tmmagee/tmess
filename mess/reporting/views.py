@@ -199,8 +199,8 @@ def reports(request):
 
             ('Transaction Summary',reverse('trans_summary')),
 
-            listrpt('Accounts','Purchases Per Account Last 90 Days',
-                '','TSum:0:90:P\r\nTSum:0:90:B\r\nTSum:0:90:A'),
+            listrpt('Accounts','Purchases Per Account Last 7 Days',
+                '','TSum:0:7:P\r\nTSum:0:7:B\r\nTSum:0:7:A'),
 
             listrpt('Accounts','All Balances and Member Equities',
                 '','balance\r\ndeposit\r\nactive_member_count',
