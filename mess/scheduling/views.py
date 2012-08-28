@@ -8,16 +8,20 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import loader, RequestContext, Context
+from django.template.loader import get_template
 from django.utils import simplejson
 import django.views.decorators.vary as vary
 from django.forms.formsets import formset_factory
 from django.utils.translation import ugettext as _
 from django.conf import settings
+from django.core import mail
 
 from mess.scheduling import forms, models
 from mess.membership import forms as m_forms
 from mess.membership import models as m_models
 from mess.core.permissions import has_elevated_perm
+
+MEMBER_COORDINATOR_EMAIL = 'membership@mariposa.coop'
 
 today = datetime.date.today()
 todaytime = datetime.datetime.now()
@@ -196,6 +200,7 @@ def schedule(request, date=None):
 @login_required
 def timecard(request, date=None):
     context = RequestContext(request)
+    context['messages'] = []
 
     if not has_elevated_perm(request, 'scheduling', 'add_timecard'):
         return HttpResponseRedirect(reverse('welcome'))
@@ -229,6 +234,24 @@ def timecard(request, date=None):
 
         if (form.is_valid()):
           task = models.Task.objects.get(id=form.cleaned_data['id'])
+
+          context['task'] = task
+
+          '''
+          Automatic email for excused shifts or unexcused shifts
+          Only goes out if this is the first the timecard has been submitted
+          '''
+          if task.hours_worked is None:
+            if form.cleaned_data['shift_status']=='excused':
+              email_template = get_template("scheduling/emails/shift_excused.html")
+              #mail.send_mail("Excused shift", email_template.render(context), MEMBER_COORDINATOR_EMAIL, [task.member.user.email])
+              #context['messages'].append("Excused email sent to member %s %s of account %s" % task.member.user.first_name, task.member.user.last_name, task.member.account.name)
+  
+            if form.cleaned_data['shift_status']=='unexcused':
+              email_template = get_template("scheduling/emails/shift_unexcused.html")
+              #mail.send_mail("Unexcused shift", email_template.render(context), MEMBER_COORDINATOR_EMAIL, [task.member.user.email])
+              #context['messages'].append("Unexcused email sent to member %s %s of account %s" % task.member.user.first_name, task.member.user.last_name, task.account.name)
+
           task.hours_worked=form.cleaned_data['hours_worked']
 
           task.excused = (form.cleaned_data['shift_status']=='excused')
@@ -322,48 +345,69 @@ def rotation(request):
     horizon = 10
     rotationtables = []
 
+    if request.GET.has_key('job'):
+        rotation_filter_form = forms.RotationFilterForm(request.GET)
+    else:
+        rotation_filter_form = forms.RotationFilterForm()
+
+    if rotation_filter_form.is_valid():
+        job = rotation_filter_form.cleaned_data.get('job')
+    else:
+        job = False
+
     # get four-week rotations, idealizing them
     for weekday in range(0,7):
         table = {'freq':4, 'weekday':weekday, 'cycles':[], 
                  'dayname':calendar.day_name[weekday], 'pagebreakafter':True}
         table['idealdate'] = idealdate = datetime.date(1990, 1, 1+weekday)
-        table['ideals'] = models.Task.objects.filter(time__range=(
+
+        if job:
+            table['ideals'] = models.Task.objects.filter(time__range=(
+                datetime.datetime.combine(idealdate, datetime.time.min),
+                datetime.datetime.combine(idealdate, datetime.time.max))).filter(job=job)
+        else:
+            table['ideals'] = models.Task.objects.filter(time__range=(
                 datetime.datetime.combine(idealdate, datetime.time.min),
                 datetime.datetime.combine(idealdate, datetime.time.max)))
         for cycle in range(4):
-            column = cyclecolumn(4, weekday, cycle)
+            column = cyclecolumn(4, weekday, cycle, False, False, job)
             idealize(column['shifts'], table['ideals'])
             table['cycles'].append(column)
         rotationtables.append(table)
 
     # get six-week cashier rotations
-    for weekday in range(0,7):
-        table = {'freq':6, 'weekday':weekday, 'cycles':[], 'cashier6':True,
-                 'dayname':calendar.day_name[weekday]}
-        if weekday in [2,4,6]:
-            table['pagebreakafter'] = True
-        for cycle in range(6):
-            table['cycles'].append(cyclecolumn(6, weekday, cycle, cashieronly=True))
-        rotationtables.append(table)
+#    for weekday in range(0,7):
+#        table = {'freq':6, 'weekday':weekday, 'cycles':[], 'cashier6':True,
+#                 'dayname':calendar.day_name[weekday]}
+#        if weekday in [2,4,6]:
+#            table['pagebreakafter'] = True
+#        for cycle in range(6):
+#            table['cycles'].append(cyclecolumn(6, weekday, cycle, cashieronly=True))
+#        rotationtables.append(table)
 
     # get dancer shifts, idealizing them
     table = {'freq':4, 'dayname':'Dancer (by Sunday)', 
              'dancer':True, 'cycles':[]}
     table['idealdate'] = idealdate = datetime.date(1990, 1, 8)
-    table['ideals'] = models.Task.objects.filter(time__range=(
+
+    if not job:
+        table['ideals'] = models.Task.objects.filter(time__range=(
                 datetime.datetime.combine(idealdate, datetime.time.min),
                 datetime.datetime.combine(idealdate, datetime.time.max)))
-    for cycle in range(4):
-        column = cyclecolumn(4, 6, cycle, getdancers=True)
-        idealize(column['shifts'], table['ideals'])
-        table['cycles'].append(column)
-    rotationtables.append(table)
+        
+        for cycle in range(4):
+            column = cyclecolumn(4, 6, cycle, getdancers=True)
+            idealize(column['shifts'], table['ideals'])
+            table['cycles'].append(column)
+        rotationtables.append(table)
 
+    context['rotation_filter_form'] = rotation_filter_form
     context['rotationtables'] = rotationtables
+
     template = loader.get_template('scheduling/rotation.html')
     return HttpResponse(template.render(context))
 
-def cyclecolumn(freq, weekday, cycle, getdancers=False, cashieronly=False):
+def cyclecolumn(freq, weekday, cycle, getdancers=False, cashieronly=False, job=False):
     horizon = 7
     cycle_begin = datetime.datetime(2009,1,26)
     today = datetime.date.today()
@@ -388,6 +432,9 @@ def cyclecolumn(freq, weekday, cycle, getdancers=False, cashieronly=False):
         shifts = shifts.exclude(job__name__icontains='dancer')
     if cashieronly:
         shifts = shifts.filter(job__name='Cashier')
+    if job:
+        shifts = shifts.filter(job=job)
+
     column['shifts'] = shifts.order_by('time','job')
     return column
 
