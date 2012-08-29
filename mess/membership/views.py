@@ -193,30 +193,27 @@ def member_form(request, username=None):
 
                 for formset in (related_account_formset, LOA_formset): 
                     _setattr_formset_save(request, formset, 'member', member)
+                
                 if not edit:
                     # TODO send member an email with login information see #224
                     # see also password_reset in django.contrib.auth.views.py
                     pass
+
+
             else:
                 is_errors = True
+
+
         else:
             if user_email_form.is_valid():
                 user = user_email_form.save()
             else:
                 is_errors = True
 
-            if member_interest_form.is_valid():
-                member_instance = member_interest_form.save(commit=False)
-                member_instance.availability = get_member_availability(member_interest_form)
-                member_instance.save()
-                member_interest_form.save_m2m()
-
                 # We notify the member coordinator if a non-staff user has updated
                 # their own profile
                 if not request.user.is_staff and request.user.id == member_instance.user.id:
                     notify_member_coordinator(member_instance)
-            else:
-                is_errors = True
 
         # must be after member.save() in case member is newly added
         if address_formset.is_valid() and phone_formset.is_valid() and not is_errors:
@@ -224,6 +221,17 @@ def member_form(request, username=None):
                 _setattr_formset_save(request, formset, 'member', member)
         else: 
             is_errors = True
+
+
+
+        if member_interest_form.is_valid() and not is_errors:
+            member_instance = member_interest_form.save(commit=False)
+            member_instance.availability = get_member_availability(member_interest_form)
+            member_instance.save()
+            member_interest_form.save_m2m()
+        else:
+            is_errors = True
+
         if not is_errors:
              # FIXME this is bad if member has more than one account
             try:
