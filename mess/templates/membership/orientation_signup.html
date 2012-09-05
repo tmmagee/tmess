@@ -23,6 +23,7 @@
       </div>
       <div class="section">
       <form class="standard" method="post">
+          {% csrf_token %}
           <h3>Contact Information</h3>
           <table>
             <tr><td><th>First Name:</th></td><td>{{ form.first_name }}</td><td>{{ form.first_name.errors }}</td></tr>
