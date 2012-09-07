@@ -13,6 +13,7 @@ from django.template.loader import get_template
 from django.conf import settings
 from django.core import mail
 from django.utils.datastructures import MultiValueDictKeyError
+from django.views.decorators.csrf import csrf_exempt
 
 #from mess.accounting import models as a_models
 from mess.utils.logging import log
@@ -650,6 +651,7 @@ def send_mess_email(subject, to_email, from_email, message):
     except smtplib.SMTPRecipientsRefused, e:
         print "SMTP Error: %s" % e
 
+@csrf_exempt
 def member_signup(request):
     context = RequestContext(request)
 
@@ -914,6 +916,7 @@ def member_signup_review(request):
     template = get_template('membership/member_signup_review.html')
     return HttpResponse(template.render(context))
 
+@csrf_exempt
 def orientation_signup(request):
     context = RequestContext(request)
 
