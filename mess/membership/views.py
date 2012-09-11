@@ -317,6 +317,8 @@ def member_interest_form(request, username=None):
                 notify_member_coordinator(member_instance)
 
             return HttpResponseRedirect(reverse('welcome'))
+        else:
+            context["is_errors"] = True
 
     else:
         member_interest_form = forms.MemberInterestForm(instance=member, prefix='member_interest')
