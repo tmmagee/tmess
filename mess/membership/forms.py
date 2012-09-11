@@ -86,7 +86,7 @@ class MemberInterestForm(forms.ModelForm):
     availability_saturday = availability_choice_field(models.MEMBER_AVAILABILITY_SATURDAY)
 
     extra_info = forms.CharField(
-            widget=forms.Textarea(attrs={"width":"800px"}),
+            widget=forms.Textarea(attrs={"cols":"100"}),
             required=False,
             )
 
