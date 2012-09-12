@@ -834,6 +834,8 @@ def member_signup_review(request):
                     user.groups.add(Group.objects.get(name="member"))
                     user.save()
 
+                    log(request, user, 'add')
+
                     # Create member
                     member = models.Member()
                     member.user = user
@@ -855,6 +857,8 @@ def member_signup_review(request):
                         member.referring_member = models.Member.objects.get(id=form.cleaned_data["referring_member"])
 
                     member.save()
+
+                    log(request, member, 'add')
 
                     address = models.Address()
                     address.type = 'h'
@@ -880,8 +884,12 @@ def member_signup_review(request):
                     account.note = u'Joined Online %s' % current_date
                     account.save()
 
+                    log(request, account, 'add')
+
                     # Create account member
                     account_member = models.AccountMember.objects.create(account=account, member=member)
+
+                    log(request, account_member, 'add')
 
                     # Perform equity transaction if there was one
                     if form.cleaned_data["payment_verified"] and new_member.equity_paid > 0:
