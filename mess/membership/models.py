@@ -319,6 +319,9 @@ class Member(models.Model):
                 primary = Account()
         return primary
 
+    def autocomplete_label_member(self):
+        return '%s %s' % (self.user.first_name, self.user.last_name) 
+
     def autocomplete_label(self):
         if self.is_active:
             return '%s %s (%s)' % (self.user.first_name, self.user.last_name, 

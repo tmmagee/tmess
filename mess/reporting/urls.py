@@ -11,7 +11,8 @@ urlpatterns = patterns('mess.reporting.views',
     url(r'^trans_summary/$', 'trans_summary', name='trans_summary'),
     url(r'^hours_balance_changes/$', 'hours_balance_changes', name='hours_balance_changes'),
     url(r'^turnout/$', 'turnout', name='turnout'),
+    url(r'^logging/(\w+)/$', 'logging', name='logging'),
 
     # everything below here is partly unused or deprecated
-    url(r'^trans_list/$', 'transaction_list_report', name='trans_list'),
+    #url(r'^trans_list/$', 'transaction_list_report', name='trans_list'),
 )

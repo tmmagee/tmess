@@ -2,6 +2,7 @@ from django.conf.urls.defaults import *
 from mess.membership import models
 from mess.autocomplete.views import autocomplete
 from django.db.models import Q
+from django.contrib.auth.models import User
 from django.contrib.auth import views as auth_views
 
 autocomplete.register('account', models.Account.objects.all(), ('name__istartswith',), limit=10, label='name')
@@ -20,7 +21,13 @@ def member_spiffy_filter(query):
                     Q(user__last_name__istartswith=query) |
                     Q(accounts__name__istartswith=query)))
 
+              
+def member_spiffy_filter_no_account(query):
+    return (Q(user__first_name__istartswith=query) |
+            Q(user__last_name__istartswith=query))
+
 autocomplete.register('member_spiffy', models.Member.objects.all(), member_spiffy_filter, limit=10, label=lambda m: m.autocomplete_label() )
+autocomplete.register('member', models.Member.objects.all(), member_spiffy_filter_no_account, limit=10, label=lambda m: m.autocomplete_label_member() )
 
 def account_spiffy_filter(query):
     if '*' in query:
