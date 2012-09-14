@@ -282,9 +282,9 @@ def reports(request):
 
         ]),
         ('Logging', [
-            listrpt('Logs', 'General',
-                '',
-                'action_time\r\nuser\r\ncontent_type\r\nobject_id\r\nobject_repr\r\naction_flag\r\nchange_message'),
+#            listrpt('Logs', 'General',
+#                '',
+#                'action_time\r\nuser\r\ncontent_type\r\nobject_id\r\nobject_repr\r\naction_flag\r\nchange_message'),
             ('Accounts',reverse('logging', args=['account'])),
             ('Members',reverse('logging', args=['member'])),
         ]),
@@ -747,10 +747,12 @@ def logging(request, object_type):
         form_type = forms.AccountLoggingFilterForm
         model_type = m_models.Account
         object_repr = "membership.Account"
+        object_url = "account"
     elif object_type == 'member':
         form_type = forms.MemberLoggingFilterForm
         model_type = m_models.Member
         object_repr = "membership.Member"
+        object_url = "member"
 #    elif object_type == 'user':
 #        form_type = forms.UserLoggingFilterForm
 #        model_type = User
@@ -781,6 +783,11 @@ def logging(request, object_type):
         user = User.objects.get(id=log.user_id)
         log.user_name = user.first_name + " " + user.last_name
         log.object_name = unicode(model_type.objects.get(id=log.object_id))
+
+        if object_type == 'account':
+            log.object_url_id = log.object_id
+        elif object_type == 'member':
+            log.object_url_id = model_type.objects.get(id=log.object_id).user.username
 
     return render_to_response('reporting/logging.html', locals(),
         context_instance=RequestContext(request))
