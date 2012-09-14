@@ -19,16 +19,14 @@
               <th>Time</th>
               <th>Change</th>
           </tr>
-          {% if logs %}
           {% for log in logs|dictsortreversed:"id" %}
           <tr class="{% cycle 'odd' 'even' %}" >
-              <td>{{ log.object_name }}</td>
+            <td><a href="{{ log.object_url }}">{{ log.object_name }}</a></td>
               <td>{{ log.user_name }}</td>
               <td>{{ log.action_time|date:"d M Y g:iA" }}</td>    
               <td>{{ log.change_message|linebreaks }}</td>
           </tr>
           {% endfor %}
-          {% endif %}
       </table>
     </div>
   </div>

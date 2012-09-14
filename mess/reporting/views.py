@@ -743,16 +743,14 @@ def equity_transfer(request):
 
 def logging(request, object_type):
     
-    if object_type == 'account':
+    if object_type == "account":
         form_type = forms.AccountLoggingFilterForm
         model_type = m_models.Account
         object_repr = "membership.Account"
-        object_url = "account"
-    elif object_type == 'member':
+    elif object_type == "member":
         form_type = forms.MemberLoggingFilterForm
         model_type = m_models.Member
         object_repr = "membership.Member"
-        object_url = "member"
 #    elif object_type == 'user':
 #        form_type = forms.UserLoggingFilterForm
 #        model_type = User
@@ -785,9 +783,9 @@ def logging(request, object_type):
         log.object_name = unicode(model_type.objects.get(id=log.object_id))
 
         if object_type == 'account':
-            log.object_url_id = log.object_id
+            log.object_url = reverse('account', args=[log.object_id])
         elif object_type == 'member':
-            log.object_url_id = model_type.objects.get(id=log.object_id).user.username
+            log.object_url = reverse('member', args=[model_type.objects.get(id=log.object_id).user.username])
 
     return render_to_response('reporting/logging.html', locals(),
         context_instance=RequestContext(request))
