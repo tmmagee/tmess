@@ -2,6 +2,7 @@ from datetime import date, timedelta
 import datetime
 import time
 
+from django.contrib.auth.models import User
 from django.contrib.admin.models import LogEntry
 from django.template import RequestContext
 from django.shortcuts import render_to_response
@@ -281,9 +282,11 @@ def reports(request):
 
         ]),
         ('Logging', [
-            listrpt('Logs', 'General',
-                '',
-                'action_time\r\nuser\r\ncontent_type\r\nobject_id\r\nobject_repr\r\naction_flag\r\nchange_message'),
+#            listrpt('Logs', 'General',
+#                '',
+#                'action_time\r\nuser\r\ncontent_type\r\nobject_id\r\nobject_repr\r\naction_flag\r\nchange_message'),
+            ('Accounts',reverse('logging', args=['account'])),
+            ('Members',reverse('logging', args=['member'])),
         ]),
         ]]
     return render_to_response('reporting/reports.html', locals(),
@@ -737,3 +740,52 @@ def equity_transfer(request):
     equity_transactions_sum = all_equity_transactions.aggregate(total=Sum('purchase_amount'))
     return render_to_response('reporting/equity_transfer.html', locals(),
             context_instance=RequestContext(request))
+
+def logging(request, object_type):
+    
+    if object_type == "account":
+        form_type = forms.AccountLoggingFilterForm
+        model_type = m_models.Account
+        object_repr = "membership.Account"
+    elif object_type == "member":
+        form_type = forms.MemberLoggingFilterForm
+        model_type = m_models.Member
+        object_repr = "membership.Member"
+#    elif object_type == 'user':
+#        form_type = forms.UserLoggingFilterForm
+#        model_type = User
+#        object_repr = "auth.User"
+    else:
+        return HttpResponse("Logging report not supported for object type '" + object_type + "'")
+
+    if request.GET.has_key('start'):
+        form = form_type(request.GET)
+    else:
+        form = form_type()
+
+    if not form.is_valid():
+        logs = []
+        return render_to_response('reporting/logging.html', 
+            locals(), context_instance=RequestContext(request))
+
+    obj = form.cleaned_data.get(object_type)
+    start = form.cleaned_data.get('start')
+    end = form.cleaned_data.get('end')
+
+    logs = LogEntry.objects.filter(object_repr=object_repr).filter(action_time__range=(start, end))
+
+    if obj:
+        logs = logs.filter(object_id=obj.id)
+
+    for log in logs:
+        user = User.objects.get(id=log.user_id)
+        log.user_name = user.first_name + " " + user.last_name
+        log.object_name = unicode(model_type.objects.get(id=log.object_id))
+
+        if object_type == 'account':
+            log.object_url = reverse('account', args=[log.object_id])
+        elif object_type == 'member':
+            log.object_url = reverse('member', args=[model_type.objects.get(id=log.object_id).user.username])
+
+    return render_to_response('reporting/logging.html', locals(),
+        context_instance=RequestContext(request))

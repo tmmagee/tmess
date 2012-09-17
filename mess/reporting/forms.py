@@ -1,6 +1,7 @@
 import datetime
 
 from django import forms
+from django.contrib.auth.models import User
 from mess.autocomplete import AutoCompleteWidget
 from mess.accounting import models as a_models
 from mess.membership import models as m_models
@@ -61,3 +62,19 @@ class HoursBalanceChangesFilterForm(forms.Form):
         if 'end' not in self.data:
             self.data['end'] = today + datetime.timedelta(1)
         super(HoursBalanceChangesFilterForm,self).full_clean()
+
+class LoggingFilterForm(forms.Form):
+    start = forms.DateTimeField(initial=datetime.date.today())
+    end = forms.DateTimeField(initial=datetime.date.today()+datetime.timedelta(1))
+
+class AccountLoggingFilterForm(LoggingFilterForm):
+    account = forms.ModelChoiceField(m_models.Account.objects.all(),
+        widget=AutoCompleteWidget('account',
+            view_name='membership-autocomplete', canroundtrip=True),
+        required=False)
+
+class MemberLoggingFilterForm(LoggingFilterForm):
+    member = forms.ModelChoiceField(m_models.Member.objects.all(),
+        widget=AutoCompleteWidget('member',
+            view_name='membership-autocomplete', canroundtrip=True),
+        required=False)

@@ -13,6 +13,7 @@ from django.template.loader import get_template
 from django.conf import settings
 from django.core import mail
 from django.utils.datastructures import MultiValueDictKeyError
+from django.views.decorators.csrf import csrf_exempt
 
 #from mess.accounting import models as a_models
 from mess.utils.logging import log
@@ -20,6 +21,7 @@ from mess.membership import forms, models
 from mess.events import models as e_models
 from mess.accounting import models as a_models
 from mess.core.permissions import has_elevated_perm
+#from mess.changelog import models as c_models
 
 from decimal import Decimal
 import copy
@@ -152,9 +154,12 @@ def member_form(request, username=None):
     if edit:
         user = get_object_or_404(User, username=username)
         member = user.get_profile()
+        user_old_values = copy.deepcopy(user.__dict__)
+        member_old_values = copy.deepcopy(member.__dict__)
     else:
         user = User()
         member = models.Member()
+
     is_errors = False
     if request.method == 'POST':
         if 'cancel' in request.POST:
@@ -164,8 +169,9 @@ def member_form(request, username=None):
             else:
                 return HttpResponseRedirect(reverse('accounts'))
         if 'delete' in request.POST:
-            member.delete()
-            user.delete()
+            # We dpn't allow deleting members from MESS anymore
+            #member.delete()
+            #user.delete()
             return HttpResponseRedirect(reverse('accounts'))
         user_form = forms.UserForm(request.POST, prefix='user', instance=user)
         user_email_form = forms.UserEmailForm(request.POST, instance=user)
@@ -190,6 +196,13 @@ def member_form(request, username=None):
                 member.user = user
                 member.save()
                 member_form.save_m2m()
+
+                if edit:
+                    log(request, user, 'edit', old_values=user_old_values)
+                    log(request, member, 'edit', old_values=member_old_values)
+                else:
+                    log(request, user, 'add')
+                    log(request, member, 'add')
 
                 for formset in (related_account_formset, LOA_formset): 
                     _setattr_formset_save(request, formset, 'member', member)
@@ -316,6 +329,8 @@ def member_interest_form(request, username=None):
                 notify_member_coordinator(member_instance)
 
             return HttpResponseRedirect(reverse('welcome'))
+        else:
+            context["is_errors"] = True
 
     else:
         member_interest_form = forms.MemberInterestForm(instance=member, prefix='member_interest')
@@ -419,8 +434,8 @@ def account_form(request, id=None):
             else:
                 return HttpResponseRedirect(reverse('accounts'))
         if 'delete' in request.POST:
-            account.delete()
-            log(request, account, 'delete')
+            #account.delete()
+            #log(request, account, 'delete')
             return HttpResponseRedirect(reverse('accounts'))
         form = forms.AccountForm(request.POST, instance=account)
         related_member_formset = forms.RelatedMemberFormSet(request.POST, 
@@ -432,6 +447,11 @@ def account_form(request, id=None):
             else:
                 account = form.save()
                 log(request, account, 'add')
+
+            #account_log_entry = c_models.LogEntry()
+            #account_log_entry.record_entry(account, request.user)
+            #account_log_entry.save()
+
             _setattr_formset_save(request, related_member_formset, 'account', account)
             return HttpResponseRedirect(reverse('account', args=[account.id]))
     else:
@@ -650,6 +670,7 @@ def send_mess_email(subject, to_email, from_email, message):
     except smtplib.SMTPRecipientsRefused, e:
         print "SMTP Error: %s" % e
 
+@csrf_exempt
 def member_signup(request):
     context = RequestContext(request)
 
@@ -813,6 +834,8 @@ def member_signup_review(request):
                     user.groups.add(Group.objects.get(name="member"))
                     user.save()
 
+                    log(request, user, 'add')
+
                     # Create member
                     member = models.Member()
                     member.user = user
@@ -834,6 +857,8 @@ def member_signup_review(request):
                         member.referring_member = models.Member.objects.get(id=form.cleaned_data["referring_member"])
 
                     member.save()
+
+                    log(request, member, 'add')
 
                     address = models.Address()
                     address.type = 'h'
@@ -859,8 +884,12 @@ def member_signup_review(request):
                     account.note = u'Joined Online %s' % current_date
                     account.save()
 
+                    log(request, account, 'add')
+
                     # Create account member
                     account_member = models.AccountMember.objects.create(account=account, member=member)
+
+                    log(request, account_member, 'add')
 
                     # Perform equity transaction if there was one
                     if form.cleaned_data["payment_verified"] and new_member.equity_paid > 0:
@@ -914,6 +943,7 @@ def member_signup_review(request):
     template = get_template('membership/member_signup_review.html')
     return HttpResponse(template.render(context))
 
+@csrf_exempt
 def orientation_signup(request):
     context = RequestContext(request)
 
