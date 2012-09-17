@@ -199,8 +199,8 @@ def reports(request):
 
             ('Transaction Summary',reverse('trans_summary')),
 
-            listrpt('Accounts','Purchases Per Account Last 90 Days',
-                '','TSum:0:90:P\r\nTSum:0:90:B\r\nTSum:0:90:A'),
+            listrpt('Accounts','Purchases Per Account Last 7 Days',
+                '','TSum:0:7:P\r\nTSum:0:7:B\r\nTSum:0:7:A'),
 
             listrpt('Accounts','All Balances and Member Equities',
                 '','balance\r\ndeposit\r\nactive_member_count',
@@ -599,19 +599,20 @@ def hours_balance_changes(request):
 
 def trans_summary(request):
     """View to summarize transactions by type."""
-    storedays = a_models.StoreDay.objects.all().order_by('-start')
+#    storedays = a_models.StoreDay.objects.all().order_by('-start')
 
     if request.GET.has_key('start'):
         form = forms.TransactionFilterForm(request.GET)
     else:
-        if storedays:
-            form = forms.TransactionFilterForm(data=
-                {'start':storedays[0].start,
-                 'end':datetime.datetime(2099,12,31,23,59,59)})
-        else:
-            form = forms.TransactionFilterForm(data=
-                {'start':datetime.datetime(1900,1,1),
-                 'end':datetime.datetime(2099,12,31,23,59,59)})
+        form = forms.TransactionFilterForm()
+#        if storedays:
+#            form = forms.TransactionFilterForm(data=
+#                {'start':storedays[0].start,
+#                 'end':datetime.datetime(2099,12,31,23,59,59)})
+#        else:
+#            form = forms.TransactionFilterForm(data=
+#                {'start':datetime.datetime(1900,1,1),
+#                 'end':datetime.datetime(2099,12,31,23,59,59)})
 
     if not form.is_valid():
         transactions = []
@@ -619,13 +620,17 @@ def trans_summary(request):
             locals(), context_instance=RequestContext(request))
 
 #   else form.is_valid():
+    account = form.cleaned_data.get('account')
     start = form.cleaned_data.get('start')
     end = form.cleaned_data.get('end')
     list_each = form.cleaned_data.get('list_each')
     filter_type = form.cleaned_data.get('type')
     note = form.cleaned_data.get('note')
-    transactions = a_models.Transaction.objects.filter(
-                   timestamp__range=(start, end))
+
+    if account:
+        transactions = a_models.Transaction.objects.filter(timestamp__range=(start, end)).filter(account=account)
+    else:
+        transactions = a_models.Transaction.objects.filter(timestamp__range=(start, end))
 
     if filter_type:
         transactions = transactions.filter(Q(purchase_type=filter_type) | 

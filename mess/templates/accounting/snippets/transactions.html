@@ -22,7 +22,7 @@
     <th>Entered<br />By</th>
   </tr>
   {% if transactions %}
-    {% for transaction in transactions|dictsortreversed:"id" %}
+    {% for transaction in transactions %}
   <tr class="{% cycle 'odd' 'even' %}" >
     <td>{{ transaction.id }}</td>
     <td class="nowrap">{{ transaction.timestamp|date:"n/j/Y g:iA" }}</td>

@@ -47,6 +47,7 @@
     </td><td>
       <table>
         <form class="sorter noprint" method="GET" style="float:right;">
+          {% comment %}
           <tr>
             <th>Store Day:<br><a href="{% url storeday %}">manage</a></th>
             <td>
@@ -58,9 +59,11 @@
               </select><br>
             </td>
           </tr>
+          {% endcomment %}
           {{ form }}
           <tr><td></td><td><input type="submit" value="Filter"></td></tr>
         </form>
+        {% comment %}
         <tr>
           <td></td>
           <td>
@@ -71,6 +74,7 @@
             </form>
           </td>
         </tr>
+        {% endcomment %}
       </table>
       <br>
     </td>

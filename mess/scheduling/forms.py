@@ -13,6 +13,12 @@ AFFECT_CHOICES = (
     (1, 'this time only'),
 )
 
+SHIFT_CHOICES = (
+    (0, 'All Shifts'),
+    (1, 'Open Shifts'),
+    (2, 'Filled Shifts'),
+)
+
 class ParseDateTimeField(forms.Field):
     """ 
     DateTime field that accepts natural-language input.
@@ -129,6 +135,13 @@ class PickTaskForm(forms.Form):
     task = forms.ModelChoiceField(models.Task.objects.all(), 
            empty_label=None, widget=forms.RadioSelect())
 
+class RotationFilterForm(forms.Form):
+    '''
+    Allows an authorized user to select a filter for the 
+    jobs viewable on the rotation view (the wall calendar)
+    '''
+    job = forms.ModelChoiceField(models.Job.objects.filter(type='o'), required=False)
+
 #class WorkerForm(forms.ModelForm):
 #    class Meta:
 #        model = models.Worker
@@ -143,6 +156,6 @@ class PickTaskForm(forms.Form):
 #                    view_name='membership-autocomplete', canroundtrip=True),
 #            required=False)
     
-#AddWorkerFormSet = inlineformset_factory(models.Task, models.Worker, form=WorkerForm, extra=1)
+#A, required=FalseddWorkerFormSet = inlineformset_factory(models.Task, models.Worker, form=WorkerForm, extra=1)
 #WorkerFormSet = inlineformset_factory(models.Task, models.Worker, form=WorkerForm, extra=0) #, min_num=1)
 

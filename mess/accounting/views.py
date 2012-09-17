@@ -47,8 +47,14 @@ def listen_to_paypal(request):
         already_did_transaction = models.Transaction.objects.filter(note__contains=txn_id).count()
         if not already_did_transaction:
             (credit_or_equity, a, account_id, m, member_id) = item_number.split('-')
-            account = m_models.Account.objects.get(id=account_id)
-            member = m_models.Member.objects.get(id=member_id)
+            # this "if" part can be erased after August 2012; just put it in to fix one rogue transaction
+            if item_number=='Equity-Account-None-Member-3787':
+                account = m_models.Account.objects.get(id=2972)
+                member = m_models.Member.objects.get(id=2290)
+            else:
+                account = m_models.Account.objects.get(id=account_id)
+                member = m_models.Member.objects.get(id=member_id)
+
             if credit_or_equity == 'Credit':
                 transaction = models.Transaction.objects.create(
                     account=account,
@@ -90,7 +96,7 @@ def transaction(request):
         if request.GET['getcashierinfo'] == 'members':
             template = get_template('accounting/snippets/members.html')
         elif request.GET['getcashierinfo'] == 'transactions':
-            context['transactions'] = account.transaction_set.all()
+            context['transactions'] = account.transaction_set.order_by('-id')[:20]
             template = get_template('accounting/snippets/transactions.html')
         elif request.GET['getcashierinfo'] == 'acctinfo':
             template = get_template('accounting/snippets/acctinfo.html')
@@ -107,7 +113,7 @@ def transaction(request):
         form = forms.TransactionForm()
     today = datetime.date.today()
     transactions = models.Transaction.objects.filter(
-            timestamp__range=(today,today+datetime.timedelta(1)))
+            timestamp__range=(today,today+datetime.timedelta(1))).order_by('-id')[:20]
     context = {
         'transactions':transactions,
         'form':form,
@@ -134,7 +140,7 @@ def cashsheet_input(request):
             return HttpResponse(account.hours_balance)
         elif request.GET['getcashierinfo'] == 'transactions':
             context = RequestContext(request)
-            context['transactions'] = account.transaction_set.all().order_by('-timestamp')[:25]
+            context['transactions'] = account.transaction_set.order_by('-timestamp')[:25]
             template = get_template('accounting/snippets/transactions.html')
             return HttpResponse(template.render(context))
         else: # request.GET['getcashierinfo'] == 'acct_flags':

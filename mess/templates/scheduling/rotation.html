@@ -5,6 +5,16 @@
     {% include "scheduling/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
 
+    {% if request.user.is_staff %}
+    <span class="noprint">
+    <p>
+    <form class="sorter noprint" method="GET">
+    {{ rotation_filter_form }}
+    <input action="" type="submit" value="Filter">
+    </form>
+    </p>
+    {% endif %}
+
     {% for tablex in rotationtables %}
       <div {% if tablex.pagebreakafter %}class="pagebreakafter"{% endif %}>
       <h2>{{ tablex.dayname }} {{ tablex.freq }}-Week {% if tablex.cashier6 %}Cashier{% endif %} Shifts</h2>
@@ -53,6 +63,7 @@
           </tr>
         {% endfor %}{% endif %}
 
+        {% if not rotation_filter_form.job %}
         <!-- Print other (non-idealized) shifts -->
         <tr class="rotation-main">
           {% if tablex.ideals %}<th class="rotation-ideal">Other Shifts</th>{% endif %}
@@ -83,6 +94,8 @@
             </td>
           {% endfor %}
         </tr>
+
+        {% endif %}
       </table>
       </div>
     {% endfor %}

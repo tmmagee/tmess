@@ -72,7 +72,7 @@ EQUITY_PAID_OPTIONS = (
     ('100','$100 (Partial Equity)'),
     ('300','$300 (Additional Equity)'),
     ('500','$500 (Additional Equity)'),
-    ('0','I will pay at orientation'),
+    ('0','I will pay my equity later'),
 )
 
 MEMBER_AVAILABILITY_SUNDAY = (
@@ -405,6 +405,7 @@ class Account(models.Model):
     balance = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     note = models.TextField(blank=True)
     shared_address = models.BooleanField(default=False)
+    #balance_limit = models.DecimalField(max_digits=8, decimal_places=2, default=5.00)
 
     objects = AccountManager()
 
@@ -557,6 +558,7 @@ class Account(models.Model):
         else:
             return False
 
+    # this is no longer used by accounting.models, and can probably be removed
     def balance_on(self, time):
         newest_trans = self.transaction_set.filter(
                        timestamp__lt=time).order_by('-timestamp')
@@ -573,6 +575,7 @@ class Account(models.Model):
         return self.days_old() / 30
         
     def max_allowed_to_owe(self):
+    #    return self.balance_limit
         if self.temporarybalancelimit_set.current():
             return self.temporarybalancelimit_set.current()[0].limit
         if self.days_old() >= 180:
