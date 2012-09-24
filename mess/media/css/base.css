@@ -931,4 +931,7 @@ table thead tr th {
   float: left;
 }
 
+.message-list {
+  color: blue;
+}
 
