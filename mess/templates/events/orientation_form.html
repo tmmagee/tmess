@@ -29,7 +29,7 @@
         </div>
         {% if orientation %}
         <div class="section">
-          <h3>Scheduled Attendees</h3>
+          <h3>Scheduled Attendees ({{ orientation.member_set.count }})</h3>
           <br/>
           {% for member in orientation.member_set.all %}
           "{{ member.user.first_name }} {{ member.user.last_name }}" &lt;{{ member.user.email }}&gt;<br/>
