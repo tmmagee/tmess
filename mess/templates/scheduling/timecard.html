@@ -34,6 +34,14 @@
           <li>When a timecard has been successfully submitted, it's background will turn blue</li>
         </ul>
       </span>
+      {% if messages %}
+      <div class="noprint message-list">
+        <p><b>Messages:</b></p>
+        <ul>
+          {% for message in messages %}<li>{{ message }}</li>{% endfor %}
+        </ul>
+      </span>
+      {% endif %}
       <!--<p class="printonly scrunch-top"><b>Instructions:</b> If they worked, mark a check by the hours.<br/>  <b>Excused:</b> Change hours worked to "0" and check "excused." <b>Unexcused:</b> Change hours worked to "0".</p>
       <p class="noprint">Instructions: If they worked, just keep the hours worked.<br/>   Excused: Change hours worked to "0" and check "excused."<br/>  Unexcused: Change hours worked to "0".</p> -->
       <form method="post">
