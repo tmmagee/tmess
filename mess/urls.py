@@ -26,7 +26,7 @@ urlpatterns = patterns('',
     url(r'^passwordreset/confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', auth_views.password_reset_confirm, name='auth_password_reset_confirm'),
     url(r'^passwordreset/complete/$', auth_views.password_reset_complete, name='auth_password_reset_complete'),
 
-    ('^admin/(.*)', admin.site.root),
+    ('^admin/(.*)', admin.site.urls),
 )
 
 urlpatterns += patterns('django.views.generic.simple', 
