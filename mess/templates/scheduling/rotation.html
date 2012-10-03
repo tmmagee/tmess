@@ -56,7 +56,9 @@
                   {% else %}
                     {{ task.member.user.first_name }} ({{ task.account }})<br />
                   {% endif %}
-                  {% for phone in task.member.phones.all %} {{ phone }} <br/> {% endfor %}
+                  {% if request.user.is_staff %}
+                    {% for phone in task.member.phones.all %} {{ phone }} <br/> {% endfor %}
+                  {% endif %}
                 {% endif %}
               </td>
             {% endfor %}
