@@ -2,7 +2,9 @@
 {% load core_tags %}
   <ul id="local-nav">
     <li><a href="{% url accounts %}"{% if location.path|match:'/membership/accounts' %} class="active"{% endif %}>Accounts</a></li>
-    <li><a href="{% url members %}"{% if location.path|match:'/membership/members' %} class="active"{% endif %}>Members</a></li>
+    <li{% if not user.is_staff and not is_staff_assistant %} class="last-item"{% endif %}><a href="{% url members %}"{% if location.path|match:'/membership/members' %} class="active"{% endif %}>Members</a></li>
+    {% if user.is_staff or is_staff_assistant %}
     <li class="last-item"><a {% if location.path|match:'/membership/signup/member/review' %} class="active"{% endif %} href="{% url member-signup-review %}">Member Signup Review</a></li>
+    {% endif %}
   </ul>
 {% endblock %}
