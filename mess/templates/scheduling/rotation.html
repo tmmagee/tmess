@@ -5,7 +5,7 @@
     {% include "scheduling/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
 
-    {% if request.user.is_staff %}
+    {% if request.user.is_staff or is_staff_assistant or is_member_services_rep %}
     <span class="noprint">
     <p>
     <form class="sorter noprint" method="GET">
@@ -56,7 +56,9 @@
                   {% else %}
                     {{ task.member.user.first_name }} ({{ task.account }})<br />
                   {% endif %}
-                  {% for phone in task.member.phones.all %} {{ phone }} <br/> {% endfor %}
+                  {% if request.user.is_staff %}
+                    {% for phone in task.member.phones.all %} {{ phone }} <br/> {% endfor %}
+                  {% endif %}
                 {% endif %}
               </td>
             {% endfor %}
