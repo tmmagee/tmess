@@ -243,16 +243,14 @@ def timecard(request, date=None):
           '''
           if task.hours_worked is None:
             if form.cleaned_data['shift_status']=='excused':
-                pass
-              #email_template = get_template("scheduling/emails/shift_excused.html")
-              #mail.send_mail("Excused shift", email_template.render(context), MEMBER_COORDINATOR_EMAIL, [task.member.user.email])
-              #context['messages'].append("Excused email sent to member %s %s of account %s" % task.member.user.first_name, task.member.user.last_name, task.member.account.name)
+              email_template = get_template("scheduling/emails/shift_excused.html")
+              mail.send_mail("Excused shift", email_template.render(context), MEMBER_COORDINATOR_EMAIL, [task.member.user.email])
+              context['messages'].append("Excused email sent to member %s %s of account %s" % (task.member.user.first_name, task.member.user.last_name, task.account.name))
   
             if form.cleaned_data['shift_status']=='unexcused':
-                pass
-              #email_template = get_template("scheduling/emails/shift_unexcused.html")
-              #mail.send_mail("Unexcused shift", email_template.render(context), MEMBER_COORDINATOR_EMAIL, [task.member.user.email])
-              #context['messages'].append("Unexcused email sent to member %s %s of account %s" % task.member.user.first_name, task.member.user.last_name, task.account.name)
+              email_template = get_template("scheduling/emails/shift_unexcused.html")
+              mail.send_mail("Unexcused shift", email_template.render(context), MEMBER_COORDINATOR_EMAIL, [task.member.user.email])
+              context['messages'].append("Unexcused email sent to member %s %s of account %s" % (task.member.user.first_name, task.member.user.last_name, task.account.name))
 
           task.hours_worked=form.cleaned_data['hours_worked']
 

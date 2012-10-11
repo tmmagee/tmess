@@ -51,7 +51,7 @@ class RelatedMemberForm(forms.ModelForm):
 class MemberForm(forms.ModelForm):
     class Meta:
         model = models.Member
-        exclude = ('status', 'user', 'equity_held', 'job_interests', 'skills', 'availability', 'extra_info')
+        exclude = ('status', 'user', 'equity_held', 'job_interests', 'skills', 'availability', 'extra_info', 'card_number', 'card_facility_code', 'card_type', 'has_key')
 
 def availability_choice_field(availability_choices):
     return forms.MultipleChoiceField(

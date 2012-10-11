@@ -147,6 +147,7 @@ class Member(models.Model):
     date_joined = models.DateField(default=datetime.date.today())
     date_missing = models.DateField(blank=True, null=True)
     date_departed = models.DateField(blank=True, null=True)
+    date_turns_18 = models.DateField(blank=True, null=True)
     card_number = models.CharField(max_length=128, blank=True, null=True)
     card_facility_code = models.CharField(max_length=128, blank=True, 
             null=True)

@@ -24,7 +24,7 @@
       {% for orientation in upcoming_orientations %}
       <tr class="{% cycle 'odd' 'even' %}">
         <td>
-          <a title='Attendees: {% for member in orientation.member_set.all %}{{ member.user.first_name }} {{ member.user.last_name }}, {% endfor %}' href='{% url events-orientation-edit orientation.id %}'>{{ orientation.name }}</a>
+          <a title='Attendees ({{ orientation.member_set.count }}): {% for member in orientation.member_set.all %}{{ member.user.first_name }} {{ member.user.last_name }}, {% endfor %}' href='{% url events-orientation-edit orientation.id %}'>{{ orientation.name }}</a>
         </td>
         <td>{{ orientation.start }}</td>
         <td>{{ orientation.end }}</td>
@@ -52,7 +52,7 @@
       {% for orientation in special_orientations %}
       <tr class="{% cycle 'odd' 'even' %}">
         <td>
-          <a title='Attendees: {% for member in orientation.member_set.all %}{{ member.user.first_name }} {{ member.user.last_name }}, {% endfor %}' href='{% url events-orientation-edit orientation.id %}'>{{ orientation.name }}</a>
+          <a title='Attendees ({{ orientation.member_set.count }}): {% for member in orientation.member_set.all %}{{ member.user.first_name }} {{ member.user.last_name }}, {% endfor %}' href='{% url events-orientation-edit orientation.id %}'>{{ orientation.name }}</a>
         </td>
         <td>{{ orientation.start }}</td>
         <td>{{ orientation.end }}</td>
