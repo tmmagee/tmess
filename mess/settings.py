@@ -51,20 +51,11 @@ USE_I18N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = False
 
-# Absolute filesystem path to the directory that will hold user-uploaded files.
-# Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = ''
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash.
-# Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
-
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = '/usr/share/nginx/www/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -116,19 +107,6 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
-INSTALLED_APPS = (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
-)
-
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.
@@ -165,11 +143,6 @@ MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media/')
 # trailing slash.
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = PROJECT_URL + 'media/'
-
-# URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
-# trailing slash.
-# Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = PROJECT_URL + 'admin/media/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '4w-cz*to=zc-gjoqtrf=pi2m54i@ghqlnsdq=2mq7e^8fbgh#w'
@@ -215,6 +188,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.messages',
     'django.contrib.markup',
+    'django.contrib.staticfiles',
     'mess.autocomplete',
     'mess.accounting',
     'mess.core',
