@@ -3,6 +3,7 @@
 import os
 
 DEBUG = True
+MAINTENANCE = False
 TEMPLATE_DEBUG = DEBUG
 
 # Absolute path to the root of the project.
@@ -131,6 +132,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # function to allow non-staff access.
 USER_PASSES_TEST_URLS = (
     (r'^/$', None), 
+    (r'^/maintenance/$', None), 
     (r'^/login/$', None),
     (r'^/logout/$', None),
     (r'^/media/', None),

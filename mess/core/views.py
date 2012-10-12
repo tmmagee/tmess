@@ -10,6 +10,8 @@ from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.template import RequestContext
 from django.template.loader import get_template
 
+from django.conf import settings
+
 from mess.forum import models as f_models
 
 
@@ -18,6 +20,10 @@ TIMEOUT = 5  # timeout in seconds in case rss server is down
 NORMAL_TIMEOUT = 30 # a sane value, I think
 
 def welcome(request):
+
+    if settings.MAINTENANCE:
+        return HttpResponseRedirect('maintenance')
+
     context = RequestContext(request)
 
     if request.user.is_authenticated():
@@ -55,4 +61,9 @@ def welcome(request):
             context['next'] = request.GET.get('next', '')
         context['form'] = auth_form
         template = get_template('welcome-anon.html')
+    return HttpResponse(template.render(context))
+
+def maintenance(request):
+    context = RequestContext(request)
+    template = get_template('maintenance.html')
     return HttpResponse(template.render(context))
