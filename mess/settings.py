@@ -165,7 +165,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.doc.XViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'mess.core.middleware.UserPassesTestMiddleware',
-    'mess.core.middleware.RelativeRedirectFix',
 )
 
 ROOT_URLCONF = 'mess.urls'
