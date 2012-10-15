@@ -2,6 +2,8 @@ import re
 
 import django.conf as conf
 import django.contrib.auth.decorators as ad 
+from django.utils.encoding import iri_to_uri
+from django.http import HttpResponse
 
 
 class UserPassesTestMiddleware(object):
@@ -65,4 +67,11 @@ class UserPassesTestMiddleware(object):
                         *view_args, **view_kwargs)             
                 else:  # no test, don't wrap
                     return 
+
+class RelativeRedirectFix(object):
+    def process_response(self, request, response):
+      if response.status_code == 302 and not re.match("http", response['Location']):
+        response['Location'] = iri_to_uri('https://' + request.META['SERVER_NAME'] + response['Location'])
+
+      return response
 
