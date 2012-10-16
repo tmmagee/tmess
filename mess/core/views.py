@@ -62,8 +62,3 @@ def welcome(request):
         context['form'] = auth_form
         template = get_template('welcome-anon.html')
     return HttpResponse(template.render(context))
-
-def maintenance(request):
-    context = RequestContext(request)
-    template = get_template('maintenance.html')
-    return HttpResponse(template.render(context))
