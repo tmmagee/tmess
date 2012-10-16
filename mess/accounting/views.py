@@ -21,8 +21,6 @@ from mess.membership import models as m_models
 from mess.core.permissions import has_elevated_perm
 from mess.core.context_processors import cashier_permission
 
-today = datetime.date.today()
-
 @csrf_exempt
 def listen_to_paypal(request):
     '''
@@ -129,6 +127,8 @@ def cashsheet_input(request):
         return HttpResponse('Sorry, you do not have cashier permission. %s' 
                              % request.META['REMOTE_ADDR'])
 
+    today = datetime.date.today()
+
     if 'getcashierinfo' in request.GET:
         account_id = request.GET['account']
         account = m_models.Account.objects.get(id=account_id)
@@ -176,6 +176,9 @@ def cashsheet_input(request):
 def hours_balance(request):
     if not has_elevated_perm(request, 'accounting', 'add_transaction'):
         return HttpResponseRedirect(reverse('welcome'))
+
+    today = datetime.date.today()
+
     if 'getcashierinfo' in request.GET:
         account_id = request.GET['account']
         account = m_models.Account.objects.get(id=account_id)
