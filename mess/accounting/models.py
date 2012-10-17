@@ -10,6 +10,7 @@ from mess.membership.models import Account, Member
 from mess.membership import models as m_models
 
 PURCHASE_CHOICES = (
+    ('T','Gift Card'),
     ('P','Purchase'),
     ('B','Bulk Purchase'),
     ('A','After-Hours Purchase'),
