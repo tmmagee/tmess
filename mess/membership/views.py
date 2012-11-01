@@ -158,6 +158,7 @@ def member_form(request, username=None):
         member_old_values = copy.deepcopy(member.__dict__)
     else:
         user = User()
+        user.set_unusable_password()
         member = models.Member()
 
     is_errors = False
@@ -830,7 +831,14 @@ def member_signup_review(request):
                     user.email = new_member.email
                     user.first_name = new_member.first_name
                     user.last_name = new_member.last_name
+                    user.set_unusable_password()
+
+                    '''
+                    We save this here because the user needs a primary key value before
+                    we can add a group
+                    '''
                     user.save()
+
                     user.groups.add(Group.objects.get(name="member"))
                     user.save()
 
