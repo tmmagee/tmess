@@ -35,7 +35,9 @@ def forum(request, forum_slug):
         posts = forum.post_set.filter(subject=subject).order_by('-timestamp')
     else:
         posts = forum.post_set.order_by('-timestamp')[:maxposts]
+
     threads = _organize_as_threads(posts) 
+
     return render_to_response('forum/forum.html', locals(),
             context_instance=RequestContext(request))
     
@@ -59,8 +61,10 @@ def addpost(request, forum_slug):
     """ Add a post to a given forum (optional: in a given thread) """
     forum = get_object_or_404(models.Forum, slug=forum_slug)
     subject = request.GET.get('subject')
+
     if request.method == "POST":
-        form = forms.AddPostForm(request.POST)
+        form = forms.AddPostForm(request.POST, request.FILES)
+
         if form.is_valid() and request.POST.get('action')=='Post':
             form.save(author=request.user)
             new_post = form.instance

@@ -9,6 +9,8 @@ from django.contrib.auth import models as auth_models
 from django.db.models import Max, Count
 from django.utils.http import urlquote
 
+from mess.settings import MEDIA_ROOT
+
 class Forum(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
@@ -41,14 +43,28 @@ class PostManager(models.Manager):
                            'forum__name', 'forum__slug').annotate(last_post=Max(
                 'timestamp')).order_by('-last_post')
 
+class Attachment(models.Model):
+    name = models.CharField(max_length=255)
+    file_upload = models.FileField(upload_to=MEDIA_ROOT+"/attachments/")
+
+    def __str__(self):
+      return self.name
+
+    def get_file_name(self):
+      return str(self.file_upload).split("/").pop()
+
 class Post(models.Model):
     forum = models.ForeignKey(Forum)
     author = models.ForeignKey(auth_models.User)    
     subject = models.CharField(max_length=255)  #used for grouping into threads
+    attachments = models.ManyToManyField(Attachment)
     timestamp = models.DateTimeField(auto_now_add=True)
     body = models.TextField()
     deleted = models.BooleanField()
     objects = PostManager()
+
+    def __str__(self):
+      return str(self.author) + ": " + self.subject + " [" + str(self.timestamp) + "]"
 
     def get_absolute_url(self):   #for now, return the thread's url
         return '/forum/%s/?subject=%s' % (self.forum.slug, urlquote(self.subject, safe=''))

@@ -19,21 +19,28 @@
             </th>
           </tr>
           {% for post in thread.posts %}
-          <tr>
-            <td>
-              <b>{{ post.get_alias }}</br>
-                {{ post.timestamp|date:"n/j/y g:iA" }}</b>
-              {% ifequal post.author request.user %}
-                <br><input type="button" value="delete" 
-                     onclick="deletepost({{ post.id }});">
-              {% endifequal %}
-            </td>
-            <td>
-              {% if post.deleted %}(deleted post)
-              {% else %}{{ post.body|linebreaksbr }}
-              {% endif %}
-            </td>
-          </tr>
+            <tr>
+              <td>
+                <b>{{ post.get_alias }}</br>
+                  {{ post.timestamp|date:"n/j/y g:iA" }}</b>
+                {% ifequal post.author request.user %}
+                  <br><input type="button" value="delete" 
+                       onclick="deletepost({{ post.id }});">
+                {% endifequal %}
+              </td>
+              <td>
+                {% if post.deleted %}(deleted post)
+                {% else %}{{ post.body|linebreaksbr }}
+                {% endif %}
+              </td>
+            </tr>
+            {% if not post.deleted %}
+            {% for attachment in post.attachments.get_query_set %}
+              <tr>
+                <td>Attachment: <a href="{{ MEDIA_URL }}attachments/{{ attachment.get_file_name }}">{{ attachment }}</a></td>
+              </tr>
+            {% endfor %}
+            {% endif %}
           {% endfor %}
         </table>
       {% endfor %}

@@ -3,14 +3,22 @@
 {% block content %}
 <div id="double-column">
   <div id="primary-content-wrapper">
+    {{ form.errors }}
     <h2>Post to Forum: <a href="{{ forum.get_absolute_url }}">{{ forum }}</a></h2>
     <h2>Posting as: {{ request.user.first_name }} ({{ request.user.get_profile.get_primary_account }})</h2>
     {% if subject %}
       <h2>Subject: <a href="{{ forum.get_absolute_url }}?subject={{ subject|urlencode }}">{{ subject }}</a></h2>
     {% endif %}
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
-      <table class="data">{{ form }}</table>
+      <table class="data">
+        {{ form.forum }}
+        <tr><th><label for='id_subject'>{{ form.subject.label}}:</label></th><td>{{ form.subject }}</td></tr>
+        <tr><th><label for='id_body'>{{ form.body.label }}:</label></th><td>{{ form.body }}</td></tr>
+        {% if request.user.is_staff %}
+        <tr><th><label for='id_attachment'>{{ form.attachment.label }} (PDFs only):</label></th><td>{{ form.attachment }}</td></tr>
+        {% endif %}
+      </table>
       Your post will be viewable on the MESS forum.
       <input type="submit" name="action" value="Preview">
       <input type="submit" name="action" value="Post">
