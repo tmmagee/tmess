@@ -158,7 +158,7 @@ def member_form(request, username=None):
         member_old_values = copy.deepcopy(member.__dict__)
     else:
         user = User()
-        user.set_unusable_password()
+        user.set_password(User.objects.make_random_password())
         member = models.Member()
 
     is_errors = False
@@ -826,12 +826,12 @@ def member_signup_review(request):
             elif review_action == "save":
                 if form.is_valid():
                     # Create user
-                    user = User()
+                    user = User.objects.create_user(form.cleaned_data['user_name'], password=User.objects.make_random_password())
+                    # user = UserManager.create_user(password=UserManager.make_random_password())
                     user.username = form.cleaned_data['user_name']
                     user.email = new_member.email
                     user.first_name = new_member.first_name
                     user.last_name = new_member.last_name
-                    user.set_unusable_password()
 
                     '''
                     We save this here because the user needs a primary key value before
