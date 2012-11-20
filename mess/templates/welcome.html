@@ -20,8 +20,7 @@
       <h3>Here are the most recent conversations on the <a href="/forum/menu">Forum</a></h3>
       <ul>
       {% for t in threads %}
-      <li><a href="/forum/{{ t.forum__slug }}/?subject={{ t.subject }}">{{ t.subject }}</a> - new post on 
-        {{ t.last_post|date:'D d F' }} at {{ t.last_post|date:'P' }}</li>
+      <li><a href="/forum/{{ t.forum__slug }}/?subject={{ t.subject }}">{{ t.subject }}</a> - new post in <a href="/forum/{{ t.forum__slug }}">{{ t.forum__name }}</a> on {{ t.last_post|date:'D d F' }} at {{ t.last_post|date:'P' }}</li>
       {% endfor %}
       </ul>
 
