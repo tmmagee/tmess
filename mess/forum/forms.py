@@ -11,7 +11,7 @@ class AddPostForm(forms.Form):
     # hide subject and attachment if this is a reply
     def __init__(self, *args, **kwargs):
         super(AddPostForm, self).__init__(*args, **kwargs)
-        if self.initial.get('subject') or self.data.get('subject'):
+        if self.initial.get('subject'):
             self.fields['subject'].widget = forms.HiddenInput()
             self.fields['attachment'].widget = forms.HiddenInput()
 

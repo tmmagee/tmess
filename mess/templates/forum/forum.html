@@ -37,7 +37,7 @@
             {% if not post.deleted %}
             {% for attachment in post.attachments.get_query_set %}
               <tr>
-                <td>Attachment: <a href="{{ MEDIA_URL }}attachments/{{ attachment.get_file_name }}">{{ attachment }}</a></td>
+                <td>Attachment: <a href="{{ MEDIA_URL }}uploads/forum/attachments/{{ attachment.get_file_name }}">{{ attachment }}</a></td>
               </tr>
             {% endfor %}
             {% endif %}

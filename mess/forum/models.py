@@ -9,8 +9,6 @@ from django.contrib.auth import models as auth_models
 from django.db.models import Max, Count
 from django.utils.http import urlquote
 
-from mess.settings import MEDIA_ROOT
-
 class Forum(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
@@ -45,7 +43,7 @@ class PostManager(models.Manager):
 
 class Attachment(models.Model):
     name = models.CharField(max_length=255)
-    file_upload = models.FileField(upload_to=MEDIA_ROOT+"/attachments/")
+    file_upload = models.FileField(upload_to="uploads/forum/attachments")
 
     def __str__(self):
       return self.name
