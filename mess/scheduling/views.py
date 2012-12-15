@@ -242,15 +242,40 @@ def timecard(request, date=None):
           Only goes out if this is the first the timecard has been submitted
           '''
           if task.hours_worked is None:
-            if form.cleaned_data['shift_status']=='excused':
-              email_template = get_template("scheduling/emails/shift_excused.html")
-              mail.send_mail("Excused shift", email_template.render(context), MEMBER_COORDINATOR_EMAIL, [task.member.user.email])
-              context['messages'].append("Excused email sent to member %s %s of account %s" % (task.member.user.first_name, task.member.user.last_name, task.account.name))
-  
-            if form.cleaned_data['shift_status']=='unexcused':
-              email_template = get_template("scheduling/emails/shift_unexcused.html")
-              mail.send_mail("Unexcused shift", email_template.render(context), MEMBER_COORDINATOR_EMAIL, [task.member.user.email])
-              context['messages'].append("Unexcused email sent to member %s %s of account %s" % (task.member.user.first_name, task.member.user.last_name, task.account.name))
+            shift_status = form.cleaned_data['shift_status']
+
+            '''
+            Per Jamila and Shinara, we only send out emails if the task is not 
+            a make up or banked shift
+            '''
+            if (shift_status == 'excused' or shift_status == 'unexcused') and not task.makeup and not task.banked:
+              if task.job.name.strip() == "Committee":
+                email_template = get_template("scheduling/emails/shift_" + shift_status + "_committee.html")
+                subject_template = get_template("scheduling/emails/shift_" + shift_status + "_committee_subject.html")
+              elif task.job.name.strip() == "Mill Creek Farm":
+                email_template = get_template("scheduling/emails/shift_" + shift_status + "_mill_creek.html")
+                subject_template = get_template("scheduling/emails/shift_" + shift_status + "_mill_creek_subject.html")
+              else:
+                email_template = get_template("scheduling/emails/shift_" + shift_status + ".html")
+                subject_template = get_template("scheduling/emails/shift_" + shift_status + "_subject.html")
+
+              subject = ''.join(subject_template.render(context).splitlines())
+
+              if task.member.user.email:
+                mail.send_mail(
+                  subject,
+                  email_template.render(context), 
+                  MEMBER_COORDINATOR_EMAIL, 
+                  ["thomas.m.magee@gmail.com"]
+                  #[task.member.user.email]
+                  )
+
+              context['messages'].append(
+                  "Shift " + shift_status + " email sent to member %s %s of account %s" % (
+                  task.member.user.first_name, 
+                  task.member.user.last_name, 
+                  task.account.name
+                  ))
 
           task.hours_worked=form.cleaned_data['hours_worked']
 
