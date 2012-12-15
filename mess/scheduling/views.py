@@ -266,8 +266,7 @@ def timecard(request, date=None):
                   subject,
                   email_template.render(context), 
                   MEMBER_COORDINATOR_EMAIL, 
-                  ["thomas.m.magee@gmail.com"]
-                  #[task.member.user.email]
+                  [task.member.user.email]
                   )
 
               context['messages'].append(
