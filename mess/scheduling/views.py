@@ -261,15 +261,16 @@ def timecard(request, date=None):
 
               subject = ''.join(subject_template.render(context).splitlines())
 
-              if task.member.user.email:
-                mail.send_mail(
-                  subject,
-                  email_template.render(context), 
-                  MEMBER_COORDINATOR_EMAIL, 
-                  [task.member.user.email]
-                  )
+              if task.member:
+                if task.member.user.email:
+                  mail.send_mail(
+                    subject,
+                    email_template.render(context), 
+                    MEMBER_COORDINATOR_EMAIL, 
+                    [task.member.user.email]
+                    )
 
-              context['messages'].append(
+                context['messages'].append(
                   "Shift " + shift_status + " email sent to member %s %s of account %s" % (
                   task.member.user.first_name, 
                   task.member.user.last_name, 

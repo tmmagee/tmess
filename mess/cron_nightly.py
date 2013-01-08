@@ -147,8 +147,6 @@ def charge_overdue_equity():
         except smtplib.SMTPRecipientsRefused, e:
           print "SMTP Error: %s" % e
 
-      return
-
 def main():
     reminder_emails()
     #cashsheet_email()
