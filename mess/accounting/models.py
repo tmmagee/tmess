@@ -322,7 +322,16 @@ def total_balances_on(time):
     cursor = connection.cursor()
     cursor.execute("select sum(t.account_balance) from membership_account a join accounting_transaction t on t.id=(select id from accounting_transaction where account_id=a.id and timestamp < %s order by timestamp desc limit 1)", [time])
     row = cursor.fetchone()
-    return row[0]
+
+    '''
+    It's possible this function returned a NULL value if the time 
+    parameter occurred prior to the very first transaction. Check
+    for this and return 0 if that's the case
+    '''
+    if row[0]:
+      return row[0]
+    else:
+      return 0
 
 @commit_on_success
 def commit_potential_bills(accounts, bill_type, entered_by):
