@@ -235,6 +235,14 @@ def timecard(request, date=None):
         if (form.is_valid()):
           task = models.Task.objects.get(id=form.cleaned_data['id'])
 
+          '''
+          It's possible for a task to exist with out a member attached to it. 
+          This shouldn't happen, but if it does don't save anything or email
+          anyone. Just continue on to the next task
+          '''
+          if not task.member:
+            continue
+
           context['task'] = task
 
           '''
