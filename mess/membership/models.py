@@ -434,6 +434,15 @@ class Account(models.Model):
         return self.billable_members().count()
 
     @property
+    def has_staff_member(self):
+      for member in self.members.all():
+        for group in member.user.groups.all():
+          if group.name=='staff':
+            return True
+
+      return False
+
+    @property
     def discount(self):
         # active working members at 10%
         # active nonworking members at 5%
