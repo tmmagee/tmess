@@ -161,7 +161,7 @@ def schedule(request, date=None):
             task_form = task.form = forms.TaskForm(request.POST, 
                     instance=task, prefix=task_index)
             recur_form = task.recur_form = forms.RecurForm(request.POST, 
-                    instance=task, prefix='recur-%s' % task_index)
+                    instance=task.recur_rule, prefix='recur-%s' % task_index)
         if task_form.is_valid() and recur_form.is_valid():
             task = task_form.save()
             if recur_form.changed_data:
@@ -608,7 +608,7 @@ def switch(request):
         return HttpResponse('Sorry.  You are not assigned to that task.')
     if original.makeup:
         return HttpResponse('Sorry.  Cannot switch a make-up shift.')
-    SOONEST_SWITCH = datetime.timedelta(1)
+    SOONEST_SWITCH = datetime.timedelta(2)
     earliest_switch = datetime.datetime.now()# + SOONEST_SWITCH
     if original.time < earliest_switch:
         return HttpResponse('Sorry.  Cannot switch shifts within %s' % SOONEST_SWITCH)
