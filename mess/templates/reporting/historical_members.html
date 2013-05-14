@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="double-column" >
+  <div id="primary-content-wrapper" >
+    <h2>Members by Date</h2>
+    <table>
+      <form class="sorter noprint" method="GET">
+        {{ form }}
+        <tr><td></td><td><input type="submit" value="Filter"></td></tr>
+
+        {% if member_count %}
+        <tr><td></td><td>Member Count for {{ date }}: {{ member_count }}</td></tr>
+        {% endif %}
+      </form>
+
+
+    </table>
+
+  </div>
+</div>
+{% endblock %}

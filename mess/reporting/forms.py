@@ -78,3 +78,6 @@ class MemberLoggingFilterForm(LoggingFilterForm):
         widget=AutoCompleteWidget('member',
             view_name='membership-autocomplete', canroundtrip=True),
         required=False)
+
+class HistoricalMembersForm(forms.Form):
+    date = forms.DateField(initial=datetime.date.today())
