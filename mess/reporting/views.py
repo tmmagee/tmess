@@ -290,12 +290,12 @@ def reports(request):
             ('Accounts',reverse('logging', args=['account'])),
             ('Members',reverse('logging', args=['member'])),
         ]),
-        ('Historical', [
-#            listrpt('Logs', 'General',
-#                '',
-#                'action_time\r\nuser\r\ncontent_type\r\nobject_id\r\nobject_repr\r\naction_flag\r\nchange_message'),
-            ('Members By Date',reverse('historical_members')),
-        ]),
+#        ('Historical', [
+##            listrpt('Logs', 'General',
+##                '',
+##                'action_time\r\nuser\r\ncontent_type\r\nobject_id\r\nobject_repr\r\naction_flag\r\nchange_message'),
+#            ('Members By Date',reverse('historical_members')),
+#        ]),
         ]]
     return render_to_response('reporting/reports.html', locals(),
             context_instance=RequestContext(request))
@@ -822,7 +822,7 @@ def historical_members(request):
 
     date = str(form.cleaned_data.get('date'))
 
-    query = "SELECT * from membership_member where date_joined <= '" + date + "' AND (date_departed is null OR date_departed > '" + date + "') AND id in (SELECT DISTINCT member_id FROM accounting_transaction WHERE purchase_type='O' AND purchase_amount>0)"
+    query = "SELECT * from membership_member where date_joined <= '" + date + "' AND (date_departed is null and equity_held>0) OR (date_departed > '" + date + "' AND id in (SELECT DISTINCT member_id FROM accounting_transaction WHERE purchase_type='O' AND purchase_amount>0))"
 
     members = m_models.Member.objects.raw(query)
     member_count = len(__builtin__.list(members))
