@@ -409,7 +409,7 @@ class Account(models.Model):
     balance = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     note = models.TextField(blank=True)
     shared_address = models.BooleanField(default=False)
-    #balance_limit = models.DecimalField(max_digits=8, decimal_places=2, default=5.00)
+    balance_limit = models.DecimalField(max_digits=8, decimal_places=2, default=5.00)
 
     objects = AccountManager()
 
@@ -588,13 +588,13 @@ class Account(models.Model):
         return self.days_old() / 30
         
     def max_allowed_to_owe(self):
-    #    return self.balance_limit
-        if self.temporarybalancelimit_set.current():
-            return self.temporarybalancelimit_set.current()[0].limit
-        if self.days_old() >= 180:
-            return self.active_member_count * Decimal('25.00')
-        else:
-            return self.active_member_count * Decimal('5.00')
+        return self.balance_limit
+#        if self.temporarybalancelimit_set.current():
+#            return self.temporarybalancelimit_set.current()[0].limit
+#        if self.days_old() >= 180:
+#            return self.active_member_count * Decimal('25.00')
+#        else:
+#            return self.active_member_count * Decimal('5.00')
     max_allowed_balance = property(max_allowed_to_owe)
 
     def must_pay(self):
