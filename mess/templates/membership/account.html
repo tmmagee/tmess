@@ -24,12 +24,7 @@
           <li><b>{% if account.owes_money %}Money owed{% else %}Credit{% endif %}:</b> 
             {{ account.balance|messmoney }}</li>
           <li><b>Discount:</b> {{ account.discount }}%</li>
-          <li>
-            <b>Balance limit:</b> {% if account.temporarybalancelimit_set.current %}{{ account.temporarybalancelimit_set.current|first }}{% else %}{{ account.max_allowed_to_owe }}{% endif %}
-            {% if request.user.is_staff %}
-              <br /><a href="{{ account.get_templimit_url }}">change balance limit</a>
-            {% endif %}
-          </li>
+          <li><b>Balance limit:</b> {{ account.balance_limit }}</li>
         </ul>
         </div>
 
