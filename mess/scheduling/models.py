@@ -32,6 +32,7 @@ REMINDER_CALL = (
     ('n', ''),
     ('c', 'Contacted'),
     ('l', 'Left Message'),
+    ('x', 'No Voicemail'),
     ('p', 'Problem w #'),
 )
 
