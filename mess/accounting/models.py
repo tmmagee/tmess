@@ -34,6 +34,12 @@ PAYMENT_CHOICES = (
     ('O','Coupon'),
 )
 
+'''
+Hours transaction for accounts
+
+Per the Marketing and Membership department's request, we 
+are phasing this out in favor of MemberHoursTransactions
+'''
 class HoursTransaction(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     account = models.ForeignKey(Account)
@@ -49,6 +55,25 @@ class HoursTransaction(models.Model):
         self.account.hours_balance = self.hours_balance = new_balance
         self.account.save()
         super(HoursTransaction, self).save(*args, **kwargs)
+
+'''
+Hours transaction for members
+'''
+class MemberHoursTransaction(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    member = models.ForeignKey(Member)
+    hours_balance_change = models.DecimalField(max_digits=5, decimal_places=2,
+        default=0, blank=True)
+    note = models.CharField(max_length=256, blank=True)
+    hours_balance = models.DecimalField(max_digits=5, decimal_places=2)
+    entered_by = models.ForeignKey(User, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        old_balance = self.member.hours_balance
+        new_balance = old_balance + self.hours_balance_change
+        self.member.hours_balance = self.hours_balance = new_balance
+        self.member.save()
+        super(MemberHoursTransaction, self).save(*args, **kwargs)
 
 class Transaction(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True) #never have to deal w/ this in a form.

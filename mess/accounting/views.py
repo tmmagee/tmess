@@ -197,6 +197,30 @@ def hours_balance(request):
     return render_to_response('accounting/hours_balance.html', locals(),
             context_instance=RequestContext(request))
 
+def member_hours_balance(request):
+    if not has_elevated_perm(request, 'accounting', 'add_transaction'):
+        return HttpResponseRedirect(reverse('welcome'))
+
+    today = datetime.date.today()
+
+    if 'getmemberinfo' in request.GET:
+        member_id = request.GET['member']
+        member = m_models.Member.objects.get(id=member_id)
+        return HttpResponse(member.hours_balance)
+    if request.method == 'POST':
+        form = forms.MemberHoursBalanceForm(request.POST)
+        if form.is_valid():
+            hourstransaction = form.save(commit=False) # get info from form
+            hourstransaction.entered_by = request.user # add entered_by
+            hourstransaction.save()                    # save to database
+            return HttpResponseRedirect(reverse('member_hours_balance'))
+    else:
+        form = forms.MemberHoursBalanceForm()
+    hours_transactions = models.MemberHoursTransaction.objects.filter(
+            timestamp__range=(today,today+datetime.timedelta(1)))
+    return render_to_response('accounting/member_hours_balance.html', locals(),
+            context_instance=RequestContext(request))
+
 # cashier permission is the first if
 @login_required
 def close_out(request, date=None):

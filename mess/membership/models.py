@@ -171,6 +171,8 @@ class Member(models.Model):
     # This field will hold extra information
     extra_info = models.CharField(max_length=255, blank=True, null=True)
 
+    hours_balance = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+
     objects = MemberManager()
 
     def __unicode__(self):

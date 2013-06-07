@@ -82,6 +82,15 @@ function yui_autocomplete(name, ac_url, force_selection) {
             });
         }
 
+        // Set up get cashier info (picking account fetches info):
+        if (typeof(window['GETMEMBERINFO']) != 'undefined' &&  
+                GETMEMBERINFO ) { 
+            autocomplete.itemSelectEvent.subscribe(function (type, args) {
+                var member_id = args[2].id;
+                getMemberInfo(member_id);
+            });
+        }
+
         // Set up jump (picking member submits form, ie for searching):
         if (typeof(window['SUBMITONSELECT']) != 'undefined' &&
                 SUBMITONSELECT ) {

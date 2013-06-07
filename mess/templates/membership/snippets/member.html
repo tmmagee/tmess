@@ -5,6 +5,7 @@
 </h4>
 
 <div class="accountmemberside">
+  <h4>Contact Information</h4>
   <ul class="quick-info">
     {% if member.user.email %}
       <li><b>Email:</b> {{ member.user.email }}</li>
@@ -32,6 +33,9 @@
     {% if member.date_departed %}
       <li><b>Departed:</b> {{ member.date_departed|date:"n/j/Y" }}</li>
     {% endif %}
+    {% if member.date_turns_18 %}
+      <li><b>Youth Member Until:</b> {{ member.date_turns_18|date:"n/j/Y" }}</li>
+    {% endif %}
     {% if member.date_missing %}
       <li><b>Missing:</b> {{ member.date_missing|date:"n/j/Y" }}</li>
     {% endif %}
@@ -52,6 +56,7 @@
     <li><b>Equity due:</b> {{ member.equity_due }}</li>
     <li><b>Equity increment:</b> {{ member.equity_increment }}</li>
     <li><b>Equity target:</b> {{ member.equity_target }}</li>
+    <li><b>Hours balance:</b> {{ member.hours_balance }}</li>
 
     {% if am.account_contact %}
       <!-- work status is only for member equity holders -->

@@ -173,6 +173,26 @@ class HoursBalanceForm(forms.ModelForm):
         except:
             raise forms.ValidationError('invalid hours balance')
 
+class MemberHoursBalanceForm(forms.ModelForm):
+    class Meta:
+        model = models.MemberHoursTransaction
+        exclude = ('hours_balance','entered_by','note')
+    member = forms.ModelChoiceField(m_models.Member.objects.all(),
+        widget=AutoCompleteWidget('member_spiffy', 
+            view_name='membership-autocomplete', canroundtrip=True), 
+        required=False, help_text='* = include inactive') 
+    hours_balance_change = forms.CharField(
+                widget=forms.TextInput(attrs={'size':'4'}))
+
+    def clean_hours_balance_change(self):
+        value = str(self.cleaned_data['hours_balance_change'])
+        if value[0] == '(' and value[-1] == ')':
+            value = '-'+value[1:-1]
+        try:
+            return Decimal(value)
+        except:
+            raise forms.ValidationError('invalid hours balance')
+
 class ReverseForm(forms.Form):
     reverse_id = forms.ModelChoiceField(models.Transaction.objects.all(),
             widget=forms.HiddenInput())
