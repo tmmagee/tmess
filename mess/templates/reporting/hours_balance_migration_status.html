@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div id="left-column">
+  <div id="primary-content-wrapper">
+    <h2>Accounts with Multiple Members ({{ accounts_with_multiple_members|length }})</h2>
+    <table class="data">
+      <thead>
+        <th>Account</th>
+        <th>Account Hours Balance</th>
+        <th>Member Hours Balance</th>
+        <th>Hours Equal</th>
+      </thead>
+    {% for account, account_hours_balance, member_hours_balance, hours_equal in accounts %}
+      <tbody>
+        <tr class="{% cycle 'odd' 'even' %}">
+          <td>{{ account.name }}</td>
+          <td>{{ account_hours_balance }}</td>
+          <td>{{ member_hours_balance }}</td>
+          <td {% if not hours_equal %}class="error" {% endif %}>{{ hours_equal }}</td>
+        </tr>
+      </tbody>
+    {% endfor %}
+  </table>
+    </div>
+</div>
+{% endblock %}

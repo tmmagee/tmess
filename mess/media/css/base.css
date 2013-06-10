@@ -935,3 +935,6 @@ table thead tr th {
   color: blue;
 }
 
+td.error {
+  color: red
+}

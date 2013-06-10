@@ -124,8 +124,8 @@ def reports(request):
                 'active_member_count\r\nnote',
                 order_by='-balance',
                 include='Present'),
-
-            ('Keys to Shut Off',reverse('frozen')+'?has_key=on'),
+            ('Hours Balance Migration Status', reverse('hours_balance_migration_status')),
+            #('Keys to Shut Off',reverse('frozen')+'?has_key=on'),
 
         ]),
 
@@ -832,3 +832,31 @@ def historical_members(request):
 
   return render_to_response('reporting/historical_members.html', locals(),
     context_instance=RequestContext(request))
+
+def get_member_hours_balance(account):
+
+  hours_balance = 0
+
+  for member in account.members.all():
+    hours_balance += member.hours_balance
+
+  return hours_balance
+
+
+def hours_balance_migration_status(request):
+
+  accounts = []
+
+  for account in m_models.Account.objects.all():
+    member_hours_balance = get_member_hours_balance(account)
+
+    if account.active_member_count > 1 and account.hours_balance != 0:
+      accounts.append([
+            account, 
+            account.hours_balance, 
+            member_hours_balance,
+            (account.hours_balance == member_hours_balance)
+          ]);
+    
+  return render_to_response('reporting/hours_balance_migration_status.html', locals(), context_instance=RequestContext(request))
+  
