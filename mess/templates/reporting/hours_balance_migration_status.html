@@ -2,13 +2,13 @@
 {% block content %}
 <div id="left-column">
   <div id="primary-content-wrapper">
-    <h2>Accounts with Multiple Members ({{ accounts_with_multiple_members|length }})</h2>
+    <h2>Accounts with Multiple Members and Non-Zero Hours Balance ({{ accounts|length }})</h2>
     <table class="data">
       <thead>
         <th>Account</th>
         <th>Account Hours Balance</th>
-        <th>Member Hours Balance</th>
-        <th>Hours Equal</th>
+        <th>Total Member Hours Balance</th>
+        <th>Balances Equal?</th>
       </thead>
     {% for account, account_hours_balance, member_hours_balance, hours_equal in accounts %}
       <tbody>
