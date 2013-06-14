@@ -10,9 +10,9 @@ from mess.membership.models import Account, Member
 from mess.membership import models as m_models
 
 PURCHASE_CHOICES = (
-    ('P','Purchase'),
-    ('B','Bulk Purchase'),
-    ('A','After-Hours Purchase'),
+    ('P','Sale'),
+    ('B','Bulk Sale'),
+    ('A','After-Hours Sale'),
     ('U','Dues'),
     ('O','Member Equity'),
     ('G','Gift or Loan'),
