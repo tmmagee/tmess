@@ -478,9 +478,9 @@ class Account(models.Model):
     def get_hours_balance_history_url(self):
         return reverse('hours_balance_changes')+'?account='+str(self.id)
 
-    #@models.permalink
-    #def get_templimit_url(self):
-    #    return ('templimit', [self.id])
+    @models.permalink
+    def get_templimit_url(self):
+        return ('templimit', [self.id])
 
     def members_leaveofabsence_set(self):
         return LeaveOfAbsence.objects.filter(member__accounts=self)
@@ -590,13 +590,10 @@ class Account(models.Model):
         return self.days_old() / 30
         
     def max_allowed_to_owe(self):
-        return self.balance_limit
-#        if self.temporarybalancelimit_set.current():
-#            return self.temporarybalancelimit_set.current()[0].limit
-#        if self.days_old() >= 180:
-#            return self.active_member_count * Decimal('25.00')
-#        else:
-#            return self.active_member_count * Decimal('5.00')
+        if self.temporarybalancelimit_set.current():
+            return self.temporarybalancelimit_set.current()[0].limit
+        else:
+            return self.balance_limit
     max_allowed_balance = property(max_allowed_to_owe)
 
     def must_pay(self):
