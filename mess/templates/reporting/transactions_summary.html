@@ -10,7 +10,7 @@
   <div id="primary-content-wrapper" >
     <h2>Transaction Totals</h2>
     <table class="data"><tr>
-      <th style="width:25%;">Purchases</th>
+      <th style="width:25%;">Sales</th>
       <th style="width:25%;">Payments</th>
       <th style="width:25%; text-align:right;">Filters</th>
 
@@ -26,7 +26,7 @@
           </tr>
         {% endfor %}
         <tr class="odd">
-          <td>Start+Purchases:</td><td>{{ start_plus_purchases|messmoney }}</td>
+          <td>Start+Sales:</td><td>{{ start_plus_purchases|messmoney }}</td>
         </tr>
       </table>
     </td><td>

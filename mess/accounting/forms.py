@@ -68,7 +68,7 @@ class AfterHoursForm(forms.Form):
                     raise forms.ValidationError("no more than 2 #s after decimal, pls.")
                 total += d
         except (InvalidOperation, AttributeError):
-            raise forms.ValidationError("Purchases field incorrect.")
+            raise forms.ValidationError("Sales field incorrect.")
 
         cleaned_data["purchase_total"] = total
         return cleaned_data
