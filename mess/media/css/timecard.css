@@ -4,4 +4,5 @@ input[id$="hours_worked"] {
 
 @media screen {
     tr.timecard-submitted { background:#bbd ! important; }
+    tr.scheduled-to-work { background:#bdb ! important; }
 }
