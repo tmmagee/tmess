@@ -31,7 +31,7 @@ PAYMENT_CHOICES = (
     ('A','Cash with Change'),
     ('B','Cash to Balance'),
     ('T','Gift Card'),
-    ('O','Coupon'),
+    ('N','Coupon'),
 )
 
 '''
