@@ -197,6 +197,7 @@ INSTALLED_APPS = (
     'mess.reporting',
     'mess.scheduling',
     'mess.events',
+    'mess.revision',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

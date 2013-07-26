@@ -207,6 +207,14 @@ def member_form(request, username=None):
 
                 for formset in (related_account_formset, LOA_formset): 
                     _setattr_formset_save(request, formset, 'member', member)
+
+                '''
+                We perform one more member.save() after the formsets have been 
+                saved. We do this because it is during the post_save of 
+                member.save() that the member revision is created, and to ensure
+                we get an accurate revision the formset has to have been saved
+                '''
+                member.save()
                 
                 if not edit:
                     # TODO send member an email with login information see #224
@@ -442,6 +450,8 @@ def account_form(request, id=None):
         related_member_formset = forms.RelatedMemberFormSet(request.POST, 
                 instance=account, prefix='related_member')
         if form.is_valid() and related_member_formset.is_valid():
+
+
             if context.get('edit'):
                 account = form.save()
                 log(request, account, 'edit', old_values=old_values)
@@ -454,6 +464,15 @@ def account_form(request, id=None):
             #account_log_entry.save()
 
             _setattr_formset_save(request, related_member_formset, 'account', account)
+
+            '''
+            We call account.save once last time here because this it is
+            during account's post_save signal that the new account 
+            revision is created, and we need that formset saved before
+            getting an accurate revision
+            '''
+            account.save()
+
             return HttpResponseRedirect(reverse('account', args=[account.id]))
     else:
         form = forms.AccountForm(instance=account)
