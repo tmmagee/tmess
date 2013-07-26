@@ -147,10 +147,46 @@ def charge_overdue_equity():
         except smtplib.SMTPRecipientsRefused, e:
           print "SMTP Error: %s" % e
 
+def balance_owed():
+  '''
+  Only runs on the first of every month. Sends emails 
+  to all members who have a balance on their account OVER
+  their allowed balance.
+  '''
+  if (datetime.datetime.today().day != 1):
+    return
+
+  accounts = m_models.Account.objects.all()
+
+  for account in accounts:
+    if account.balance > account.balance_limit:
+      for member in account.active_members():
+
+        if member.user.email:
+
+          notification_template = loader.get_template('accounting/emails/balance_owed.html')
+          notification_subject = "Your account balance exceeds allowed balance limit";
+  
+          message = notification_template.render(
+            Context({
+              'member':member, 
+              'account':account,
+              'balance':account.balance,
+              'balance_limit':account.balance_limit,
+              }))
+  
+          email = mail.EmailMessage(notification_subject, message, "Mariposa Food Co-op <finance@mariposa.coop>", [member.user.email])
+  
+          try:
+            email.send()
+          except smtplib.SMTPRecipientsRefused, e:
+            print "SMTP Error: %s" % e
+          
 def main():
     reminder_emails()
     #cashsheet_email()
     charge_overdue_equity()
+    balance_owed()
 
 if __name__ == "__main__":
     main()
