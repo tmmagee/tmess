@@ -157,7 +157,7 @@ class AccountRevision(RevisionModel):
   ebt_only = models.BooleanField()
   hours_balance = models.DecimalField(max_digits=5, decimal_places=2)
   deposit = models.DecimalField(max_digits=8, decimal_places=2)
-  balance = models.DecimalField(max_digits=8, decimal_places=2)
+  balance_limit = models.DecimalField(max_digits=8, decimal_places=2)
   note = models.TextField(blank=True)
   shared_address = models.BooleanField()
   timestamp = models.DateTimeField(auto_now_add=True)
@@ -173,7 +173,7 @@ class AccountRevision(RevisionModel):
       account_revision.ebt_only = account.ebt_only
       account_revision.hours_balance = account.hours_balance
       account_revision.deposit = account.deposit
-      account_revision.balance = account.balance
+      account_revision.balance_limit = account.balance_limit
       account_revision.note = account.note
       account_revision.shared_address = account.shared_address
 
@@ -196,7 +196,7 @@ class AccountRevision(RevisionModel):
       self.ebt_only,
       self.hours_balance,
       self.deposit,
-      self.balance,
+      self.balance_limit,
       self.note,
       self.shared_address,
       ]
