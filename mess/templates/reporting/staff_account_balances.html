@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="double-column" >
+  <div id="primary-content-wrapper" >
+    <h2>Staff Account Balances</h2>
+    <div>
+      <table class="data" >
+          <tr>
+              <th>Account</th>
+              <th>Staff Member</th>
+              <th>Account Balance</th>
+          </tr>
+          {% for account in accounts %}
+          <tr class="{% cycle 'odd' 'even' %}" >
+            {% for value in account %}
+              <td>{{ value }}</td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

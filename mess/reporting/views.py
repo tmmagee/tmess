@@ -16,6 +16,7 @@ from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.db.models.aggregates import Sum, Max
+from django.contrib.auth.models import User
 
 from mess.accounting import models as a_models
 from mess.accounting.models import Transaction
@@ -126,6 +127,7 @@ def reports(request):
                 include='Present'),
             ('Hours Balance Migration Status', reverse('hours_balance_migration_status')),
             #('Keys to Shut Off',reverse('frozen')+'?has_key=on'),
+            ('Staff Account Balances', reverse('staff_account_balances')),
 
         ]),
 
@@ -860,3 +862,16 @@ def hours_balance_migration_status(request):
     
   return render_to_response('reporting/hours_balance_migration_status.html', locals(), context_instance=RequestContext(request))
   
+def staff_account_balances(request):
+
+  accounts = []
+
+  for user in User.objects.filter(groups__name='staff'):
+    member = m_models.Member.objects.get(user__id=user.id)
+
+    for account_member in m_models.AccountMember.objects.filter(member__id=member.id):
+      account = m_models.Account.objects.get(id=account_member.account_id)
+
+      accounts.append([account.name, user.first_name + " " + user.last_name, account.balance])
+
+  return render_to_response('reporting/staff_account_balances.html', locals(), context_instance=RequestContext(request))
