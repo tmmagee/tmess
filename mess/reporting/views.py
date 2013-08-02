@@ -872,6 +872,6 @@ def staff_account_balances(request):
     for account_member in m_models.AccountMember.objects.filter(member__id=member.id):
       account = m_models.Account.objects.get(id=account_member.account_id)
 
-      accounts.append([account.name, user.first_name + " " + user.last_name, account.balance])
+      accounts.append([account.name, user.first_name + " " + user.last_name, user.email, account.balance])
 
   return render_to_response('reporting/staff_account_balances.html', locals(), context_instance=RequestContext(request))
