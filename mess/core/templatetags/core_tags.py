@@ -1,5 +1,6 @@
 import re
 from django import template
+from decimal import Decimal
 
 register = template.Library()
 
@@ -16,3 +17,6 @@ def match(value, regex):
     """
     return re.match(regex, value)
 
+@register.filter    
+def subtract(value, arg):
+  return value - arg
