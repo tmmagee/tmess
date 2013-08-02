@@ -864,14 +864,14 @@ def hours_balance_migration_status(request):
   
 def staff_account_balances(request):
 
-  accounts = []
+  staff_accounts = []
 
-  for user in User.objects.filter(groups__name='staff'):
-    member = m_models.Member.objects.get(user__id=user.id)
+  for staff_user in User.objects.filter(groups__name='staff'):
+    staff_member = m_models.Member.objects.get(user__id=staff_user.id)
 
-    for account_member in m_models.AccountMember.objects.filter(member__id=member.id):
-      account = m_models.Account.objects.get(id=account_member.account_id)
+    for staff_account_member in m_models.AccountMember.objects.filter(member__id=staff_member.id):
+      staff_account = m_models.Account.objects.get(id=staff_account_member.account_id)
 
-      accounts.append([account.name, user.first_name + " " + user.last_name, user.email, account.balance])
+      staff_accounts.append([staff_member, staff_account])
 
   return render_to_response('reporting/staff_account_balances.html', locals(), context_instance=RequestContext(request))

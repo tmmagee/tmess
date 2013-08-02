@@ -12,11 +12,12 @@
               <th>Email</th>
               <th>Account Balance</th>
           </tr>
-          {% for account in accounts %}
+          {% for member, account in staff_accounts %}
           <tr class="{% cycle 'odd' 'even' %}" >
-            {% for value in account %}
-              <td>{{ value }}</td>
-            {% endfor %}
+            <td><a href="{% url account account.id %}">{{ account }}</a></td>
+            <td><a href="{% url member member.user.username %}">{{ member }}</a></td>
+            <td><a href="mailto:{{ member.user.email }}">{{ member.user.email }}</a></td>
+            <td>{{ account.balance }}</td>
           </tr>
           {% endfor %}
       </table>
