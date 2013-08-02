@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load core_tags %}
 
 {% block content %}
 <div id="double-column" >
@@ -11,6 +12,7 @@
               <th>Staff Member</th>
               <th>Email</th>
               <th>Account Balance</th>
+              <th>Amount Over Limit</th>
           </tr>
           {% for member, account in staff_accounts %}
           <tr class="{% cycle 'odd' 'even' %}" >
@@ -18,6 +20,11 @@
             <td><a href="{% url member member.user.username %}">{{ member }}</a></td>
             <td><a href="mailto:{{ member.user.email }}">{{ member.user.email }}</a></td>
             <td>{{ account.balance }}</td>
+            {% if account.balance < account.balance_limit %}
+            <td>0</td>
+            {% else %}
+            <td>{{ account.balance|subtract:account.balance_limit }}</td>
+            {% endif %}
           </tr>
           {% endfor %}
       </table>
