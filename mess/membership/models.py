@@ -222,6 +222,10 @@ class Member(models.Model):
             possible = s_models.Task.objects.unassigned_future()
         return possible.exclude(job__skills_required__in=self.untrained())
         
+
+    def get_hours_balance_history_url(self):
+        return reverse('member_hours_balance_changes')+'?member='+str(self.id)
+
     @property
     def current_loa(self):
         loa_set = self.leaveofabsence_set.current()
@@ -359,6 +363,15 @@ class Member(models.Model):
 
         super(Member, self).save(*args, **kwargs)
 
+    def excused_hours_owed(self):
+        return self.hours_balance > self.hours_balance.to_integral_value()
+
+    def unexcused_hours_owed(self):
+        if self.hours_balance.to_integral_value() >= 1:
+            return True
+        else:
+            return False
+
     class Meta:
         ordering = ['user__username']
 
@@ -476,7 +489,7 @@ class Account(models.Model):
         return ('account', [self.id])
 
     def get_hours_balance_history_url(self):
-        return reverse('hours_balance_changes')+'?account='+str(self.id)
+        return reverse('account_hours_balance_changes')+'?account='+str(self.id)
 
     @models.permalink
     def get_templimit_url(self):

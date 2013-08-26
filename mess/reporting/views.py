@@ -106,25 +106,8 @@ def reports(request):
             listrpt('Accounts','With At Least $50 Member Equity',
                 'deposit__gte=50.00', 'deposit'),
 
-            ('Hours Balance Changes',reverse('hours_balance_changes')),            
+            ('Hours Balance Changes',reverse('account_hours_balance_changes')),            
 
-            listrpt('Accounts','Owing 1 Hour or More',
-                'hours_balance__gte=1.00', 
-                'hours_balance\r\nbalance\r\n'+
-                '{% for y in x.members.active %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
-                '{% for y in x.members.active %}{% if y.user.email %}{{ y.user.first_name }}: {{ y.user.email }}<br>{% endif %}{% endfor %}\Emails\r\n'+
-                'billable_member_count\r\nnote',
-                order_by='-hours_balance',
-                include='Present'),
-
-            listrpt('Accounts','Over Balance',
-                'balance__gte=25',
-                'balance\r\nmax_allowed_balance\r\nhours_balance\r\n'+
-                '{% for y in x.members.active %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
-                '{% for y in x.members.active %}{% if y.user.email %}{{ y.user.first_name }}: {{ y.user.email }}<br>{% endif %}{% endfor %}\Emails\r\n'+
-                'active_member_count\r\nnote',
-                order_by='-balance',
-                include='Present'),
             ('Hours Balance Migration Status', reverse('hours_balance_migration_status')),
             #('Keys to Shut Off',reverse('frozen')+'?has_key=on'),
             ('Staff Account Balances', reverse('staff_account_balances')),
@@ -193,10 +176,21 @@ def reports(request):
                 order_by='-date_departed',
                 include='All'),
 
-            listrpt('Members','Keycard Info',
-                'card_number__gt=',
-                'accounts\r\ncard_number\r\ncard_facility_code\r\ncard_type',
-                order_by='accounts'),
+#            listrpt('Members','Keycard Info',
+#                'card_number__gt=',
+#                'accounts\r\ncard_number\r\ncard_facility_code\r\ncard_type',
+#                order_by='accounts'),
+
+            ('Hours Balance Changes',reverse('member_hours_balance_changes')),            
+
+            listrpt('Members','Owing 1 Hour or More',
+                'hours_balance__gte=1.00', 
+                'accounts\r\n'+
+                'hours_balance\r\n'+
+                '{% for y in x.phones.all %}{{ x.user.first_name }}: {{ y }}<br>{% endfor %}\Phones\r\n'+
+                '{% if x.user.email %}{{ x.user.first_name }}: {{ x.user.email }}<br>{% endif %}\Emails\r\n',
+                order_by='-hours_balance',
+                include='Present'),
         ]),
 
         ('Accounting',[
@@ -590,14 +584,16 @@ def transaction_list_report(request):
     c['transactions'] = trans
     return render_to_response('reporting/transactions_list.html', c)
 
-def hours_balance_changes(request):
+def account_hours_balance_changes(request):
     """
-    View to summarize hours transactions in a given time period
+    DEPRECATED IN FAVOR OF MEMBER HOURS BALANCE CHANGES
+
+    View to summarize account hours transactions in a given time period
 
     Paul says, "This function is better now."  See form.full_clean
     It accepts any combo of provided fields, eg, account with no dates.
     """
-    form = forms.HoursBalanceChangesFilterForm(request.GET)
+    form = forms.AccountHoursBalanceChangesFilterForm(request.GET)
     if form.is_valid():    # empty form is valid, gets default dates
         start = form.cleaned_data['start']
         end = form.cleaned_data['end']        
@@ -606,7 +602,26 @@ def hours_balance_changes(request):
                              timestamp__range=(start,end))
         if account:
             hours_transactions = hours_transactions.filter(account=account)
-    return render_to_response('reporting/hours_balance_changes.html', locals(),
+    return render_to_response('reporting/account_hours_balance_changes.html', locals(),
+            context_instance=RequestContext(request))
+
+def member_hours_balance_changes(request):
+    """
+    View to summarize member hours transactions in a given time period
+
+    Paul says, "This function is better now."  See form.full_clean
+    It accepts any combo of provided fields, eg, account with no dates.
+    """
+    form = forms.MemberHoursBalanceChangesFilterForm(request.GET)
+    if form.is_valid():    # empty form is valid, gets default dates
+        start = form.cleaned_data['start']
+        end = form.cleaned_data['end']        
+        member = form.cleaned_data['member']
+        hours_transactions = a_models.MemberHoursTransaction.objects.filter(
+                             timestamp__range=(start,end))
+        if member:
+            hours_transactions = hours_transactions.filter(member=member)
+    return render_to_response('reporting/member_hours_balance_changes.html', locals(),
             context_instance=RequestContext(request))
 
 

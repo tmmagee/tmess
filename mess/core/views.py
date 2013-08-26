@@ -13,6 +13,7 @@ from django.template.loader import get_template
 from django.conf import settings
 
 from mess.forum import models as f_models
+from mess.membership import models as m_models
 
 
 MAX_ENTRIES = 5    # maximum number of rss items to show on welcome page
@@ -46,6 +47,7 @@ def welcome(request):
             threads = f_models.Post.objects.threads()[:MAX_ENTRIES]
             cache.set('threads', threads)
         context['threads'] = threads
+        context['member'] = m_models.Member.objects.get(user=request.user)
         template = get_template('welcome.html')
     else:
         if request.method == 'POST':

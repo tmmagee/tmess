@@ -42,11 +42,35 @@ class DateRangeForm(forms.Form):
     start = forms.DateField()
     end = forms.DateField()
 
-class HoursBalanceChangesFilterForm(forms.Form):
+class AccountHoursBalanceChangesFilterForm(forms.Form):
+  '''
+  DEPRECATED IN FAVOR OF MemberHoursBalanceChangesFilterForm
+  '''
+  start = forms.DateField(required=False) 
+  end = forms.DateField(required=False) 
+  account = forms.ModelChoiceField(m_models.Account.objects.all(),
+    widget=AutoCompleteWidget('account_spiffy',
+        view_name='membership-autocomplete', canroundtrip=True),
+      required=False)
+
+  def full_clean(self):
+    ''' set defaults for start and end '''
+    self.data = self.data.copy()      # make QueryDict mutable
+    today = datetime.date.today()
+    if 'start' not in self.data:
+      if 'account' in self.data:
+        self.data['start'] = datetime.date(1900,1,1)
+      else:
+        self.data['start'] = today - datetime.timedelta(7)
+    if 'end' not in self.data:
+      self.data['end'] = today + datetime.timedelta(1)
+    super(AccountHoursBalanceChangesFilterForm,self).full_clean()
+
+class MemberHoursBalanceChangesFilterForm(forms.Form):
     start = forms.DateField(required=False) 
     end = forms.DateField(required=False) 
-    account = forms.ModelChoiceField(m_models.Account.objects.all(),
-        widget=AutoCompleteWidget('account_spiffy',
+    member = forms.ModelChoiceField(m_models.Member.objects.all(),
+        widget=AutoCompleteWidget('member_spiffy',
             view_name='membership-autocomplete', canroundtrip=True),
         required=False)
 
@@ -55,13 +79,13 @@ class HoursBalanceChangesFilterForm(forms.Form):
         self.data = self.data.copy()      # make QueryDict mutable
         today = datetime.date.today()
         if 'start' not in self.data:
-            if 'account' in self.data:
+            if 'member' in self.data:
                 self.data['start'] = datetime.date(1900,1,1)
             else:
                 self.data['start'] = today - datetime.timedelta(7)
         if 'end' not in self.data:
             self.data['end'] = today + datetime.timedelta(1)
-        super(HoursBalanceChangesFilterForm,self).full_clean()
+        super(MemberHoursBalanceChangesFilterForm,self).full_clean()
 
 class LoggingFilterForm(forms.Form):
     start = forms.DateTimeField(initial=datetime.date.today())
