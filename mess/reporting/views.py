@@ -108,6 +108,15 @@ def reports(request):
 
             ('Hours Balance Changes',reverse('account_hours_balance_changes')),            
 
+            listrpt('Accounts','Over Balance',
+                'balance__gte=25',
+                'balance\r\nmax_allowed_balance\r\nhours_balance\r\n'+
+                '{% for y in x.members.active %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
+                '{% for y in x.members.active %}{% if y.user.email %}{{ y.user.first_name }}: {{ y.user.email }}<br>{% endif %}{% endfor %}\Emails\r\n'+
+                'active_member_count\r\nnote',
+                order_by='-balance',
+                include='Present'),
+
             ('Hours Balance Migration Status', reverse('hours_balance_migration_status')),
             #('Keys to Shut Off',reverse('frozen')+'?has_key=on'),
             ('Staff Account Balances', reverse('staff_account_balances')),
