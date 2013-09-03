@@ -164,12 +164,15 @@ def schedule(request, date=None):
                     instance=task.recur_rule, prefix='recur-%s' % task_index)
         if task_form.is_valid() and recur_form.is_valid():
             task = task_form.save()
-            if recur_form.changed_data:
-                frequency = recur_form.cleaned_data['frequency']
-                interval = recur_form.cleaned_data['interval']
-                until = recur_form.cleaned_data['until']
-                task.set_recur_rule(frequency, interval, until)
-                task.update_buffer()
+
+            frequency = recur_form.cleaned_data['frequency']
+            interval = recur_form.cleaned_data['interval']
+            until = recur_form.cleaned_data['until']
+
+            if frequency and interval:
+              task.set_recur_rule(frequency, interval, until)
+              task.update_buffer()
+
             return HttpResponseRedirect(reverse('scheduling-schedule', 
                     args=[date.date()]))
 
