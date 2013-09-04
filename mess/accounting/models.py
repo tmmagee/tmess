@@ -12,7 +12,7 @@ from mess.membership import models as m_models
 PURCHASE_CHOICES = (
     ('P','Sale'),
     ('B','Bulk Sale'),
-    ('A','After-Hours Sale'),
+#    ('A','After-Hours Sale'),
     ('U','Dues'),
     ('O','Member Equity'),
     ('G','Gift or Loan'),
