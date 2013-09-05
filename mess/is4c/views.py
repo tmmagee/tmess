@@ -116,7 +116,8 @@ def getmemberdict(member):
         'is_active':member.is_active,
         'is_on_loa':member.is_on_loa,
         # we use a string here because Decimal is not serializable!
-        'equity_due':'%f' % member.equity_due
+        'equity_due':'%f' % member.equity_due,
+        'member_card':member.member_card,
     }
 
 @csrf_exempt

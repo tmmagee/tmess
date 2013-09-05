@@ -173,6 +173,8 @@ class Member(models.Model):
 
     hours_balance = models.DecimalField(max_digits=5, decimal_places=2, default=0)
 
+    member_card = models.CharField(max_length=12, blank=True, null=True)
+
     objects = MemberManager()
 
     def __unicode__(self):
