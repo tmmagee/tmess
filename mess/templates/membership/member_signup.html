@@ -1,14 +1,28 @@
 {% extends "membership/signup_base.html" %}
 
-{% block title %}Mariposa Joining Form{% endblock %}
+{% block title %}Mariposa Membership Form{% endblock %}
 
 {% block content %}
   <div id="double-column">
     <div id="primary-content-wrapper">
-      <div style="text-align: center">
+      <!-- <div style="text-align: center"> -->
+      <div>
         <br />
-        <h2>Mariposa Joining Form</h2>
-        <p><a href="http://www.mariposa.coop/join">Click here for more info on the benefits of Mariposa Food Co-op Membership!</a></p>
+        <table class="center">
+          <tr><td><h2 style="text-align: center">Mariposa Membership Form</h2></td></tr>
+          <tr><td><p><a href="http://www.mariposa.coop/join">Click here for more info on the benefits of Mariposa Food Co-op Membership!</a></p></td></tr>
+          <tr><td>
+            <div class="highlight">
+              <p>Please note the full joining process includes:</p>
+              <ol>
+                <li>Filling out this Mariposa Membership Form</li>
+                <li>Attending a Member Orientation</li>
+                <li>Making your equity investment</li>
+              </ol>
+              <p>**<strong>ALL</strong> of these steps need to be completed to activate your membership!**</p>
+            </div>
+          </td></tr>
+        </table>
       </div>
       <form class="standard" method="post">
         <div class="section">
