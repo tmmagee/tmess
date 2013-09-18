@@ -102,7 +102,7 @@
             <th>Payment Type</th>
             <th>Payment Amount</th>
             <th>Account Balance</th>
-            {% if request.user.is_staff %}<th>IS4C Receipt</th>{% endif %}
+            {% if request.user.is_superuser %}<th>IS4C Receipt</th>{% endif %}
           </tr>
           {% for transaction in transactions|dictsortreversed:"id" %}
           <tr class="{% cycle 'odd' 'even' %}" >
