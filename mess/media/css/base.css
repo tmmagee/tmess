@@ -245,12 +245,12 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		float:left;
 		background:#fff;
 		margin:15px 20px 15px 15px;
-		width:725px;
+		width:775px;
 		}
 	#right-column {
 		border-top:1px solid #999;
 		float:left;
-		width:355px;
+		width:305px;
 		margin-top:15px;
         margin-bottom:15px;
 		}
