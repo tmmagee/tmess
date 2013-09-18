@@ -227,7 +227,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 
 #wrapper {
 	background:#ebebeb;
-	width:960px; 
+	width:1024px; 
 	margin:0 auto;
 	text-align:left;
 	}
@@ -250,7 +250,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 	#right-column {
 		border-top:1px solid #999;
 		float:left;
-		width:280px;
+		width:340px;
 		margin-top:15px;
         margin-bottom:15px;
 		}
@@ -258,7 +258,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		padding-bottom:50px;
 		border-top:1px solid #999;
 		float:left;
-		width:930px;
+		width:995px;
 		background:#fff;
 		margin:15px 20px 15px 15px;
 		}
@@ -962,4 +962,8 @@ table thead tr th {
 
 td.error {
   color: red
+}
+
+div#transactions table.data {
+  font-size: 1.0em;
 }
