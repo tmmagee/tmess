@@ -32,7 +32,7 @@ http://code.google.com/p/django-clevercss/
 
 body {
 	text-align:center;
-	background:#fff url(../images/bg-body.gif) repeat-y top center;
+	/*background:#fff url(../images/bg-body.gif) repeat-y top center; */
 	color: #333;
 	font-family: "DejaVu Sans", Arial, sans-serif;
 	font-size:62.5%;
