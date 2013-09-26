@@ -6,6 +6,7 @@
   <div id="double-column">
     {% include "membership/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
+      <h3>Account History for <a href="{% url account account.id %}">{{ account }}</a></h3>
       <table class="data">
         <tr>
           <th>Date & Time</th>
