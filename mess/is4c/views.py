@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerEr
 from django.shortcuts import render_to_response, get_object_or_404
 from django.db.models import Q
 from django.utils.safestring import mark_safe
-from django.core.mail import mail_admins
+from django.core import mail
 
 import django.conf as conf
 
@@ -116,15 +116,40 @@ def getmemberdict(member):
         'is_active':member.is_active,
         'is_on_loa':member.is_on_loa,
         # we use a string here because Decimal is not serializable!
-        'equity_due':'%f' % member.equity_due
+        'equity_due':'%f' % member.equity_due,
+        'member_card':member.member_card,
     }
+
+'''
+Returns 0 if no other transactions in the Transactions
+table match the transaction passed in. Returns a number
+greater than 0 otherwise
+'''
+def is_duplicate_transaction(t):
+  return a_models.Transaction.objects.filter(
+    register_no=t['register_no'],
+    is4c_timestamp=t['is4c_timestamp'],
+    is4c_cashier_id=t['is4c_cashier_id'],
+    purchase_amount=t['purchase_amount'],
+    purchase_type=t['purchase_type'],
+    payment_amount=t['payment_amount'],
+    payment_type=t['payment_type']).count()
 
 @csrf_exempt
 def recordtransaction(request):
+
+    #return HttpResponse("GET: " + str(request.GET) + "\nPOST: " + str(request.POST) + "\n")
+
     # all requests will have some get variables, at the very least the secret is a get variable.
     # verify secret
-    if not request.GET.has_key('secret') or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
-        return wrong_secret(request)
+    if not 'secret' in request.GET:
+      return wrong_secret(request)
+    
+    if request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
+      return wrong_secret(request)
+  
+    if not request.POST.has_key('transaction'):
+      return HttpResponse(str(request.POST))
 
     # get the transaction and sanitize it
     json = request.POST['transaction'] 
@@ -134,11 +159,11 @@ def recordtransaction(request):
         try:
             t['member'] = m_models.Member.objects.get(id=t['member'])
         except m_models.Member.DoesNotExist:
-            mail_admins('Member %s not found in record transaction' % t['member'],
+            mail.mail_admins('Member %s not found in record transaction' % t['member'],
                     repr(t))
             del t['member']
         except ValueError:
-            mail_admins('Member for record transaction weren\'t no integer',
+            mail.mail_admins('Member for record transaction weren\'t no integer',
                     repr(t))
             del t['member']
     t['payment_amount'] = Decimal(str(t.get('payment_amount', 0)))
@@ -150,9 +175,23 @@ def recordtransaction(request):
     if 'date' in t: 
         del t['date']
 
-    tnew = a_models.Transaction(**t)
-    tnew.save()
-    status_code = (500, 200)[tnew.pk and a_models.Transaction.objects.filter(pk=tnew.pk).exists()]
+    '''
+    IS4C sometimes sends us duplicate transactions because IS4C is buggy.
+    We ignore duplicates.
+    '''
+    if is_duplicate_transaction(t):
+      mail.send_mail(
+        "Duplicate Transaction",
+        str(t),
+        "hq@mess.mariposa.coop", 
+        ["it@mariposa.coop"]
+      )
+      status_code = 200
+    else:
+      tnew = a_models.Transaction(**t)
+      tnew.save()
+      status_code = (500, 200)[tnew.pk and a_models.Transaction.objects.filter(pk=tnew.pk).exists()]
+
     return HttpResponse(status=status_code)
 
 @login_required

@@ -19,6 +19,7 @@
     <th>Payment Type</th>
     <th>Payment Amount</th>
     <th>Account<br />Balance</th>
+    <th>IS4C Receipt</th>
     <th>Entered<br />By</th>
   </tr>
   {% if transactions %}
@@ -34,6 +35,7 @@
     <td>{{ transaction.get_payment_type_display }}</td>
     <td>{% if transaction.payment_amount %}{{ transaction.payment_amount|messmoney:"payment" }}{% endif %}</td>
     <td>{{ transaction.account_balance|messmoney }}</td>
+    <td>{% if transaction.is4c_cashier_id %}<a target="_blank" href="https://fannie.mariposa.coop/admin/LookupReceipt/reprint.php?year={{ transaction.is4c_timestamp|date:'Y'}}&month={{ transaction.is4c_timestamp|date:'m'}}&day={{ transaction.is4c_timestamp|date:'d'}}&receipt={{ transaction.is4c_cashier_id }}-{{ transaction.register_no }}-{{ transaction.trans_no }}">{{ transaction.is4c_cashier_id }}-{{ transaction.register_no }}-{{ transaction.trans_no }}</a>{% endif %}</td>
     <td>{{ transaction.entered_by.username }}{% if can_reverse and not transaction.fixes_target and not transaction.fixers %} <input type="button" value="X" onclick="reverse_trans({{ transaction.id }}, '{{ transaction.account|addslashes }}');">{% endif %}</td>
   </tr>
     {% endfor %}

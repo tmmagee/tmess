@@ -103,6 +103,7 @@
             <th>Payment Type</th>
             <th>Payment Amount</th>
             <th>Account Balance</th>
+            {% if request.user.is_staff %}<th>IS4C Receipt</th>{% endif %}
           </tr>
           {% for transaction in transactions|dictsortreversed:"id" %}
           <tr class="{% cycle 'odd' 'even' %}" >
@@ -115,6 +116,7 @@
             <td>{{ transaction.get_payment_type_display }}</td>
             <td>{{ transaction.payment_amount|messmoney:"payment" }}</td>
             <td>{{ transaction.account_balance|messmoney }}</td>
+            <{% if request.user.is_staff %}td>{% if transaction.is4c_cashier_id %}<a target="_blank" href="https://fannie.mariposa.coop/admin/LookupReceipt/reprint.php?year={{ transaction.is4c_timestamp|date:'Y'}}&month={{ transaction.is4c_timestamp|date:'m'}}&day={{ transaction.is4c_timestamp|date:'d'}}&receipt={{ transaction.is4c_cashier_id }}-{{ transaction.register_no }}-{{ transaction.trans_no }}">{{ transaction.is4c_cashier_id }}-{{ transaction.register_no }}-{{ transaction.trans_no }}</a>{% endif %}</td>{% endif %}
           </tr>
           {% endfor %}
         </table>

@@ -17,6 +17,7 @@ from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.db.models.aggregates import Sum, Max
 from django.contrib.auth.models import User
+from django.contrib.admin.models import LogEntry
 
 from mess.accounting import models as a_models
 from mess.accounting.models import Transaction

@@ -74,8 +74,12 @@
       <li><b>Work status:</b> {{ member.get_work_status_display }}</li>
     {% endif %}
 
-    <li><b>Key:</b> 
-      {% if member.has_key %}Has Key{% else %}No Key{% endif %}
+    <li><b>Membership Card:</b> 
+    {% if member.member_card %}
+      {{ member.member_card  }}
+    {% else %}
+      None
+    {% endif %}
     </li>
 
     {% if request.user.is_staff %}
