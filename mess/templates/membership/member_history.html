@@ -25,7 +25,7 @@
         {% for revision in revisions %}
         <tr class="{% cycle 'odd' 'even' %}">
           <td>{{ revision.timestamp }}</td>
-          <td>{{ revision.member }}</td>
+          <td><a href="{% url member revision.user %}">{{ revision.member }}</a></td>
           <td>{{ revision.status|member_status }}</td>
           <td>{{ revision.work_status|work_status }}</td>
           <td>{{ revision.date_joined }}</td>

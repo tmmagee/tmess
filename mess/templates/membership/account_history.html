@@ -21,14 +21,10 @@
         {% for revision in revisions %}
         <tr class="{% cycle 'odd' 'even' %}">
           <td>{{ revision.timestamp }}</td>
-          <td>{{ revision.name }}</td>
+          <td><a href="{% url account revision.account.id %}">{{ revision.name }}</a></td>
           <td>
           {% for member in revision.members.all %}
-          {% if not member.is_active %}
-            <p class="inactive">{{ member }}</p>
-          {% else %}
-            <p>{{ member }}</p>
-          {% endif %}
+          <p><a href="{% url member member.user %}">{{ member }}</a></p>
           {% endfor %}</td>
           <td>{{ revision.can_shop }}</td>
           <td>{{ revision.ebt_only }}</td>
