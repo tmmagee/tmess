@@ -32,7 +32,7 @@ http://code.google.com/p/django-clevercss/
 
 body {
 	text-align:center;
-	background:#fff url(../images/bg-body.gif) repeat-y top center;
+	/*background:#fff url(../images/bg-body.gif) repeat-y top center; */
 	color: #333;
 	font-family: "DejaVu Sans", Arial, sans-serif;
 	font-size:62.5%;
@@ -103,9 +103,34 @@ h2.accountmembersection {margin-top:0.8em;}
 		border-collapse:collapse;
 		margin-top:5px;
 		}
-		tr {}
-			th {}
-			td {
+
+  table.center {
+    margin-left: auto; 
+    margin-right: auto; 
+    text-align: center;
+		font-size: 1.2em; 
+    }
+
+  table.center p {
+    margin-bottom: 0.3em;
+  }
+  table.center div.highlight {
+    padding: 1em;
+    background-color: #DDD;
+  }
+  table.center ol {
+    margin: 1em;
+    text-align: left;
+    margin-left: auto; 
+    margin-right: auto; 
+    padding-left: 9.1em;
+    font-size: 1.2em;
+  }
+
+
+  tr {}
+	th {}
+	td {
  				vertical-align:top;
 				padding:.5em 0;
 				}
@@ -202,7 +227,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 
 #wrapper {
 	background:#ebebeb;
-	width:960px; 
+	width:1130px; 
 	margin:0 auto;
 	text-align:left;
 	}
@@ -220,12 +245,12 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		float:left;
 		background:#fff;
 		margin:15px 20px 15px 15px;
-		width:625px;
+		width:775px;
 		}
 	#right-column {
 		border-top:1px solid #999;
 		float:left;
-		width:280px;
+		width:305px;
 		margin-top:15px;
         margin-bottom:15px;
 		}
@@ -233,7 +258,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		padding-bottom:50px;
 		border-top:1px solid #999;
 		float:left;
-		width:930px;
+		width:1100px;
 		background:#fff;
 		margin:15px 20px 15px 15px;
 		}
@@ -507,10 +532,9 @@ h5.accountnotes { margin-top:0.2em; margin-bottom:0em; }
 				margin-bottom:.5em;
 				}
 			#primary-content-wrapper div.profile h4 a {
-				display:block; float:right; color:#ebebed; font-size:90%; margin-left:0.5em;
+				display:block; float:right; color:#ebebed; font-size:90%;
 				}
 			#primary-content-wrapper div.profile h4 a.nofloat {
-                                margin-left:0em;
                                 float:none;
                                 }
 			#primary-content-wrapper div.profile p {
@@ -939,9 +963,7 @@ table thead tr th {
 td.error {
   color: red
 }
-.inactive {
-  color: red
-}
+
 /*
 div#transactions table.data {
   font-size: 1.0em;
