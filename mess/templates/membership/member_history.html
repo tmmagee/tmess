@@ -1,0 +1,45 @@
+{% extends "membership/base.html" %}
+{% load membership_tags %}
+
+{% block title %}Member History for {{ member }}{% endblock %}
+
+{% block content %}
+  <div id="double-column">
+    {% include "membership/snippets/page_menu.html" %}
+    <div id="primary-content-wrapper">
+      <h3>Member History for {{ member }}</h3>
+      <table class="data">
+        <tr>
+          <th>Date & Time</th>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Work Status</th>
+          <th>Joined</th>
+          <th>Departed</th>
+          <th>Turns 18</th>
+          <th>Equity Held</th>
+          <th>Equity Due</th>
+          <th>Equity Increment</th>
+          <th>Referral Source</th>
+        </tr>
+        {% for revision in revisions %}
+        <tr class="{% cycle 'odd' 'even' %}">
+          <td>{{ revision.timestamp }}</td>
+          <td>{{ revision.member }}</td>
+          <td>{{ revision.status|member_status }}</td>
+          <td>{{ revision.work_status|work_status }}</td>
+          <td>{{ revision.date_joined }}</td>
+          <td>{{ revision.date_departed }}</td>
+          <td>{{ revision.date_turns_18 }}</td>
+          <td>{{ revision.equity_held }}</td>
+          <td>{{ revision.equity_due }}</td>
+          <td>{{ revision.equity_increment }}</td>
+          {% if revision.referral_member %}
+          <td>{{ revision.referral_member }}</td>
+          {% else %}
+          <td>{{ revision.referral_source }}</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </table>
+{% endblock %}

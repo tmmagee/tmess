@@ -1,0 +1,42 @@
+{% extends "membership/base.html" %}
+
+{% block title %}Account History for {{ account }}{% endblock %}
+
+{% block content %}
+  <div id="double-column">
+    {% include "membership/snippets/page_menu.html" %}
+    <div id="primary-content-wrapper">
+      <table class="data">
+        <tr>
+          <th>Date & Time</th>
+          <th>Name</th>
+          <th>Members</th>
+          <th>Can Shop?</th>
+          <th>EBT Only?</th>
+          <th>Deposit</th>
+          <th>Balance Limit</th>
+          <th>Shared Address</th>
+          <th>Note</th>
+        </tr>
+        {% for revision in revisions %}
+        <tr class="{% cycle 'odd' 'even' %}">
+          <td>{{ revision.timestamp }}</td>
+          <td>{{ revision.name }}</td>
+          <td>
+          {% for member in revision.members.all %}
+          {% if not member.is_active %}
+            <p class="inactive">{{ member }}</p>
+          {% else %}
+            <p>{{ member }}</p>
+          {% endif %}
+          {% endfor %}</td>
+          <td>{{ revision.can_shop }}</td>
+          <td>{{ revision.ebt_only }}</td>
+          <td>{{ revision.deposit }}</td>
+          <td>{{ revision.balance_limit }}</td>
+          <td>{{ revision.shared_address }}</td>
+          <td>{{ revision.note|linebreaks }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+{% endblock %}
