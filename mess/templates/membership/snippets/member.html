@@ -3,8 +3,8 @@
 
 <h4>
   <a href="{% url member-edit member.user.username %}">edit</a>
-
-      <a class="nofloat" href="{% url member member.user.username %}">{{ member }}</a>
+  <a href="{% url member-history member.id %}">history</a>
+  <a class="nofloat" href="{% url member member.user.username %}">{{ member }}</a>
 </h4>
 
 <div class="accountmemberside">

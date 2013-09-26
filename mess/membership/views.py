@@ -21,6 +21,7 @@ from mess.membership import forms, models
 from mess.events import models as e_models
 from mess.accounting import models as a_models
 from mess.core.permissions import has_elevated_perm
+from mess.revision import models as r_models
 #from mess.changelog import models as c_models
 
 from decimal import Decimal
@@ -1013,3 +1014,18 @@ def _get_current_page(pager, page_number):
         current_page = pager.page(1)
     return current_page
 
+def account_history(request, account_id):
+  context = RequestContext(request)
+  account = models.Account.objects.get(id=account_id)
+  revisions = r_models.AccountRevision.objects.filter(account=account).order_by('-timestamp')
+
+  return render_to_response('membership/account_history.html', locals(),
+    context_instance=RequestContext(request))
+
+def member_history(request, member_id):
+  context = RequestContext(request)
+  member = models.Member.objects.get(id=member_id)
+  revisions = r_models.MemberRevision.objects.filter(member=member).order_by('-timestamp')
+
+  return render_to_response('membership/member_history.html', locals(),
+    context_instance=RequestContext(request))

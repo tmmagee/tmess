@@ -76,6 +76,8 @@ urlpatterns = patterns('mess.membership.views',
     url(r'^signup/member/review/$', 'member_signup_review', name='member-signup-review'),
     url(r'^signup/orientation/$', 'orientation_signup', name='orientation-signup'),
 
+    url(r'^accounts/(\d+)/history$', 'account_history', name='account-history'),
+    url(r'^members/(\d+)/history$', 'member_history', name='member-history'),
     #url(r'^rawlist/$', 'raw_list', name='membership-raw-list')
     #url('^junkx/(\w+)/$', junk, name='junkx'),
 )

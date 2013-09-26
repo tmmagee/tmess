@@ -9,6 +9,7 @@
       <h2 class="accountname">
         {% if user.is_staff or is_staff_assistant %}
           <span class="accountactionlinks">
+            <a href="{% url account-history account.id %}">history</a>
             <a href="{% url account-edit account.id %}">edit</a>
             <a href="{% url loa-account account.id %}">loa</a>
             <a href="{% url depart-account account.id %}">depart</a>
