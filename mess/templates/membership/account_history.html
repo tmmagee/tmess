@@ -22,7 +22,7 @@
         {% for revision in revisions %}
         <tr class="{% cycle 'odd' 'even' %}">
           <td>{{ revision.timestamp }}</td>
-          <td><a href="{% url account revision.account.id %}">{{ revision.name }}</a></td>
+          <td>{{ revision.name }}</td>
           <td>
           {% for member in revision.members.all %}
           <p><a href="{% url member member.user %}">{{ member }}</a></p>
