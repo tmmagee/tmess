@@ -616,16 +616,17 @@ def switch(request):
     if original.time < earliest_switch:
         return HttpResponse('Sorry.  Cannot switch shifts within %s' % SOONEST_SWITCH)
     if request.method == 'POST':
-        switch = models.Task.objects.get(id=request.POST['task'])
-        if switch.member or switch.account:
-            return HttpResponse('Sorry.  Switch task is already assigned.')
-        if switch.recur_rule:
-            switch = switch.excuse_and_duplicate()  # one-time fill
-        original.excuse_and_duplicate()
-        switch.member = original.member
-        switch.account = original.account
-        switch.makeup = True
-        switch.save()
+        if 'task' in request.POST.keys():
+          switch = models.Task.objects.get(id=request.POST['task'])
+          if switch.member or switch.account:
+              return HttpResponse('Sorry.  Switch task is already assigned.')
+          if switch.recur_rule:
+              switch = switch.excuse_and_duplicate()  # one-time fill
+          original.excuse_and_duplicate()
+          switch.member = original.member
+          switch.account = original.account
+          switch.makeup = True
+          switch.save()
         return HttpResponseRedirect(reverse('myschedule'))
     form = forms.PickTaskForm()
 
