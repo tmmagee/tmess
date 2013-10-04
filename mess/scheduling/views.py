@@ -314,7 +314,7 @@ def timecard(request, date=None):
             '''
             mail.send_mail(
               "That DoesNotExist error",
-              str(e.strerror) + '\n\nform-' + str(n) + '-reminder_call\n\n' + str(date) + '\n\n' + str(request.POST),
+              str(e) + '\n\nform-' + str(n) + '-reminder_call\n\n' + str(date) + '\n\n' + str(request.POST),
               "hq@mess.mariposa.coop", 
               ['it@mariposa.coop'],
               )

@@ -18,6 +18,7 @@ from django.db.models import Q
 from django.db.models.aggregates import Sum, Max
 from django.contrib.auth.models import User
 from django.contrib.admin.models import LogEntry
+from django.core import mail
 
 from mess.accounting import models as a_models
 from mess.accounting.models import Transaction
@@ -815,7 +816,18 @@ def logging(request, object_type):
     for log in logs:
         user = User.objects.get(id=log.user_id)
         log.user_name = user.first_name + " " + user.last_name
-        log.object_name = unicode(model_type.objects.get(id=log.object_id))
+
+        try:
+          log.object_name = unicode(model_type.objects.get(id=log.object_id))
+        except Exception as e:
+          '''
+          We get a DoesNotExist exception if for some reason the
+          object (member or account) has been deleted. THIS SHOULD
+          NEVER HAPPEN. But if it does we just set the object name 
+          to an informative value
+          '''
+          log.object_name = 'DELETED ' + str(model_type)
+
 
         if object_type == 'account':
             log.object_url = reverse('account', args=[log.object_id])
