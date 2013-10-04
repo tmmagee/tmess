@@ -15,6 +15,7 @@ from django.forms.formsets import formset_factory
 from django.utils.translation import ugettext as _
 from django.conf import settings
 from django.core import mail
+from django.db.models import query
 
 from mess.scheduling import forms, models
 from mess.membership import forms as m_forms
@@ -301,9 +302,22 @@ def timecard(request, date=None):
           Even if we don't validate, we still save the reminder call value, as
           reminder calls take place a day before the timecard is ready to be submitted.
           '''
-          task = models.Task.objects.get(id=request.POST['form-' + str(n) + '-id'])
-          task.reminder_call = request.POST['form-' + str(n) + '-reminder_call']
-          task.save()
+          try:
+            task = models.Task.objects.get(id=request.POST['form-' + str(n) + '-id'])
+            task.reminder_call = request.POST['form-' + str(n) + '-reminder_call']
+            task.save()
+          except Exception as e:
+            '''
+            The DoesNotExist exception has been occurring but I do not know why. 
+            For now just send the IT coordinator an email with more 
+            information about the bug
+            '''
+            mail.send_mail(
+              "That DoesNotExist error",
+              str(e.strerror) + '\n\nform-' + str(n) + '-reminder_call\n\n' + str(date) + '\n\n' + str(request.POST),
+              "hq@mess.mariposa.coop", 
+              ['it@mariposa.coop'],
+              )
 
       if (not formset.errors):
         return HttpResponseRedirect(reverse('scheduling-timecard', args=[date.date()]))
