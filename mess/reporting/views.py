@@ -819,6 +819,7 @@ def logging(request, object_type):
 
         try:
           log.object_name = unicode(model_type.objects.get(id=log.object_id))
+          log.object_deleted = False
         except Exception as e:
           '''
           We get a DoesNotExist exception if for some reason the
@@ -827,9 +828,11 @@ def logging(request, object_type):
           to an informative value
           '''
           log.object_name = 'DELETED ' + str(model_type)
+          log.object_deleted = True
 
-
-        if object_type == 'account':
+        if log.object_deleted:
+            log.object_url = ''
+        elif object_type == 'account':
             log.object_url = reverse('account', args=[log.object_id])
         elif object_type == 'member':
             log.object_url = reverse('member', args=[model_type.objects.get(id=log.object_id).user.username])
