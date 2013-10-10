@@ -416,7 +416,7 @@ def account(request, id):
         return HttpResponseRedirect(reverse('welcome'))
     context = RequestContext(request)
     context['account'] = account
-    transactions = account.transaction_set.order_by('-id')[:50]
+    transactions = account.transaction_set.order_by('-id')[:1000]
     context['transactions'] = transactions
     template = get_template('membership/account.html')
     return HttpResponse(template.render(context))
@@ -788,11 +788,11 @@ def member_signup_review(request):
     Here we just create the list, and we set it in each form later. The key here is 
     that the choices have to be set before each form is validated.
     '''
-    #members = models.Member.objects.filter(date_departed__isnull=True)
-    #member_choices = [('','')]
+    members = models.Member.objects.filter(date_departed__isnull=True)
+    member_choices = [('','')]
         
-    #for member in members:
-    #    member_choices.append((member.id, str(member)))
+    for member in members:
+        member_choices.append((member.id, str(member)))
 
 
     if request.method == "POST":
@@ -818,7 +818,7 @@ def member_signup_review(request):
                 continue
 
             form = formset.forms[n]
-            #form.set_referring_member_choices(member_choices)
+            form.set_referring_member_choices(member_choices)
 
             # We need to check if a given form has been selected, but the selected
             # value only appears in POST if the user has actually selected... I am sure there 
@@ -878,10 +878,9 @@ def member_signup_review(request):
                         
                     member.referral_source = new_member.referral_source
                     member.orientation = new_member.orientation
-                    member.referring_member = form.cleaned_data["referring_member"];
 
-                    #if form.cleaned_data["referring_member"] and member.referral_source == "Current Member":
-                    #    member.referring_member = models.Member.objects.get(id=form.cleaned_data["referring_member"])
+                    if form.cleaned_data["referring_member"] and member.referral_source == "Current Member":
+                        member.referring_member = models.Member.objects.get(id=form.cleaned_data["referring_member"])
 
                     member.save()
 
@@ -960,7 +959,7 @@ def member_signup_review(request):
         '''
         for form in formset.forms:
             form.errors.clear()
-            #form.set_referring_member_choices(member_choices)
+            form.set_referring_member_choices(member_choices)
 
     context["formset"] = formset
     context["record_ids"] = ','.join(record_ids)

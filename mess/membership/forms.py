@@ -11,19 +11,6 @@ from mess.scheduling import models as s_models
 from mess.autocomplete import AutoCompleteWidget
 import datetime
 
-def formfield_callback(field):
-  if field.name == 'member':
-    return forms.ModelChoiceField(models.Member.objects.all(),
-      widget=AutoCompleteWidget('member_spiffy',
-        view_name='membership-autocomplete', canroundtrip=True),
-      required=False, help_text='* = include inactive') 
-  elif field.name == 'account':
-    return forms.ModelChoiceField(models.Account.objects.all(),
-      widget=AutoCompleteWidget('account_spiffy',
-        view_name='membership-autocomplete', canroundtrip=True))
-  else:
-    return field.formfield()
-
 AddressFormSet = inlineformset_factory(models.Member, models.Address, 
         extra=0) #, min_num=1)
 PhoneFormSet = inlineformset_factory(models.Member, models.Phone, 
@@ -31,9 +18,9 @@ PhoneFormSet = inlineformset_factory(models.Member, models.Phone,
 LeaveOfAbsenceFormSet = inlineformset_factory(models.Member, models.LeaveOfAbsence, 
         extra=0) #, min_num=1)
 RelatedAccountFormSet = inlineformset_factory(models.Member, 
-        models.AccountMember, exclude=('primary_account',), extra=0, formfield_callback=formfield_callback)
+        models.AccountMember, exclude=('primary_account',), extra=0)
 RelatedMemberFormSet = inlineformset_factory(models.Account, 
-        models.AccountMember, exclude=('primary_account',), extra=0, formfield_callback=formfield_callback)
+        models.AccountMember, exclude=('primary_account',), extra=0)
 
 # forms below needed for dynamic formsets
 class AddressForm(forms.ModelForm):
@@ -56,33 +43,15 @@ class RelatedAccountForm(forms.ModelForm):
         model = models.AccountMember
         exclude = ('member', 'primary_account')
 
-    account = forms.ModelChoiceField(models.Account.objects.all(),
-      widget=AutoCompleteWidget('account_spiffy',
-        view_name='membership-autocomplete', canroundtrip=True))
-
 class RelatedMemberForm(forms.ModelForm):
     class Meta:
         model = models.AccountMember
         exclude = ('account', 'primary_account')
 
-    member = forms.ModelChoiceField(models.Member.objects.all(),
-      widget=AutoCompleteWidget('member_spiffy',
-        view_name='membership-autocomplete', 
-        canroundtrip=True),
-      required=False, 
-      help_text='* = include inactive') 
-
 class MemberForm(forms.ModelForm):
     class Meta:
         model = models.Member
         exclude = ('status', 'user', 'equity_held', 'job_interests', 'skills', 'availability', 'extra_info', 'card_number', 'card_facility_code', 'card_type', 'has_key')
-
-    referring_member = forms.ModelChoiceField(models.Member.objects.all(),
-      widget=AutoCompleteWidget('member_spiffy',
-        view_name='membership-autocomplete', 
-        canroundtrip=True),
-      required=False, 
-      help_text='* = include inactive') 
 
 def availability_choice_field(availability_choices):
     return forms.MultipleChoiceField(
@@ -284,8 +253,8 @@ class MemberSignUpReviewForm(forms.Form):
 
         return value
 
-    #def set_referring_member_choices(self, choices):
-    #    self.fields["referring_member"].choices = choices
+    def set_referring_member_choices(self, choices):
+        self.fields["referring_member"].choices = choices
 
     record_id = forms.IntegerField(widget=forms.HiddenInput, required=False)
     selected = forms.BooleanField(initial=False, required=False)
@@ -298,12 +267,7 @@ class MemberSignUpReviewForm(forms.Form):
     state = forms.CharField(widget=forms.HiddenInput, required=False)
     postal_code = forms.CharField(widget=forms.HiddenInput, required=False)
     referral_source = forms.CharField(widget=forms.HiddenInput, required=False)
-    referring_member = forms.ModelChoiceField(models.Member.objects.all(),
-      widget=AutoCompleteWidget('member_spiffy',
-        view_name='membership-autocomplete', 
-        canroundtrip=True),
-      required=False, 
-      help_text='* = include inactive') 
+    referring_member = forms.ChoiceField(required=False)
     orientation = forms.CharField(widget=forms.HiddenInput, required=False)
     equity_paid = forms.CharField(widget=forms.HiddenInput, required=False)
     payment_verified = forms.BooleanField(initial=False, required=False)

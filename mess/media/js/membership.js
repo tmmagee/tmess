@@ -13,8 +13,7 @@ function addNew(formsetPrefix, baseURL) {
       var writeRoot = document.getElementById(o.argument[0] + '-writeroot');
       writeRoot.parentNode.insertBefore(newFields, writeRoot);
       newFields = writeRoot.previousSibling;
-      //newFields.getElementsByTagName('select')[0].focus();
-      autocomplete('related_member-' + (totalForms.value - 1).toString() + '-member', '/membership/autocomplete/member_spiffy/', true);
+      newFields.getElementsByTagName('select')[0].focus();
     },
     failure: function(o) {},
     argument: [formsetPrefix],
