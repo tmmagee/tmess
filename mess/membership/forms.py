@@ -282,6 +282,9 @@ class MemberSignUpReviewForm(forms.Form):
         if (User.objects.filter(username=value.strip()).count() > 0):
             raise ValidationError(u'The user name %s already exists' % value)
 
+        if (value.strip().find(' ') != -1):
+            raise ValidationError(u'The user name must not contain spaces')
+
         return value
 
     #def set_referring_member_choices(self, choices):
