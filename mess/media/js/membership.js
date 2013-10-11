@@ -14,7 +14,16 @@ function addNew(formsetPrefix, baseURL) {
       writeRoot.parentNode.insertBefore(newFields, writeRoot);
       newFields = writeRoot.previousSibling;
       //newFields.getElementsByTagName('select')[0].focus();
+      
+      /* We call autocomplete here to make sure that the new divs are marked with the right 
+       * classes so autocomplete functions correctly.
+       *
+       * We call this twice - once for member divs and once for account divs. One of these calls
+       * is unnecessary, and it might be ideal in the future to split this function into two separate functions someday:
+       * addNewAccount and addNewMember
+       */
       autocomplete('related_member-' + (totalForms.value - 1).toString() + '-member', '/membership/autocomplete/member_spiffy/', true);
+      autocomplete('related_account-' + (totalForms.value - 1).toString() + '-account', '/membership/autocomplete/account_spiffy/', true);
     },
     failure: function(o) {},
     argument: [formsetPrefix],
