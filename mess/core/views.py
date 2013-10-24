@@ -27,7 +27,17 @@ def welcome(request):
 
     context = RequestContext(request)
 
-    if request.user.is_authenticated():
+    if request.method == 'POST':
+      auth_form = auth_forms.AuthenticationForm(data=request.POST)
+      if auth_form.is_valid():
+        user = auth_form.get_user()
+        login(request, user)
+        redirect = request.POST.get('next', reverse('welcome'))
+        #raise Exception, auth_form.cleaned_data
+        return HttpResponseRedirect(redirect)
+    else:
+
+      if request.user.is_authenticated():
         entries = cache.get('entries')
         if not entries:
             socket.setdefaulttimeout(TIMEOUT)
@@ -49,18 +59,10 @@ def welcome(request):
         context['threads'] = threads
         context['member'] = m_models.Member.objects.get(user=request.user)
         template = get_template('welcome.html')
-    else:
-        if request.method == 'POST':
-            auth_form = auth_forms.AuthenticationForm(data=request.POST)
-            if auth_form.is_valid():
-                user = auth_form.get_user()
-                login(request, user)
-                redirect = request.POST.get('next', reverse('welcome'))
-                #raise Exception, auth_form.cleaned_data
-                return HttpResponseRedirect(redirect)
-        else:
-            auth_form = auth_forms.AuthenticationForm()
-            context['next'] = request.GET.get('next', '')
+      else:
+        auth_form = auth_forms.AuthenticationForm()
+        context['next'] = request.GET.get('next', '')
         context['form'] = auth_form
         template = get_template('welcome-anon.html')
+
     return HttpResponse(template.render(context))
