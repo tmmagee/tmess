@@ -205,15 +205,95 @@ class Member(models.Model):
             return Decimal("150.00")
 
         return Decimal("200.00")
+    
+    ''' 
+    Returns the difference, in three month quarters,
+    between two dates. Dates passed in must be one of 
+    four quarter values
+      01/01/XX
+      04/01/XX
+      07/01/XX
+      10/01/XX
+
+    Function returns -1 otherwise
+    '''
+    def quarter_diff(self, q1, q2):
+
+      if ((q1.day != 1 or
+          ( q1.month != 1 and
+            q1.month != 4 and
+            q1.month != 7 and 
+            q1.month != 10
+            )) or 
+          (q2.day != 1 or
+          ( q2.month != 1 and
+            q2.month != 4 and
+            q2.month != 7 and 
+            q2.month != 10
+            ))):
+        return -1
+          
+      if q1 > q2:
+        gq = q1
+        lq = q2
+      else:
+        gq = q2
+        lq = q1
+
+      gq_quarters = (gq.year * 4) + ((gq.month  + 2) / 3)
+      lq_quarters = (lq.year * 4) + ((lq.month  + 2) / 3)
+
+      return gq_quarters - lq_quarters
+
+    '''
+    Takes the date and rounds the date passed in to the 'nearest'
+    quarter. By our standards nearest quarter is the next quarter if 
+    the date is within 1 month of the next quarter. Otherwise it is the 
+    previous quarter. The four start-of-quarter dates are:
+      01/01/XX
+      04/01/XX
+      07/01/XX
+      10/01/XX
+    '''
+    def round_to_quarter(self, d):
+      if d.month == 1 or d.month == 2:
+        return datetime.datetime(d.year, 1, 1)
+      elif d.month == 3 or d.month == 4 or d.month == 5:
+        return datetime.datetime(d.year, 4, 1)
+      elif d.month == 6 or d.month == 7 or d.month == 8:
+        return datetime.datetime(d.year, 7, 1)
+      elif d.month == 9 or d.month == 10 or d.month == 11:
+        return datetime.datetime(d.year, 10, 1)
+      else:
+        return datetime.datetime(d.year + 1, 1, 1)
+
+    '''
+    This function calculates the "real" equity increment, factoring in 
+    equity payments that are made ahead of schedule
+    '''
+    def calc_real_equity_increment(self, equity_increment, equity_held, equity_target, date_joined):
+      quarter_joined = self.round_to_quarter(date_joined)  
+      current_quarter = self.round_to_quarter(datetime.datetime.today())
+      quarters = self.quarter_diff(current_quarter, quarter_joined)
+      on_track_equity = min(equity_increment * quarters, equity_target)
+
+      if (equity_held >= on_track_equity):
+        return 0
+      elif (on_track_equity - equity_held) < equity_increment:
+        return on_track_equity - equity_held
+      else:
+        return equity_increment
 
     def potential_new_equity_due(self):
         if (not self.is_active) or (self.is_on_loa):
-            return Decimal("0.00")
+          return Decimal("0.00")
+
+        real_equity_increment = self.calc_real_equity_increment(self.equity_increment, self.equity_held, self.equity_target(), self.date_joined)
         held_plus_due = self.equity_held + self.equity_due
         remaining_to_target = self.equity_target() - held_plus_due
         if remaining_to_target < 0:
-            remaining_to_target = Decimal("0.00")
-        return min(self.equity_increment, remaining_to_target)
+          remaining_to_target = Decimal("0.00")
+        return min(real_equity_increment, remaining_to_target)
 
     def untrained(self):
         return s_models.Skill.objects.exclude(
