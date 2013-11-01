@@ -11,7 +11,9 @@ import unittest
 from datetime import datetime
 from decimal import Decimal
 import django.contrib.auth.models as a_models
-import membership.models as m_models
+import mess.membership.models as m_models
+from mess.utils.dateutils import quarter_diff, round_to_quarter
+
 
 class TestQuarterFunctions(unittest.TestCase):
 
@@ -20,37 +22,38 @@ class TestQuarterFunctions(unittest.TestCase):
       if not member.is_on_loa:
         return member
 
-
   def setUp(self):
     self.m = self.get_member()
 
   def test_quarter_diff(self):
-    self.assertEqual(self.m.quarter_diff(datetime(2012,1,1), datetime(2012,1,1)), 0)
-    self.assertEqual(self.m.quarter_diff(datetime(2012,1,1), datetime(2012,4,1)), 1)
-    self.assertEqual(self.m.quarter_diff(datetime(2012,1,1), datetime(2012,7,1)), 2)
-    self.assertEqual(self.m.quarter_diff(datetime(2012,1,1), datetime(2012,10,1)), 3)
-    self.assertEqual(self.m.quarter_diff(datetime(2012,1,1), datetime(2013,1,1)), 4)
-    self.assertEqual(self.m.quarter_diff(datetime(2012,1,1), datetime(2013,4,1)), 5)
-    self.assertEqual(self.m.quarter_diff(datetime(2012,1,1), datetime(2013,7,1)), 6)
-    self.assertEqual(self.m.quarter_diff(datetime(2012,1,1), datetime(2013,10,1)), 7)
-    self.assertEqual(self.m.quarter_diff(datetime(2012,1,1), datetime(2014,1,1)), 8)
-    self.assertEqual(self.m.quarter_diff(datetime(2012,1,1), datetime(2013,10,2)), -1)
-    self.assertEqual(self.m.quarter_diff(datetime(2012,1,1), datetime(2013,10,2)), -1)
-    self.assertEqual(self.m.quarter_diff(datetime(2012,1,1), datetime(2013,9,1)), -1)
+    self.assertEqual(quarter_diff(datetime(2012,1,1), datetime(2012,1,1)), 0)
+    self.assertEqual(quarter_diff(datetime(2012,1,1), datetime(2012,4,1)), 1)
+    self.assertEqual(quarter_diff(datetime(2012,1,1), datetime(2012,7,1)), 2)
+    self.assertEqual(quarter_diff(datetime(2012,1,1), datetime(2012,10,1)), 3)
+    self.assertEqual(quarter_diff(datetime(2012,1,1), datetime(2013,1,1)), 4)
+    self.assertEqual(quarter_diff(datetime(2012,1,1), datetime(2013,4,1)), 5)
+    self.assertEqual(quarter_diff(datetime(2012,1,1), datetime(2013,7,1)), 6)
+    self.assertEqual(quarter_diff(datetime(2012,1,1), datetime(2013,10,1)), 7)
+    self.assertEqual(quarter_diff(datetime(2012,1,1), datetime(2014,1,1)), 8)
+    self.assertRaises(ValueError, quarter_diff, datetime(2012,1,1), datetime(2013,10,2))
+    self.assertRaises(ValueError, quarter_diff, datetime(2012,1,1), datetime(2013,9,1))
+    self.assertRaises(ValueError, quarter_diff, datetime(2012,1,1), False)
+    self.assertRaises(ValueError, quarter_diff, False, datetime(2012,1,1))
 
   def test_round_to_quarter(self):
-    self.assertEqual(self.m.round_to_quarter(datetime(2012,1,1)), datetime(2012,1,1))
-    self.assertEqual(self.m.round_to_quarter(datetime(2012,2,1)), datetime(2012,1,1))
-    self.assertEqual(self.m.round_to_quarter(datetime(2012,3,1)), datetime(2012,4,1))
-    self.assertEqual(self.m.round_to_quarter(datetime(2012,4,1)), datetime(2012,4,1))
-    self.assertEqual(self.m.round_to_quarter(datetime(2012,5,1)), datetime(2012,4,1))
-    self.assertEqual(self.m.round_to_quarter(datetime(2012,6,1)), datetime(2012,7,1))
-    self.assertEqual(self.m.round_to_quarter(datetime(2012,7,1)), datetime(2012,7,1))
-    self.assertEqual(self.m.round_to_quarter(datetime(2012,8,1)), datetime(2012,7,1))
-    self.assertEqual(self.m.round_to_quarter(datetime(2012,9,1)), datetime(2012,10,1))
-    self.assertEqual(self.m.round_to_quarter(datetime(2012,10,1)), datetime(2012,10,1))
-    self.assertEqual(self.m.round_to_quarter(datetime(2012,11,1)), datetime(2012,10,1))
-    self.assertEqual(self.m.round_to_quarter(datetime(2012,12,1)), datetime(2013,1,1))
+    self.assertEqual(round_to_quarter(datetime(2012,1,1)), datetime(2012,1,1))
+    self.assertEqual(round_to_quarter(datetime(2012,2,1)), datetime(2012,1,1))
+    self.assertEqual(round_to_quarter(datetime(2012,3,1)), datetime(2012,4,1))
+    self.assertEqual(round_to_quarter(datetime(2012,4,1)), datetime(2012,4,1))
+    self.assertEqual(round_to_quarter(datetime(2012,5,1)), datetime(2012,4,1))
+    self.assertEqual(round_to_quarter(datetime(2012,6,1)), datetime(2012,7,1))
+    self.assertEqual(round_to_quarter(datetime(2012,7,1)), datetime(2012,7,1))
+    self.assertEqual(round_to_quarter(datetime(2012,8,1)), datetime(2012,7,1))
+    self.assertEqual(round_to_quarter(datetime(2012,9,1)), datetime(2012,10,1))
+    self.assertEqual(round_to_quarter(datetime(2012,10,1)), datetime(2012,10,1))
+    self.assertEqual(round_to_quarter(datetime(2012,11,1)), datetime(2012,10,1))
+    self.assertEqual(round_to_quarter(datetime(2012,12,1)), datetime(2013,1,1))
+    self.assertRaises(ValueError, round_to_quarter, False)
 
 
   def test_calc_real_equity_increment(self):
@@ -129,5 +132,4 @@ class TestQuarterFunctions(unittest.TestCase):
     self.assertEqual(m.potential_new_equity_due(), Decimal(0))
 
 if __name__ == '__main__':
-  unittest.main
-
+  unittest.main()
