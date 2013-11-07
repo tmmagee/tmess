@@ -44,8 +44,8 @@
   {% include "accounting/snippets/acct_flags.html" %}
   <ul class="quick-info">
     <li>
-      <b>Hours {% if account.hours_owed %}Owed{% else %}Banked{% endif %}:</b> 
-        {{ account.hours_balance|messhours }} 
+      <b>Hours {% if member.hours_owed %}Owed{% else %}Banked{% endif %}:</b> 
+        {{ member.hours_balance|messhours }} 
     </li>
   </ul>
 
