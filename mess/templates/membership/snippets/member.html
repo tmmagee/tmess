@@ -64,7 +64,13 @@
       {% if request.user.is_staff %}<a href="{{ member.get_hours_balance_history_url }}">history</a>{% endif %}
     </li>
 
-    <li><b>Equity held:</b> {{ member.equity_held }}</li>
+    {% if member.personal_equity_held %}
+    <li><b>Personal Equity:</b> {{ member.personal_equity_held }}</li>
+    {% endif %}
+    {% if member.membership_fund_equity_held %}
+    <li><b>Membership Fund Equity:</b> {{ member.membership_fund_equity_held }}</li>
+    {% endif %}
+    <li><b>Total Equity:</b> {{ member.equity_held }}</li>
     <li><b>Equity due:</b> {{ member.equity_due }}</li>
     <li><b>Equity increment:</b> {{ member.equity_increment }}</li>
     <li><b>Equity target:</b> {{ member.equity_target }}</li>
