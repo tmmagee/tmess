@@ -227,7 +227,7 @@ def reports(request):
                 '','balance\r\ndeposit\r\nactive_member_count'),
 
             ('Member Equities Billing (New 2011)',reverse('billing')),
-            ('One-time Equity Transfer',reverse('equity_transfer')),
+#            ('One-time Equity Transfer',reverse('equity_transfer')),
             ('Equity Totals',reverse('equity')),
         ]),
 
