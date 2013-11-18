@@ -152,7 +152,10 @@ class Member(models.Model):
     card_facility_code = models.CharField(max_length=128, blank=True, 
             null=True)
     card_type = models.CharField(max_length=128, blank=True, null=True)
-    equity_held = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+
+    personal_equity_held = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    membership_fund_equity_held = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+
     equity_due = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     equity_increment = models.DecimalField(max_digits=8, decimal_places=2, default=25)
 
@@ -227,6 +230,10 @@ class Member(models.Model):
 
     def get_hours_balance_history_url(self):
         return reverse('member_hours_balance_changes')+'?member='+str(self.id)
+
+    @property 
+    def equity_held(self):
+      return self.personal_equity_held + self.membership_fund_equity_held
 
     @property
     def current_loa(self):

@@ -289,7 +289,7 @@ def frozen(request):
 
 def billing(request):
     ''' NEW 2011 view to bill equity to members, not accounts '''
-    members = m_models.Member.objects.filter(Q(equity_held__gt=0) | Q(equity_due__gt=0) | Q(date_missing__isnull=True, date_departed__isnull=True))
+    members = m_models.Member.objects.filter(Q(personal_equity_held__gt=0) |  Q(membership_fund_equity_held__gt=0) | Q(equity_due__gt=0) | Q(date_missing__isnull=True, date_departed__isnull=True))
     if request.method=='POST':
         form = forms.MemberEquityBillingForm(request.POST)
         if form.is_valid():

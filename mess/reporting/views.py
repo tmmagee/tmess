@@ -228,6 +228,7 @@ def reports(request):
 
             ('Member Equities Billing (New 2011)',reverse('billing')),
 #            ('One-time Equity Transfer',reverse('equity_transfer')),
+            ('Equity By Member',reverse('equity_by_member')),
             ('Equity Totals',reverse('equity')),
         ]),
 
@@ -733,7 +734,7 @@ def equity_old(request):
 
 def equity(request):
     ''' member equity, grouped by account'''
-    equity_transactions = a_models.Transaction.objects.filter(purchase_type='O')
+    equity_transactions = a_models.Transaction.objects.filter(Q(purchase_type='O') | Q(purchase_type='F'))
 #    esums = equity_transactions.values(
 #            'account','account__name','account__deposit'
 #            ).annotate(esum=Sum('purchase_amount')).order_by('account')
@@ -747,9 +748,9 @@ def equity(request):
 #            'acct_esum': esum['esum'],
 #        })
     mem_equity_due = m_models.Member.objects.all().aggregate(total=Sum('equity_due'))
-    member_equity = m_models.Member.objects.all().aggregate(total=Sum('equity_held'))
-    acct_equity = m_models.Account.objects.all().aggregate(total=Sum('deposit'))
-    all_equity = member_equity['total'] + acct_equity['total']
+    personal_member_equity = m_models.Member.objects.all().aggregate(total=Sum('personal_equity_held'))
+    membership_fund_equity = m_models.Member.objects.all().aggregate(total=Sum('membership_fund_equity_held'))
+    all_equity = personal_member_equity['total'] + membership_fund_equity['total']
     equity_transactions_sum = equity_transactions.aggregate(total=Sum('purchase_amount'))
     return render_to_response('reporting/equity.html', locals(),
             context_instance=RequestContext(request))
@@ -770,9 +771,10 @@ def equity_transfer(request):
             'acct_deposit': esum['account__deposit'],
             'acct_esum': esum['esum'],
         })
-    member_equity = m_models.Member.objects.all().aggregate(total=Sum('equity_held'))
+    personal_member_equity = m_models.Member.objects.all().aggregate(total=Sum('personal_equity_held'))
+    membership_fund_member_equity = m_models.Member.objects.all().aggregate(total=Sum('membership_fund_equity_held'))
     acct_equity = m_models.Account.objects.all().aggregate(total=Sum('deposit'))
-    all_equity = member_equity['total'] + acct_equity['total']
+    all_equity = personal_member_equity['total'] + membership_fund_member_equity['total'] + acct_equity['total']
     equity_transactions_sum = all_equity_transactions.aggregate(total=Sum('purchase_amount'))
     return render_to_response('reporting/equity_transfer.html', locals(),
             context_instance=RequestContext(request))
@@ -864,7 +866,7 @@ def historical_members(request):
 
     date = str(form.cleaned_data.get('date'))
 
-    query = "SELECT * from membership_member where date_joined <= '" + date + "' AND (date_departed is null and equity_held>0) OR (date_departed > '" + date + "' AND id in (SELECT DISTINCT member_id FROM accounting_transaction WHERE purchase_type='O' AND purchase_amount>0))"
+    query = "SELECT * from membership_member where date_joined <= '" + date + "' AND (date_departed is null and (personal_equity_held>0 OR membership_fund_equity_held>0) OR (date_departed > '" + date + "' AND id in (SELECT DISTINCT member_id FROM accounting_transaction WHERE purchase_type='O' AND purchase_amount>0))"
 
     members = m_models.Member.objects.raw(query)
     member_count = len(__builtin__.list(members))
@@ -915,3 +917,10 @@ def staff_account_balances(request):
       staff_accounts.append([staff_member, staff_account])
 
   return render_to_response('reporting/staff_account_balances.html', locals(), context_instance=RequestContext(request))
+
+def equity_by_member(request):
+  members = m_models.Member.objects.filter(Q(personal_equity_held__gt=0) | Q(membership_fund_equity_held__gt=0) | Q(personal_equity_held__lt=0) | Q(membership_fund_equity_held__lt=0))
+  personal_equity_sum = m_models.Member.objects.filter(Q(personal_equity_held__gt=0) | Q(personal_equity_held__lt=0)).aggregate(Sum('personal_equity_held')).values()[0]
+  membership_fund_equity_sum = m_models.Member.objects.filter(Q(membership_fund_equity_held__gt=0) | Q(membership_fund_equity_held__lt=0)).aggregate(Sum('membership_fund_equity_held')).values()[0]
+  equity_sum = personal_equity_sum + membership_fund_equity_sum
+  return render_to_response('reporting/equity_by_member.html', locals(), context_instance=RequestContext(request))
