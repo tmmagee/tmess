@@ -44,9 +44,11 @@
       <b>{% if member.excused_hours_owed %}Excused hours owed{% else %}Hours banked{% endif %}:</b> {{ member.hours_balance|messhours }}
         {% if request.user.is_staff %}<a href="{{ member.get_hours_balance_history_url }}">history</a>{% endif %}
       </li>
-      <li><b>Personal Equity:</b> {{ user.get_profile.personal_equity_held }}</li>
-      <li><b>Membership Fund Equity:</b> {{ user.get_profile.membership_fund_equity_held }}</li>
-      <li><b>Total Equity:</b> {{ user.get_profile.equity_held }}</li>
+      {% if request.user.is_staff %}
+      <li><b>Personal equity:</b> {{ user.get_profile.personal_equity_held }}</li>
+      <li><b>Membership fund equity:</b> {{ user.get_profile.membership_fund_equity_held }}</li>
+      {% endif %}
+      <li><b>Equity held:</b> {{ user.get_profile.equity_held }}</li>
       <li><b>Equity due:</b> {{ user.get_profile.equity_due }}</li>
       {% if user.get_profile.get_primary_account.id %}<!-- require account id to dilsplay Paypal links -->
       <li>
