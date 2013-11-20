@@ -54,10 +54,12 @@
         to {{ member.current_loa.end|date:"n/j/Y" }}
       </li>
     {% endif %}
-
+    
+    {% if member.unexcused_hours_owed %}
     <li>
-      {% if member.unexcused_hours_owed %}<b>Unexcused hours owed</b>: {{ member.hours_balance|messhours:"unexcused" }}{% endif %}
+      <b>Unexcused hours owed</b>: {{ member.hours_balance|messhours:"unexcused" }}
     </li>
+    {% endif %}
 
     <li><b>{% if member.excused_hours_owed %}Excused hours owed{% else %}Hours banked{% endif %}:</b> 
       {{ member.hours_balance|messhours }} 
