@@ -64,7 +64,7 @@
       {% if request.user.is_staff %}<a href="{{ member.get_hours_balance_history_url }}">history</a>{% endif %}
     </li>
 
-    {% if request.user.is_staff % }
+    {% if request.user.is_staff %}
     <li><b>Personal equity:</b> {{ member.personal_equity_held }}</li>
     <li><b>Membership fund equity:</b> {{ member.membership_fund_equity_held }}</li>
     {% endif %}
