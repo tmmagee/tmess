@@ -920,7 +920,7 @@ def staff_account_balances(request):
 
 def equity_by_member(request):
   members = m_models.Member.objects.filter(Q(personal_equity_held__gt=0) | Q(membership_fund_equity_held__gt=0) | Q(personal_equity_held__lt=0) | Q(membership_fund_equity_held__lt=0))
-  personal_equity_sum = m_models.Member.objects.filter(Q(personal_equity_held__gt=0) | Q(personal_equity_held__lt=0)).aggregate(Sum('personal_equity_held')).values()[0]
-  membership_fund_equity_sum = m_models.Member.objects.filter(Q(membership_fund_equity_held__gt=0) | Q(membership_fund_equity_held__lt=0)).aggregate(Sum('membership_fund_equity_held')).values()[0]
+  personal_equity_sum = m_models.Member.objects.all().aggregate(Sum('personal_equity_held')).values()[0]
+  membership_fund_equity_sum = m_models.Member.objects.all().aggregate(Sum('membership_fund_equity_held')).values()[0]
   equity_sum = personal_equity_sum + membership_fund_equity_sum
   return render_to_response('reporting/equity_by_member.html', locals(), context_instance=RequestContext(request))
