@@ -153,7 +153,7 @@ class Member(models.Model):
             null=True)
     card_type = models.CharField(max_length=128, blank=True, null=True)
 
-    personal_equity_held = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    member_owner_equity_held = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     membership_fund_equity_held = models.DecimalField(max_digits=8, decimal_places=2, default=0)
 
     equity_due = models.DecimalField(max_digits=8, decimal_places=2, default=0)
@@ -233,7 +233,7 @@ class Member(models.Model):
 
     @property 
     def equity_held(self):
-      return self.personal_equity_held + self.membership_fund_equity_held
+      return self.member_owner_equity_held + self.membership_fund_equity_held
 
     @property
     def current_loa(self):

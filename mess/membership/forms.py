@@ -75,7 +75,7 @@ class RelatedMemberForm(forms.ModelForm):
 class MemberForm(forms.ModelForm):
     class Meta:
         model = models.Member
-        exclude = ('status', 'user', 'personal_equity_held', 'membership_fund_equity_held', 'job_interests', 'skills', 'availability', 'extra_info', 'card_number', 'card_facility_code', 'card_type', 'has_key')
+        exclude = ('status', 'user', 'member_owner_equity_held', 'membership_fund_equity_held', 'job_interests', 'skills', 'availability', 'extra_info', 'card_number', 'card_facility_code', 'card_type', 'has_key')
 
     referring_member = forms.ModelChoiceField(models.Member.objects.all(),
       widget=AutoCompleteWidget('member_spiffy',

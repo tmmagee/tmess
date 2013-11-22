@@ -72,7 +72,7 @@ class MemberRevision(RevisionModel):
   card_number = models.CharField(max_length=128, blank=True, null=True)
   card_facility_code = models.CharField(max_length=128, blank=True, null=True)
   card_type = models.CharField(max_length=128, blank=True, null=True)
-  personal_equity_held = models.DecimalField(max_digits=8, decimal_places=2, null=True)
+  member_owner_equity_held = models.DecimalField(max_digits=8, decimal_places=2, null=True)
   membership_fund_equity_held = models.DecimalField(max_digits=8, decimal_places=2, null=True)
   equity_due = models.DecimalField(max_digits=8, decimal_places=2, null=True)
   equity_increment = models.DecimalField(max_digits=8, decimal_places=2, null=True)
@@ -102,7 +102,7 @@ class MemberRevision(RevisionModel):
       member_revision.card_number = member.card_number
       member_revision.card_facility_code = member.card_facility_code
       member_revision.card_type = member.card_type
-      member_revision.personal_equity_held = member.personal_equity_held
+      member_revision.member_owner_equity_held = member.member_owner_equity_held
       member_revision.membership_fund_equity_held = member.membership_fund_equity_held
       member_revision.equity_due = member.equity_due
       member_revision.equity_increment = member.equity_increment
@@ -139,7 +139,7 @@ class MemberRevision(RevisionModel):
         self.card_number,
         self.card_facility_code,
         self.card_type,
-        self.personal_equity_held,
+        self.member_owner_equity_held,
         self.membership_fund_equity_held,
         self.equity_due,
         self.equity_increment,

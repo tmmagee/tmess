@@ -9,21 +9,21 @@
       <table class="data" >
           <tr>
               <th>Member</th>
-              <th>Personal Equity</th>
+              <th>Member-Owner Equity</th>
               <th>Membership Fund Equity</th>
               <th>Total Equity</th>
           </tr>
           {% for member in members %}
           <tr class="{% cycle 'odd' 'even' %}" >
             <td><a href="{% url member member.user %}">{{ member }}</a></td>
-            <td>{{ member.personal_equity_held }}</td>
+            <td>{{ member.member_owner_equity_held }}</td>
             <td>{{ member.membership_fund_equity_held }}</td>
             <td>{{ member.equity_held }}</td>
           </tr>
           {% endfor %}
           <tr class="{% cycle 'odd' 'even' %}" >
             <th>Totals</th>
-            <th>{{ personal_equity_sum }}</th>
+            <th>{{ member_owner_equity_sum }}</th>
             <th>{{ membership_fund_equity_sum }}</th>
             <th>{{ equity_sum }}</th>
           </tr>

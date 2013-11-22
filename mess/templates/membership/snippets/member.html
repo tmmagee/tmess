@@ -67,10 +67,12 @@
     </li>
 
     {% if request.user.is_staff %}
-    <li><b>Personal equity:</b> {{ member.personal_equity_held }}</li>
+    <li><b>Member-owner equity:</b> {{ member.member_owner_equity_held }}</li>
     <li><b>Membership fund equity:</b> {{ member.membership_fund_equity_held }}</li>
-    {% endif %}
+    <li><b>Total equity:</b> {{ member.equity_held }}</li>
+    {% else %}
     <li><b>Equity held:</b> {{ member.equity_held }}</li>
+    {% endif %}
     <li><b>Equity due:</b> {{ member.equity_due }}</li>
     <li><b>Equity increment:</b> {{ member.equity_increment }}</li>
     <li><b>Equity target:</b> {{ member.equity_target }}</li>
