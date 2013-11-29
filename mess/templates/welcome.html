@@ -35,23 +35,31 @@
   </div>
 
   <div id ="right-column">  
-    <h2>Member Information</h2>
+    {% if member.is_organization %}
+      <h2>Organization Information</h2>
+    {% else %}
+      <h2>Member Information</h2>
+    {% endif %}
     <ul class="quick-info">
       <li>
-      {% if member.unexcused_hours_owed %}<b>Unexcused hours owed</b>: {{ member.hours_balance|messhours:"unexcused" }}{% endif %}
-      </li>
-      <li>
-      <b>{% if member.excused_hours_owed %}Excused hours owed{% else %}Hours banked{% endif %}:</b> {{ member.hours_balance|messhours }}
-        {% if request.user.is_staff %}<a href="{{ member.get_hours_balance_history_url }}">history</a>{% endif %}
-      </li>
-      {% if request.user.is_staff %}
-      <li><b>Member-owner equity:</b> {{ user.get_profile.member_owner_equity_held }}</li>
-      <li><b>Membership fund equity:</b> {{ user.get_profile.membership_fund_equity_held }}</li>
-      <li><b>Total equity:</b> {{ user.get_profile.equity_held }}</li>
+      {% if member.is_organization %}
+        <li><b>Organizational Deposit:</b> {{ member.equity_held }}</li>
       {% else %}
-      <li><b>Equity held:</b> {{ user.get_profile.equity_held }}</li>
+        {% if member.unexcused_hours_owed %}<b>Unexcused hours owed</b>: {{ member.hours_balance|messhours:"unexcused" }}{% endif %}
+        </li>
+        <li>
+        <b>{% if member.excused_hours_owed %}Excused hours owed{% else %}Hours banked{% endif %}:</b> {{ member.hours_balance|messhours }}
+          {% if request.user.is_staff %}<a href="{{ member.get_hours_balance_history_url }}">history</a>{% endif %}
+        </li>
+        {% if request.user.is_staff %}
+        <li><b>Member-owner equity:</b> {{ user.get_profile.member_owner_equity_held }}</li>
+        <li><b>Membership fund equity:</b> {{ user.get_profile.membership_fund_equity_held }}</li>
+        <li><b>Total equity:</b> {{ user.get_profile.equity_held }}</li>
+        {% else %}
+        <li><b>Equity held:</b> {{ user.get_profile.equity_held }}</li>
+        {% endif %}
+        <li><b>Equity due:</b> {{ user.get_profile.equity_due }}</li>
       {% endif %}
-      <li><b>Equity due:</b> {{ user.get_profile.equity_due }}</li>
       {% if user.get_profile.get_primary_account.id %}<!-- require account id to dilsplay Paypal links -->
       <li>
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
@@ -84,7 +92,11 @@
             <option value="2000.00">2000.00</option>
             <option value="2500.00">2500.00</option>
           </select>
-          <input type="submit" value="add equity with Paypal">
+          {% if member.is_organization %}
+            <input type="submit" value="increase deposit via PayPal">
+          {% else %}
+            <input type="submit" value="add equity via PayPal">
+          {% endif %}
         </form>
       </li>
       {% endif %}
@@ -121,15 +133,17 @@
           <input type="hidden" name="notify_url" value="https://mess.mariposa.coop/accounting/listen_to_paypal">
           <input type="hidden" name="return" value="https://mess.mariposa.coop">
           <input type="hidden" name="rm" value="1">
-          <input type="submit" value="add credit with Paypal">
+          <input type="submit" value="add credit via PayPal">
         </form>
       </li>
       <li><b>Discount:</b> {{ account.discount }}%</li>
-      {% if account.next_shift %}
-      <li><b>Next workshift:</b> {{ account.next_shift.member.user.first_name }} {{ account.next_shift.time|date:"D n/j g:ia" }}<br><a href="{{ account.next_shift.get_switch_url }}">need to switch?</a></li>
-      {% endif %}
-      {% if account.deposit %}<li><b>Equity still linked to account:</b> {{ account.deposit|messmoney }}</li>{% endif %}
-      <li><b>Shared address:</b> {% if account.shared_address %}Yes{% else %}No{% endif %}</li>
+      {% if not member.is_organization %}
+        {% if account.next_shift %}
+          <li><b>Next workshift:</b> {{ account.next_shift.member.user.first_name }} {{ account.next_shift.time|date:"D n/j g:ia" }}<br><a href="{{ account.next_shift.get_switch_url }}">need to switch?</a></li>
+        {% endif %}
+        {% if account.deposit %}<li><b>Equity still linked to account:</b> {{ account.deposit|messmoney }}</li>{% endif %}
+        <li><b>Shared address:</b> {% if account.shared_address %}Yes{% else %}No{% endif %}</li>
+        {% endif %}
       <li><b>Balance limit:</b> {% if account.temporarybalancelimit_set.current %}{{ account.temporarybalancelimit_set.current|first }}{% else %}{{ account.max_allowed_to_owe }}{% endif %}</li>
     </ul>
     {% endfor %}

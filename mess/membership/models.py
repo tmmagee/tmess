@@ -13,6 +13,11 @@ from django.db.models.aggregates import Min
 # import scheduling models to figure what tasks a member has
 from mess.scheduling import models as s_models
 
+ACCOUNT_TYPE = (
+    ('m', 'Member'),
+    ('o', 'Organization'),
+)
+
 MEMBER_STATUS = (
     ('a', 'Active'),
     ('L', 'Leave of Absence'),
@@ -381,6 +386,14 @@ class Member(models.Model):
         else:
             return False
 
+    @property
+    def is_organization(self):
+      for g in self.user.groups.all():
+        if g.name=='organization':
+          return True
+
+      return False
+
     class Meta:
         ordering = ['user__username']
 
@@ -434,6 +447,7 @@ class Account(models.Model):
     note = models.TextField(blank=True)
     shared_address = models.BooleanField(default=False)
     balance_limit = models.DecimalField(max_digits=8, decimal_places=2, default=5.00)
+    account_type = models.CharField(max_length=1, choices=ACCOUNT_TYPE, default='m')
 
     objects = AccountManager()
 

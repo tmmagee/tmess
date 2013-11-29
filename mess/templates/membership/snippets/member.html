@@ -33,54 +33,60 @@
 </div>
 <div class="accountmemberside">
   <ul class="quick-info">
-    {% if member.date_departed %}
-      <li><b>Departed:</b> {{ member.date_departed|date:"n/j/Y" }}</li>
-    {% endif %}
-    {% if member.date_turns_18 %}
-      <li><b>Youth Member Until:</b> {{ member.date_turns_18|date:"n/j/Y" }}</li>
-    {% endif %}
-    {% if member.date_missing %}
-      <li><b>Missing:</b> {{ member.date_missing|date:"n/j/Y" }}</li>
-    {% endif %}
-
-    {% ifequal section "departed" %}
-      {% if am.shopper %}<li><b>Was Proxy</b></li>{% endif %}
-      {% if am.account_contact %}<li><b>Was Member Equity Holder</b></li>{% endif %}
-    {% endifequal %}
-
-    {% if member.current_loa %}
-      <li>
-        <b>On leave:</b> {{ member.current_loa.start|date:"n/j/Y" }} 
-        to {{ member.current_loa.end|date:"n/j/Y" }}
-      </li>
-    {% endif %}
-    
-    {% if member.unexcused_hours_owed %}
-    <li>
-      <b>Unexcused hours owed</b>: {{ member.hours_balance|messhours:"unexcused" }}
-    </li>
-    {% endif %}
-
-    <li><b>{% if member.excused_hours_owed %}Excused hours owed{% else %}Hours banked{% endif %}:</b> 
-      {{ member.hours_balance|messhours }} 
-      {% if request.user.is_staff %}<a href="{{ member.get_hours_balance_history_url }}">history</a>{% endif %}
-    </li>
-
-    {% if request.user.is_staff %}
-    <li><b>Member-owner equity:</b> {{ member.member_owner_equity_held }}</li>
-    <li><b>Membership fund equity:</b> {{ member.membership_fund_equity_held }}</li>
-    <li><b>Total equity:</b> {{ member.equity_held }}</li>
+    {% if member.is_organization %}
+        <li><b>Organizational Deposit:</b> {{ member.equity_held }}</li>
     {% else %}
-    <li><b>Equity held:</b> {{ member.equity_held }}</li>
-    {% endif %}
-    <li><b>Equity due:</b> {{ member.equity_due }}</li>
-    <li><b>Equity increment:</b> {{ member.equity_increment }}</li>
-    <li><b>Equity target:</b> {{ member.equity_target }}</li>
+      {% if member.date_departed %}
+        <li><b>Departed:</b> {{ member.date_departed|date:"n/j/Y" }}</li>
+      {% endif %}
+      {% if member.date_turns_18 %}
+        <li><b>Youth Member Until:</b> {{ member.date_turns_18|date:"n/j/Y" }}</li>
+      {% endif %}
+      {% if member.date_missing %}
+        <li><b>Missing:</b> {{ member.date_missing|date:"n/j/Y" }}</li>
+      {% endif %}
+  
+      {% ifequal section "departed" %}
+        {% if am.shopper %}<li><b>Was Proxy</b></li>{% endif %}
+        {% if am.account_contact %}<li><b>Was Member Equity Holder</b></li>{% endif %}
+      {% endifequal %}
+  
+      {% if member.current_loa %}
+        <li>
+          <b>On leave:</b> {{ member.current_loa.start|date:"n/j/Y" }} 
+          to {{ member.current_loa.end|date:"n/j/Y" }}
+        </li>
+      {% endif %}
+      
+      {% if member.unexcused_hours_owed %}
+      <li>
+        <b>Unexcused hours owed</b>: {{ member.hours_balance|messhours:"unexcused" }}
+      </li>
+      {% endif %}
+  
+      <li><b>{% if member.excused_hours_owed %}Excused hours owed{% else %}Hours banked{% endif %}:</b> 
+        {{ member.hours_balance|messhours }} 
+        {% if request.user.is_staff %}<a href="{{ member.get_hours_balance_history_url }}">history</a>{% endif %}
+      </li>
 
-    {% if am.account_contact %}
-      <!-- work status is only for member equity holders -->
-      <li><b>Work status:</b> {{ member.get_work_status_display }}</li>
+      {% if request.user.is_staff %}
+        <li><b>Member-owner equity:</b> {{ member.member_owner_equity_held }}</li>
+        <li><b>Membership fund equity:</b> {{ member.membership_fund_equity_held }}</li>
+        <li><b>Total equity:</b> {{ member.equity_held }}</li>
+      {% else %}
+        <li><b>Equity held:</b> {{ member.equity_held }}</li>
+      {% endif %}
+
+      <li><b>Equity due:</b> {{ member.equity_due }}</li>
+      <li><b>Equity increment:</b> {{ member.equity_increment }}</li>
+      <li><b>Equity target:</b> {{ member.equity_target }}</li>
+
+      {% if am.account_contact %}
+        <!-- work status is only for member equity holders -->
+        <li><b>Work status:</b> {{ member.get_work_status_display }}</li>
+      {% endif %}
     {% endif %}
+
 
     <li><b>Membership Card:</b> 
     {% if member.member_card %}
