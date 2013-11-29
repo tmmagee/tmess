@@ -81,14 +81,14 @@ def reports(request):
         ('Accounts',[
             listrpt('Accounts','Active Contacts',
                 '',
-                '{% for y in x.accountmember_set.all %}{% if y.member.is_active %}{{ y.member }}{% if y.account_contact %}*{% endif %}{% if y.shopper %}(s){% endif %}<br>{% endif %}{% endfor %}\*=Member Equity, (s)=Shopper\r\n'+
+                '{% for y in x.accountmember_set.all %}{% if y.member.is_active %}{{ y.member }}{% if y.account_contact %}*{% endif %}{% if y.shopper %}(s){% endif %}<br>{% endif %}{% endfor %}\*=Member-Owner Equity, (s)=Shopper\r\n'+
                 '{% for y in x.members.active %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
                 '{% for y in x.members.active %}{% if y.user.email %}{{ y.user.first_name }}: {{ y.user.email }}<br>{% endif %}{% endfor %}\Emails\r\n'+
                 'deposit'),
 
 #           listrpt('Accounts','Active Addresses',
 #               '',
-#               '{% for y in x.accountmember_set.all %}{% if y.member.is_active %}{{ y.member }}{% if y.account_contact %}*{% endif %}{% if y.shopper %}(s){% endif %}<br>{% endif %}{% endfor %}\*=Member Equity, (s)=Shopper\r\n'+
+#               '{% for y in x.accountmember_set.all %}{% if y.member.is_active %}{{ y.member }}{% if y.account_contact %}*{% endif %}{% if y.shopper %}(s){% endif %}<br>{% endif %}{% endfor %}\*=Member-Owner Equity, (s)=Shopper\r\n'+
 #               '{% for y in x.members.active %}{% for z in y.addresses.all %}{% if not forloop.parentloop.first %}<br><br>{% endif %}{{ z.fullmailing|linebreaksbr }}<br>{% endfor %}{% endfor %}\Addresses'),
                 
 # broken :(
@@ -105,7 +105,7 @@ def reports(request):
             listrpt('Accounts','With No Proxy Shoppers',
                 'accountmember__shopper!=True', 'members\r\nactive_member_count'),
 
-            listrpt('Accounts','With At Least $50 Member Equity',
+            listrpt('Accounts','With At Least $50 Member-Owner Equity',
                 'deposit__gte=50.00', 'deposit'),
 
             ('Hours Balance Changes',reverse('account_hours_balance_changes')),            
@@ -161,7 +161,7 @@ def reports(request):
                 'user__email=\r\naccountmember__shopper=False',
                 'accounts\r\nphones', order_by='accounts'),
 
-            listrpt('Members','Member Equity Holders on LOA',
+            listrpt('Members','Member-Owner Equity Holders on LOA',
                 'leaveofabsence__start__lte='+str(datetime.date.today())+'\r\nleaveofabsence__end__gte='+str(datetime.date.today())+'\r\naccountmember__shopper=False',
                 'current_loa.start\r\ncurrent_loa.end\r\naccounts\r\nphones\r\n{% for a in x.accounts.all %}{{ a.note }}{% endfor %}\Notes',
                 order_by='leaveofabsence__end'),
@@ -228,6 +228,7 @@ def reports(request):
 
             ('Member Equities Billing (New 2011)',reverse('billing')),
 #            ('One-time Equity Transfer',reverse('equity_transfer')),
+            ('Equity By Member',reverse('equity_by_member')),
             ('Equity Totals',reverse('equity')),
         ]),
 
@@ -260,7 +261,7 @@ def reports(request):
         ]),
 
         ('Anomalies',[
-            ('Page For Fixing "Member Equity Holder" and "Shopper"',
+            ('Page For Fixing "Member-Owner Equity Holder" and "Shopper"',
                 reverse('accountmemberflags')),
             ('Database Anomalies',reverse('anomalies')),
         ]),
@@ -733,7 +734,7 @@ def equity_old(request):
 
 def equity(request):
     ''' member equity, grouped by account'''
-    equity_transactions = a_models.Transaction.objects.filter(purchase_type='O')
+    equity_transactions = a_models.Transaction.objects.filter(Q(purchase_type='O') | Q(purchase_type='F'))
 #    esums = equity_transactions.values(
 #            'account','account__name','account__deposit'
 #            ).annotate(esum=Sum('purchase_amount')).order_by('account')
@@ -747,9 +748,9 @@ def equity(request):
 #            'acct_esum': esum['esum'],
 #        })
     mem_equity_due = m_models.Member.objects.all().aggregate(total=Sum('equity_due'))
-    member_equity = m_models.Member.objects.all().aggregate(total=Sum('equity_held'))
-    acct_equity = m_models.Account.objects.all().aggregate(total=Sum('deposit'))
-    all_equity = member_equity['total'] + acct_equity['total']
+    member_owner_equity = m_models.Member.objects.all().aggregate(total=Sum('member_owner_equity_held'))
+    membership_fund_equity = m_models.Member.objects.all().aggregate(total=Sum('membership_fund_equity_held'))
+    all_equity = member_owner_equity['total'] + membership_fund_equity['total']
     equity_transactions_sum = equity_transactions.aggregate(total=Sum('purchase_amount'))
     return render_to_response('reporting/equity.html', locals(),
             context_instance=RequestContext(request))
@@ -770,9 +771,10 @@ def equity_transfer(request):
             'acct_deposit': esum['account__deposit'],
             'acct_esum': esum['esum'],
         })
-    member_equity = m_models.Member.objects.all().aggregate(total=Sum('equity_held'))
+    member_owner_equity = m_models.Member.objects.all().aggregate(total=Sum('member_owner_equity_held'))
+    membership_fund_member_equity = m_models.Member.objects.all().aggregate(total=Sum('membership_fund_equity_held'))
     acct_equity = m_models.Account.objects.all().aggregate(total=Sum('deposit'))
-    all_equity = member_equity['total'] + acct_equity['total']
+    all_equity = member_owner_equity['total'] + membership_fund_member_equity['total'] + acct_equity['total']
     equity_transactions_sum = all_equity_transactions.aggregate(total=Sum('purchase_amount'))
     return render_to_response('reporting/equity_transfer.html', locals(),
             context_instance=RequestContext(request))
@@ -864,7 +866,7 @@ def historical_members(request):
 
     date = str(form.cleaned_data.get('date'))
 
-    query = "SELECT * from membership_member where date_joined <= '" + date + "' AND (date_departed is null and equity_held>0) OR (date_departed > '" + date + "' AND id in (SELECT DISTINCT member_id FROM accounting_transaction WHERE purchase_type='O' AND purchase_amount>0))"
+    query = "SELECT * from membership_member where date_joined <= '" + date + "' AND (date_departed is null and (member_owner_equity_held>0 OR membership_fund_equity_held>0) OR (date_departed > '" + date + "' AND id in (SELECT DISTINCT member_id FROM accounting_transaction WHERE purchase_type='O' AND purchase_amount>0))"
 
     members = m_models.Member.objects.raw(query)
     member_count = len(__builtin__.list(members))
@@ -915,3 +917,10 @@ def staff_account_balances(request):
       staff_accounts.append([staff_member, staff_account])
 
   return render_to_response('reporting/staff_account_balances.html', locals(), context_instance=RequestContext(request))
+
+def equity_by_member(request):
+  members = m_models.Member.objects.filter(Q(member_owner_equity_held__gt=0) | Q(membership_fund_equity_held__gt=0) | Q(member_owner_equity_held__lt=0) | Q(membership_fund_equity_held__lt=0))
+  member_owner_equity_sum = m_models.Member.objects.all().aggregate(Sum('member_owner_equity_held')).values()[0]
+  membership_fund_equity_sum = m_models.Member.objects.all().aggregate(Sum('membership_fund_equity_held')).values()[0]
+  equity_sum = member_owner_equity_sum + membership_fund_equity_sum
+  return render_to_response('reporting/equity_by_member.html', locals(), context_instance=RequestContext(request))

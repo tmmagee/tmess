@@ -14,7 +14,8 @@ PURCHASE_CHOICES = (
     ('B','Bulk Sale'),
 #    ('A','After-Hours Sale'),
     ('U','Dues'),
-    ('O','Member Equity'),
+    ('O','Member-Owner Equity'),
+    ('F','Membership Fund Equity'),
     ('G','Gift or Loan'),
     ('S','Misc'),   # Misc is used for transfers etc, positive or negative
 #   ('T','Trade'),    what is Trade?
@@ -154,11 +155,22 @@ https://docs.djangoproject.com/en/dev/topics/db/transactions/
             self.payment_type = ''
 
         if self.purchase_type == 'O':  
-            print self.purchase_amount
-            # rehydrate the value of self.member.equity_held:
-            rehydratedmember = m_models.Member.objects.get(id=self.member.id)
-            self.member.equity_held = (rehydratedmember.equity_held + 
+            # rehydrate the value of self.member.member_owner_equity_held:
+            if not 'rehydratedmember' in locals():  
+              rehydratedmember = m_models.Member.objects.get(id=self.member.id)
+            self.member.member_owner_equity_held = (rehydratedmember.member_owner_equity_held + 
                             self.purchase_amount)
+
+        if self.purchase_type == 'F':  
+            if not 'rehydratedmember' in locals():  
+              rehydratedmember = m_models.Member.objects.get(id=self.member.id)
+            rehydratedmember = m_models.Member.objects.get(id=self.member.id)
+            self.member.membership_fund_equity_held = (rehydratedmember.membership_fund_equity_held + 
+                            self.purchase_amount)
+
+        if (self.purchase_type == 'O' or self.purchase_type == 'F'):
+            if not 'rehydratedmember' in locals():  
+              rehydratedmember = m_models.Member.objects.get(id=self.member.id)
 
             # Per Dan's instructions, only update equity_due if the transaction is for a 
             # positive amount
@@ -168,6 +180,7 @@ https://docs.djangoproject.com/en/dev/topics/db/transactions/
 
             if self.member.equity_due < 0:
                 self.member.equity_due = 0
+            
         rehydratedaccount = m_models.Account.objects.get(id=self.account.id)
         balance = rehydratedaccount.balance
         new_balance = balance + self.purchase_amount - self.payment_amount
@@ -188,12 +201,12 @@ https://docs.djangoproject.com/en/dev/topics/db/transactions/
             self.payment_type = ''
 
         # equity should be recorded on account.deposit ONLY if member is unspecified.
-        # if member is specified for equity transaction, then record on member.equity_held.
+        # if member is specified for equity transaction, then record on member.member_owner_equity_held.
         if self.purchase_type == 'O':  
             if self.member is None:
                 self.account.deposit += self.purchase_amount
             else:
-                self.member.equity_held += self.purchase_amount
+                self.member.member_owner_equity_held += self.purchase_amount
                 self.member.equity_due -= self.purchase_amount
                 if self.member.equity_due < 0:
                     self.member.equity_due = 0

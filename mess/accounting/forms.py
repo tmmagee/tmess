@@ -341,7 +341,7 @@ class MemberEquityBillingForm(forms.Form):
 
 class BillingOldForm(forms.Form):
     bill_type = forms.ChoiceField(
-                choices=(('O','Member Equity'),('U','Dues')))
+                choices=(('O','Member-Owner Equity'),('U','Dues')))
     amount_per_member = forms.DecimalField(initial=20)
     max_deposit_per_member = forms.DecimalField(initial=100)
 
