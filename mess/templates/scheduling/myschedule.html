@@ -44,8 +44,12 @@
   {% include "accounting/snippets/acct_flags.html" %}
   <ul class="quick-info">
     <li>
-      <b>Hours {% if member.hours_owed %}Owed{% else %}Banked{% endif %}:</b> 
-        {{ member.hours_balance|messhours }} 
+      {% if member.unexcused_hours_owed %}<b>Unexcused hours owed</b>: {{ member.hours_balance|messhours:"unexcused" }}{% endif %}
+    </li>
+
+    <li><b>{% if member.excused_hours_owed %}Excused hours owed{% else %}Hours banked{% endif %}:</b> 
+      {{ member.hours_balance|messhours }} 
+      {% if request.user.is_staff %}<a href="{{ member.get_hours_balance_history_url }}">history</a>{% endif %}
     </li>
   </ul>
 
