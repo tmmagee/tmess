@@ -126,15 +126,26 @@ table match the transaction passed in. Returns a number
 greater than 0 otherwise
 '''
 def is_duplicate_transaction(t):
-  return a_models.Transaction.objects.filter(
-    register_no=t['register_no'],
-    trans_id=t['trans_id'],
-    is4c_timestamp=t['is4c_timestamp'],
-    is4c_cashier_id=t['is4c_cashier_id'],
-    purchase_amount=t['purchase_amount'],
-    purchase_type=t['purchase_type'],
-    payment_amount=t['payment_amount'],
-    payment_type=t['payment_type']).count()
+
+  if 'trans_id' in t:
+    return a_models.Transaction.objects.filter(
+      register_no=t['register_no'],
+      trans_id=t['trans_id'],
+      is4c_timestamp=t['is4c_timestamp'],
+      is4c_cashier_id=t['is4c_cashier_id'],
+      purchase_amount=t['purchase_amount'],
+      purchase_type=t['purchase_type'],
+      payment_amount=t['payment_amount'],
+      payment_type=t['payment_type']).count()
+  else:
+    return a_models.Transaction.objects.filter(
+      register_no=t['register_no'],
+      is4c_timestamp=t['is4c_timestamp'],
+      is4c_cashier_id=t['is4c_cashier_id'],
+      purchase_amount=t['purchase_amount'],
+      purchase_type=t['purchase_type'],
+      payment_amount=t['payment_amount'],
+      payment_type=t['payment_type']).count()
 
 @csrf_exempt
 def recordtransaction(request):
