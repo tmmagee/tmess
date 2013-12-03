@@ -128,6 +128,7 @@ greater than 0 otherwise
 def is_duplicate_transaction(t):
   return a_models.Transaction.objects.filter(
     register_no=t['register_no'],
+    trans_id=t['trans_id'],
     is4c_timestamp=t['is4c_timestamp'],
     is4c_cashier_id=t['is4c_cashier_id'],
     purchase_amount=t['purchase_amount'],
