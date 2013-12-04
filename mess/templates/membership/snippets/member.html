@@ -69,7 +69,7 @@
         {% if request.user.is_staff %}<a href="{{ member.get_hours_balance_history_url }}">history</a>{% endif %}
       </li>
 
-      {% if request.user.is_staff %}
+      {% if is_finance or is_membership or request.user == member.user %}
         <li><b>Member-owner equity:</b> {{ member.member_owner_equity_held }}</li>
         <li><b>Membership fund equity:</b> {{ member.membership_fund_equity_held }}</li>
         <li><b>Total equity:</b> {{ member.equity_held }}</li>

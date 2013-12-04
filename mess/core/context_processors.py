@@ -17,8 +17,16 @@ def role_permissions(request):
     cashier_perms = cashier_permission(request)
     msr_perms = member_service_rep_permission(request)
     sa_perms = staff_assistant_permission(request)
+    finance_perms = finance_permission(request)
+    membership_perms = membership_permission(request)
 
-    return dict(cashier_perms.items() + msr_perms.items() + sa_perms.items())
+    return dict(
+        cashier_perms.items() + 
+        msr_perms.items() + 
+        sa_perms.items() + 
+        finance_perms.items() + 
+        membership_perms.items()
+        )
 
 def cashier_permission(request):
     ''' 
@@ -72,3 +80,26 @@ def staff_assistant_permission(request):
         return {'is_staff_assistant':True}
     return {}     # no permission, bool({}) = False
 
+def finance_permission(request):
+    ''' 
+    Used as a template context processor before showing tabs
+    that only a finance staff member may see.
+    '''
+    if not request.user.is_authenticated():
+      return {}     # no permission, bool({}) = False
+    if request.user.groups.filter(name="finance").count() > 0:
+      return {'is_finance':True}
+    else:
+      return {'is_finance':False}
+
+def membership_permission(request):
+    ''' 
+    Used as a template context processor before showing tabs
+    that only a membership and marketing staff member may see.
+    '''
+    if not request.user.is_authenticated():
+      return {}     # no permission, bool({}) = False
+    if request.user.groups.filter(name="membership & marketing").count() > 0:
+      return {'is_membership':True}
+    else:
+      return {'is_membership':False}

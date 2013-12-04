@@ -1,5 +1,10 @@
 # Django settings for the Mess project.
 
+try:
+    from settings_ldap import *
+except ImportError:
+    pass
+
 import os
 
 DEBUG = True

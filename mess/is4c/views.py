@@ -126,7 +126,6 @@ table match the transaction passed in. Returns a number
 greater than 0 otherwise
 '''
 def is_duplicate_transaction(t):
-
   if 'trans_id' in t:
     return a_models.Transaction.objects.filter(
       register_no=t['register_no'],
@@ -184,6 +183,7 @@ def recordtransaction(request):
     t['purchase_type'] = t.get('purchase_type', '')
     t['is4c_cashier_id'] = t.get('is4c_cashier_id', 0)
     t['is4c_timestamp'] = t.get('date')
+    t['trans_id'] = t.get('trans_id')
     if 'date' in t: 
         del t['date']
 
