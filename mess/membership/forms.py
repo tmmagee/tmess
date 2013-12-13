@@ -196,6 +196,7 @@ class AccountListFilterForm(forms.Form):
     sort_by = forms.ChoiceField(choices=ACCOUNT_SORT_CHOICES)
     active = forms.BooleanField(initial=True, required=False)
     inactive = forms.BooleanField(initial=False, required=False)
+    organizations = forms.BooleanField(initial=False, required=False)
 #   can_shop = forms.BooleanField(initial=True, required=False)
 #   ebt_only = forms.BooleanField(initial=True, required=False)
 
