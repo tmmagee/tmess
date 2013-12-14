@@ -370,14 +370,15 @@ def accounts(request):
         else:
             form = forms.AccountListFilterForm()
         if 'sort_by' in request.GET and form.is_valid():
-            accounts = models.Account.objects.none()
-
-            if form.cleaned_data['active']:
-                accounts = accounts | models.Account.objects.active()
-
-            if form.cleaned_data['inactive']:
-                accounts = accounts | models.Account.objects.inactive()
-
+            if form.cleaned_data['inactive'] and form.cleaned_data['active']:
+                accounts = models.Account.objects.all()
+            elif form.cleaned_data['inactive']:
+                accounts = models.Account.objects.inactive()
+            elif form.cleaned_data['active']:
+                accounts = models.Account.objects.active()
+            else:
+                accounts = models.Account.objects.none()
+            
             if form.cleaned_data['organizations']:
                 accounts = accounts.filter(account_type='o')
 
