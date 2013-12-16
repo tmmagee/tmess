@@ -180,7 +180,7 @@ class MemberHoursBalanceForm(forms.ModelForm):
     member = forms.ModelChoiceField(m_models.Member.objects.all(),
         widget=AutoCompleteWidget('member_spiffy', 
             view_name='membership-autocomplete', canroundtrip=True), 
-        required=False, help_text='* = include inactive') 
+        required=True, help_text='* = include inactive') 
     hours_balance_change = forms.CharField(
                 widget=forms.TextInput(attrs={'size':'4'}))
 
