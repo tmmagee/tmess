@@ -185,7 +185,7 @@ def balance_owed():
 def main():
     reminder_emails()
     #cashsheet_email()
-    charge_overdue_equity()
+    #charge_overdue_equity()
     balance_owed()
 
 if __name__ == "__main__":
