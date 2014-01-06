@@ -9,6 +9,7 @@
       <tr>
         <th>Member</th>
         <th>Accounts</th>
+        <th>Date Joined</th>
         <th>Equity Target</th>
         <th>Equity Held</th>
         <th>Equity Due</th>
@@ -18,6 +19,7 @@
 
       <tr>
         <th>Totals:</th>
+        <td></td>
         <td></td>
         <td>{{ total_equity_target }}</td>
         <td>{{ total_existing_equity_held }}</td>
@@ -36,6 +38,7 @@
               <a href="{{ account.get_absolute_url }}">{{ account }}</a><br/>
             {% endfor %}
           </td>
+          <td>{{ member.date_joined }}</td>
           <td>{{ member.equity_target }}</td>
           <td>{{ member.equity_held }}</td>
           <td>{{ member.equity_due }}</td>

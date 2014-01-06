@@ -12,6 +12,7 @@ from django.db.models.aggregates import Min
 
 # import scheduling models to figure what tasks a member has
 from mess.scheduling import models as s_models
+from mess.utils.dateutils import quarter_diff, round_to_quarter
 
 ACCOUNT_TYPE = (
     ('m', 'Member'),
@@ -213,15 +214,34 @@ class Member(models.Model):
             return Decimal("150.00")
 
         return Decimal("200.00")
+    
+    '''
+    This function calculates the "real" equity increment, factoring in 
+    equity payments that are made ahead of schedule
+    '''
+    def calc_real_equity_increment(self, equity_increment, equity_held, equity_target, date_joined):
+      quarter_joined = round_to_quarter(date_joined)  
+      current_quarter = round_to_quarter(datetime.datetime.today())
+      quarters = quarter_diff(current_quarter, quarter_joined)
+      on_track_equity = min(equity_increment * quarters, equity_target)
+
+      if (equity_held >= on_track_equity):
+        return Decimal(0)
+      elif (on_track_equity - equity_held) < equity_increment:
+        return on_track_equity - equity_held
+      else:
+        return equity_increment
 
     def potential_new_equity_due(self):
         if (not self.is_active) or (self.is_on_loa):
-            return Decimal("0.00")
+          return Decimal(0)
+
+        real_equity_increment = self.calc_real_equity_increment(self.equity_increment, self.equity_held, self.equity_target(), self.date_joined)
         held_plus_due = self.equity_held + self.equity_due
         remaining_to_target = self.equity_target() - held_plus_due
         if remaining_to_target < 0:
-            remaining_to_target = Decimal("0.00")
-        return min(self.equity_increment, remaining_to_target)
+          remaining_to_target = Decimal(0)
+        return min(real_equity_increment, remaining_to_target)
 
     def untrained(self):
         return s_models.Skill.objects.exclude(
