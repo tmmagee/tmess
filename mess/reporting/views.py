@@ -661,16 +661,20 @@ def trans_summary(request):
 
 #   else form.is_valid():
     account = form.cleaned_data.get('account')
+    member = form.cleaned_data.get('member')
     start = form.cleaned_data.get('start')
     end = form.cleaned_data.get('end')
     list_each = form.cleaned_data.get('list_each')
     filter_type = form.cleaned_data.get('type')
     note = form.cleaned_data.get('note')
 
+    transactions = a_models.Transaction.objects.filter(timestamp__range=(start, end))
+
     if account:
-        transactions = a_models.Transaction.objects.filter(timestamp__range=(start, end)).filter(account=account)
-    else:
-        transactions = a_models.Transaction.objects.filter(timestamp__range=(start, end))
+        transactions = transactions.filter(account=account)
+
+    if member:
+        transactions = transactions.filter(member=member)
 
     if filter_type:
         transactions = transactions.filter(Q(purchase_type=filter_type) | 
