@@ -30,13 +30,14 @@
         <td>{{ orientation.end }}</td>
         <td>{{ orientation.location.name }}</td>        
         <td>{{ orientation.location.address1 }}</td>        
-        <td>{{ orientation.facilitator }}</td>        
-        <td>{{ orientation.cofacilitator }}</td>        
+        <td><a href="{% url member orientation.facilitator.user.username %}">{{ orientation.facilitator }}</a></td>        
+        <td><a href="{% url member orientation.cofacilitator.user.username %}">{{ orientation.cofacilitator }}</a></td>        
         <td>{{ orientation.active }}</td>        
       </tr>
       {% endfor %}
     </table>
     <br/>
+    {% if recent_orientations %}
     <h2>Recent Orientations (past 3 days)</h2>
     <table class="data">
       <tr>
@@ -58,12 +59,13 @@
         <td>{{ orientation.end }}</td>
         <td>{{ orientation.location.name }}</td>        
         <td>{{ orientation.location.address1 }}</td>        
-        <td>{{ orientation.facilitator }}</td>        
-        <td>{{ orientation.cofacilitator }}</td>        
+        <td><a href="{% url member orientation.facilitator.user.username %}">{{ orientation.facilitator }}</a></td>        
+        <td><a href="{% url member orientation.cofacilitator.user.username %}">{{ orientation.cofacilitator }}</a></td>        
         <td>{{ orientation.active }}</td>        
       </tr>
       {% endfor %}
     </table>
+    {% endif %}
     <br/>
     <h2>Special Orientations</h2>
     <table class="data">
@@ -86,8 +88,8 @@
         <td>{{ orientation.end }}</td>
         <td>{{ orientation.location.name }}</td>        
         <td>{{ orientation.location.address1 }}</td>        
-        <td>{{ orientation.facilitator }}</td>        
-        <td>{{ orientation.cofacilitator }}</td>        
+        <td><a href="{% url member orientation.facilitator.user.username %}">{{ orientation.facilitator }}</a></td>        
+        <td><a href="{% url member orientation.cofacilitator.user.username %}">{{ orientation.cofacilitator }}</a></td>        
         <td>{{ orientation.active }}</td>        
       </tr>
       {% endfor %}
