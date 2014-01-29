@@ -11,7 +11,7 @@ from mess.membership import models as m_models
 from mess.events import forms
 from mess.core.permissions import has_elevated_perm
 
-from datetime import datetime
+import datetime
 
 def orientations(request):
     '''
@@ -22,9 +22,11 @@ def orientations(request):
 
     context = RequestContext(request)
 
-    upcoming_orientations = models.Orientation.objects.filter(start__gte=datetime.now()).order_by('-start')
+    recent_orientations = models.Orientation.objects.filter(start__gte=(datetime.datetime.now() - datetime.timedelta(3))).filter(start__lte=datetime.datetime.now()).order_by('-start')
+    upcoming_orientations = models.Orientation.objects.filter(start__gte=datetime.datetime.now()).order_by('-start')
     special_orientations = [models.Orientation.objects.get(pk=1), models.Orientation.objects.get(pk=2)]
 
+    context['recent_orientations']  = recent_orientations
     context['upcoming_orientations']  = upcoming_orientations
     context['special_orientations']  = special_orientations
 
