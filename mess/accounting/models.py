@@ -21,6 +21,16 @@ PURCHASE_CHOICES = (
 #   ('T','Trade'),    what is Trade?
 )
 
+# These are the only choices we want to be made 
+# available on the transaction form. Some should 
+# only be made available through the POS
+TRANSACTION_FORM_PURCHASE_CHOICES = (
+    ('S','Misc'),   
+    ('O','Member-Owner Equity'),
+    ('F','Membership Fund Equity'),
+    ('G','Gift or Loan'),
+)
+
 PAYMENT_CHOICES = (
     ('C','Credit Card'),
     ('D','Debit Card'),

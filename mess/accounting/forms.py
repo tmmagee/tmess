@@ -40,6 +40,7 @@ class TransactionForm(forms.ModelForm):
             view_name='membership-autocomplete', canroundtrip=True))
     member = forms.ModelChoiceField(m_models.Member.objects.all(),
         widget=SelectAfterAjax(), required=True)
+    purchase_type = forms.ChoiceField(choices=models.TRANSACTION_FORM_PURCHASE_CHOICES)
 
 
 class AfterHoursForm(forms.Form):
