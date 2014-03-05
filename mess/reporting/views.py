@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+from decimal import Decimal
 import datetime
 import time
 
@@ -664,7 +665,7 @@ def trans_summary(request):
     member = form.cleaned_data.get('member')
     start = form.cleaned_data.get('start')
     end = form.cleaned_data.get('end')
-    list_each = form.cleaned_data.get('list_each')
+    list_transactions = form.cleaned_data.get('list_transactions')
     filter_type = form.cleaned_data.get('type')
     note = form.cleaned_data.get('note')
 
@@ -707,7 +708,7 @@ def trans_summary(request):
     end_plus_payments = ending_total + payments_total
 
     # by default, show the transactions that have notes
-    if list_each == False and filter_type == '' and note == '':
+    if list_transactions == 'N' and filter_type == '' and note == '':
         transactions = transactions.filter(note__gt='')
 
     return render_to_response('reporting/transactions_summary.html', locals(),
@@ -923,8 +924,38 @@ def staff_account_balances(request):
   return render_to_response('reporting/staff_account_balances.html', locals(), context_instance=RequestContext(request))
 
 def equity_by_member(request):
-  members = m_models.Member.objects.filter(Q(member_owner_equity_held__gt=0) | Q(membership_fund_equity_held__gt=0) | Q(member_owner_equity_held__lt=0) | Q(membership_fund_equity_held__lt=0))
-  member_owner_equity_sum = m_models.Member.objects.all().aggregate(Sum('member_owner_equity_held')).values()[0]
-  membership_fund_equity_sum = m_models.Member.objects.all().aggregate(Sum('membership_fund_equity_held')).values()[0]
-  equity_sum = member_owner_equity_sum + membership_fund_equity_sum
+
+  if request.GET.has_key('as_of'):
+    form = forms.EquityByMemberForm(request.GET)
+  else:
+    form = forms.EquityByMemberForm()
+
+  report = []
+
+  if form.is_valid():
+    date = form.cleaned_data.get('as_of') + datetime.timedelta(1)
+    members = m_models.Member.objects.filter(Q(date_joined__lt=date))
+
+    member_owner_equity_sum = Decimal(0);
+    member_fund_equity_sum = Decimal(0);
+    equity_sum = Decimal(0);
+
+    for member in members:
+      member_owner_equity = a_models.Transaction.objects.filter(member=member).filter(timestamp__lte=date).filter(purchase_type='O').aggregate(Sum('purchase_amount')).values()[0]
+      member_fund_equity = a_models.Transaction.objects.filter(member=member).filter(timestamp__lte=date).filter(purchase_type='F').aggregate(Sum('purchase_amount')).values()[0]
+
+      if not member_owner_equity:
+        member_owner_equity = Decimal(0)
+
+      if not member_fund_equity:
+        member_fund_equity = Decimal(0)
+
+      total_equity = member_owner_equity + member_fund_equity
+
+      if (total_equity):
+        member_owner_equity_sum += member_owner_equity;
+        member_fund_equity_sum += member_fund_equity;
+        equity_sum += total_equity;
+        report.append([member, member_owner_equity, member_fund_equity, total_equity])
+
   return render_to_response('reporting/equity_by_member.html', locals(), context_instance=RequestContext(request))

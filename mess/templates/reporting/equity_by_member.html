@@ -6,6 +6,12 @@
   <div id="primary-content-wrapper" >
     <h2>Equity By Member</h2>
     <div>
+      <form method="get">
+        {{ form }}
+        <input type="submit" value="Submit">
+      </form>
+
+      {% if report %}
       <table class="data" >
           <tr>
               <th>Member</th>
@@ -13,21 +19,22 @@
               <th>Membership Fund Equity</th>
               <th>Total Equity</th>
           </tr>
-          {% for member in members %}
+          {% for member, member_equity, fund_equity, equity_held in report %}
           <tr class="{% cycle 'odd' 'even' %}" >
             <td><a href="{% url member member.user %}">{{ member }}</a></td>
-            <td>{{ member.member_owner_equity_held }}</td>
-            <td>{{ member.membership_fund_equity_held }}</td>
-            <td>{{ member.equity_held }}</td>
+            <td>{{ member_equity }}</td>
+            <td>{{ fund_equity }}</td>
+            <td>{{ equity_held }}</td>
           </tr>
           {% endfor %}
           <tr class="{% cycle 'odd' 'even' %}" >
             <th>Totals</th>
             <th>{{ member_owner_equity_sum }}</th>
-            <th>{{ membership_fund_equity_sum }}</th>
+            <th>{{ member_fund_equity_sum }}</th>
             <th>{{ equity_sum }}</th>
           </tr>
       </table>
+      {% endif %}
     </div>
   </div>
 </div>

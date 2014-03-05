@@ -80,13 +80,11 @@
     </td>
     
     </tr></table>
-    {% if list_each %}
-    {% else %}
-      <h3>Transactions with Notes</h3><!-- pulled by default by view -->
-    {% endif %}
+    {% if list_transactions %}
     <div id="transactions">
       {% include "accounting/snippets/transactions.html" %}
     </div>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

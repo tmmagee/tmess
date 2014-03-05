@@ -37,7 +37,8 @@ class TransactionFilterForm(forms.Form):
         required=False)
     start = forms.DateTimeField(initial=datetime.date.today())
     end = forms.DateTimeField(initial=datetime.date.today()+datetime.timedelta(1))
-    list_each = forms.BooleanField(required=False)
+    list_transactions = forms.ChoiceField(required=False, choices =
+           (('','None'),('N','With Notes'),('A', 'All')))
     type = forms.ChoiceField(required=False, choices=
            (('','All'),) + a_models.PURCHASE_CHOICES + a_models.PAYMENT_CHOICES)
     note = forms.CharField(required=False)
@@ -109,3 +110,6 @@ class MemberLoggingFilterForm(LoggingFilterForm):
 
 class HistoricalMembersForm(forms.Form):
     date = forms.DateField(initial=datetime.date.today())
+
+class EquityByMemberForm(forms.Form):
+    as_of = forms.DateField(initial=datetime.date.today())
