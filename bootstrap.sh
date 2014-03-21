@@ -2,18 +2,19 @@
 
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
+# Don't apt-get upgrade http://stackoverflow.com/a/15093460/589391
 apt-get install -y gunicorn nginx postgresql python-dateutil python-feedparser
 
-# Install Django
+echo 'Installing Django...'
 cd /tmp
-wget https://www.djangoproject.com/m/releases/1.4/Django-1.4.10.tar.gz
-tar xzvf Django-1.4.10.tar.gz
+wget -nv https://www.djangoproject.com/m/releases/1.4/Django-1.4.10.tar.gz
+tar xzf Django-1.4.10.tar.gz
 cd Django-1.4.10
-python setup.py install
+python setup.py -q install
 cd ..
 rm -rf Django-1.4.10*
 
-# Configure nginx
+echo 'Configuring nginx...'
 cat > /etc/nginx/sites-available/mess << 'EOF'
 server {
   listen 80;
@@ -46,7 +47,7 @@ server {
 EOF
 /etc/init.d/nginx restart
 
-# Configure gunicorn
+echo 'Configuring gunicorn...'
 cat > /etc/gunicorn.d/mess << 'EOF'
 CONFIG = {
   'mode': 'django',
@@ -64,3 +65,43 @@ CONFIG = {
 }
 EOF
 /etc/init.d/gunicorn restart
+
+echo 'Creating MESS DB...'
+sudo -u postgres createuser -S -D -R mess
+sudo -u postgres createdb -O mess mess
+
+echo 'Writing local settings for MESS...'
+cat > /vagrant/mess/settings_local.py << 'EOF'
+DEBUG = True
+TEMPLATE_DEBUG = DEBUG
+
+ADMINS = (
+    ('Dev', 'dev@localhost'),
+)
+
+MANAGERS = ADMINS
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'mess',
+        'USER': 'mess',
+        'PASSWORD': 'mess',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
+
+SECRET_KEY = 'secret'
+
+DEFAULT_FROM_EMAIL = 'do-not-reply@localhost'
+SERVER_EMAIL = 'hq@localhost'
+
+MARIPOSA_IPS = ('192.168.48.24')
+
+GOTOPHPBB_SECRET='phpbbsecret'
+GOTOIS4C_SECRET='is4secret'
+IS4C_SECRET='is4secret'
+EOF
+
+echo 'MESS box provisioned!'
