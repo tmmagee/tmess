@@ -162,7 +162,7 @@ class Member(models.Model):
     member_owner_equity_held = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     membership_fund_equity_held = models.DecimalField(max_digits=8, decimal_places=2, default=0)
 
-    equity_due = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    equity_due = models.DecimalField(max_digits=8, decimal_places=2, default=25)
     equity_increment = models.DecimalField(max_digits=8, decimal_places=2, default=25)
 
     referral_source = models.CharField(max_length=20, choices=REFERRAL_SOURCES, blank=True, null=True)
@@ -393,6 +393,15 @@ class Member(models.Model):
 
     def save(self, *args, **kwargs):
         if self.date_departed:
+
+          # If the person who is departing is _really_ 
+          # departing (and we are not just using that date
+          # as a marker as we do with new accounts that
+          # are departed by default) then we set their 
+          # equity_due to 0 by the finance department's 
+          # request. 1971 is Mariposa's first year.
+
+          if self.date_departed.year >= 1971:
             self.equity_due = Decimal(0)
 
         super(Member, self).save(*args, **kwargs)
