@@ -40,14 +40,14 @@ def welcome(request):
         context['next'] = request.GET.get('next', '')
         template = get_template('welcome-anon.html')
     elif request.user.is_authenticated():
-      entries = cache.get('entries')
-      if not entries:
-          socket.setdefaulttimeout(TIMEOUT)
-          feed = feedparser.parse("http://www.mariposa.coop/?feed=rss2")
-          socket.setdefaulttimeout(NORMAL_TIMEOUT)
-          entries = feed.entries[:MAX_ENTRIES]
-          cache.set('entries', entries, 300)
-      context['rss_entries'] = entries
+#      entries = cache.get('entries')
+#      if not entries:
+#          socket.setdefaulttimeout(TIMEOUT)
+#          feed = feedparser.parse("http://www.mariposa.coop/?feed=rss2")
+#          socket.setdefaulttimeout(NORMAL_TIMEOUT)
+#          entries = feed.entries[:MAX_ENTRIES]
+#          cache.set('entries', entries, 300)
+#      context['rss_entries'] = entries
 
       # not sure why we're getting the FieldDoesNotExist error with locmem
       # but this try/except block seems to handle it

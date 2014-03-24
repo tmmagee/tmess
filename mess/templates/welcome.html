@@ -23,7 +23,6 @@
       <li><a href="/forum/{{ t.forum__slug }}/?subject={{ t.subject }}">{{ t.subject }}</a> - new post in <a href="/forum/{{ t.forum__slug }}">{{ t.forum__name }}</a> on {{ t.last_post|date:'D d F' }} at {{ t.last_post|date:'P' }}</li>
       {% endfor %}
       </ul>
-
       {% if rss_entries %}
         <h3>Here are the most recent updates from <a href="http://www.mariposa.coop/?cat=3">mariposa.coop</a></h3>
         {% for entry in rss_entries %}
