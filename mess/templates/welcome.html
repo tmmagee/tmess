@@ -34,6 +34,12 @@
   </div>
 
   <div id ="right-column">  
+    {% if user.is_staff %}
+    <h2>[STAFF ONLY] Incident Reports</h2>
+    <ul class="quick-info">
+      <li><a href="https://docs.google.com/forms/d/1mCcyEshXFtWIepVvE_DAwuzz5a5rsfUzUGxrDGARISw/viewform">IT Incident Report</a></li>
+    </ul>
+    {% endif %}
     {% if member.is_organization %}
       <h2>Organization Information</h2>
     {% else %}
