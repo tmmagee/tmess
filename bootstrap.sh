@@ -3,7 +3,7 @@
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
 # Don't apt-get upgrade http://stackoverflow.com/a/15093460/589391
-apt-get install -y gunicorn nginx postgresql python-dateutil python-feedparser
+apt-get install -y gunicorn nginx postgresql python-dateutil python-feedparser python-psycopg2
 
 echo 'Installing Django...'
 cd /tmp
