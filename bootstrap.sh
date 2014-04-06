@@ -67,7 +67,9 @@ EOF
 /etc/init.d/gunicorn restart
 
 echo 'Creating MESS DB...'
-sudo -u postgres createuser -S -D -R mess
+sudo -u postgres psql <<EOF
+CREATE USER mess with password 'mess';
+EOF
 sudo -u postgres createdb -O mess mess
 
 echo 'Writing local settings for MESS...'
@@ -103,5 +105,8 @@ GOTOPHPBB_SECRET='phpbbsecret'
 GOTOIS4C_SECRET='is4secret'
 IS4C_SECRET='is4secret'
 EOF
+
+cd /vagrant/mess
+python manage.py syncdb --noinput
 
 echo 'MESS box provisioned!'
