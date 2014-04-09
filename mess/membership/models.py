@@ -415,12 +415,18 @@ class Member(models.Model):
         else:
             return False
 
+    def is_in_group(self, group):
+      for g in self.user.groups.all():
+        if g.name==group:
+          return True
+      return False
+
+
     @property
     def is_organization(self):
       for g in self.user.groups.all():
         if g.name=='organization':
           return True
-
       return False
 
     class Meta:
@@ -517,14 +523,18 @@ class Account(models.Model):
         totaldiscount = 0.0
         memberset = self.billable_members()
         if memberset.count() == 0:
-            return 0
+          return 0
+
         for m in memberset:
-            if m.work_status == 'x':
-                totaldiscount = 0
-            elif m.work_status != 'n':
-                totaldiscount += 10
-            else: 
-                totaldiscount += 5
+          if m.is_in_group('staff'):
+            totaldiscount += 20.0
+          elif m.work_status == 'x':
+            totaldiscount += 0.0
+          elif m.work_status != 'n':
+            totaldiscount += 10.0
+          else: 
+            totaldiscount += 5.0
+
         rounded = round(totaldiscount / memberset.count(), 2)
         # no decimals if can be displayed as integer
         return rounded if int(rounded) != rounded else int(rounded)
