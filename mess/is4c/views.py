@@ -72,6 +72,7 @@ def getuserdict(user):
         'last_name':user.last_name,
         'email':user.email,
         'password':user.password,
+        'active': user.is_active,
         'groups': groups,
         }
 
