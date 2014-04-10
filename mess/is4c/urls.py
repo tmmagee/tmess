@@ -8,4 +8,6 @@ urlpatterns = patterns('mess.is4c.views',
     url(r'^members/$', 'members', name='is4c-members'),
     url(r'^recordtransaction/$', 'recordtransaction', name='is4c-recordtransaction'),
     url(r'^gotois4c$', 'gotois4c', name='is4c-login'),
+    url(r'^users/$', 'users', name='users'),
+    url(r'^groups/$', 'groups', name='groups'),
 )

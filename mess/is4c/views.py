@@ -8,6 +8,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.db.models import Q
 from django.utils.safestring import mark_safe
 from django.core import mail
+from django.contrib.auth import models as auth_models
 
 import django.conf as conf
 
@@ -56,6 +57,29 @@ def accounts(request):
     accounts = [getacctdict(account) for account in m_models.Account.objects.all()]
     result = simplejson.dumps(accounts)
     return HttpResponse(result, mimetype='application/json')
+
+def getuserdict(user):
+
+    groups = []
+
+    for group in user.groups.all():
+      groups.append(group.id)
+
+    return {
+        'id':user.id,
+        'username':user.username,
+        'first_name':user.first_name,
+        'last_name':user.last_name,
+        'email':user.email,
+        'password':user.password,
+        'groups': groups,
+        }
+
+def getgroupdict(group):
+    return {
+        'id':group.id,
+        'name':group.name,
+        }
 
 # helper method
 def getacctdict(account):
@@ -223,3 +247,22 @@ def gotois4c(request):
     return render_to_response('is4c/gotois4c.html', locals(),
             context_instance=RequestContext(request))
 
+def users(request):
+  if not 'secret' in request.GET or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
+    return wrong_secret(request)
+
+  users = [getuserdict(user) for user in auth_models.User.objects.all()]
+  result = simplejson.dumps(users)
+  return HttpResponse(result, mimetype='application/json')
+    
+def groups(request):
+  if not 'secret' in request.GET or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
+    return wrong_secret(request)
+
+  groups = [getgroupdict(group) for group in auth_models.Group.objects.all()]
+  result = simplejson.dumps(groups)
+  return HttpResponse(result, mimetype='application/json')
+    
+
+  
+  
