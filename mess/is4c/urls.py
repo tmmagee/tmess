@@ -10,5 +10,5 @@ urlpatterns = patterns('mess.is4c.views',
     url(r'^gotois4c$', 'gotois4c', name='is4c-login'),
     url(r'^members_by_group/$', 'members_by_group', name='staff'),
     url(r'^groups/$', 'groups', name='groups'),
-    url(r'^is4c_transactions_by_day/$', 'is4c_transactions_by_day', name='is4c-transactions-by-day'),
+    url(r'^is4c_transactions_list/$', 'is4c_transactions_list', name='is4c-transactions-list'),
 )
