@@ -281,17 +281,17 @@ def is4c_transactions_list(request):
   if not 'secret' in request.GET or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
     return wrong_secret(request)
   
-  if 'start_date' in request.GET and 'end_date' in request.GET:
-    is4c_trans = a_models.Transaction.objects.raw("SELECT id, is4c_cashier_id || '-' || register_no || '-' || trans_no as trans, date(is4c_timestamp) as is4c_date FROM accounting_transaction WHERE date(is4c_timestamp) >= '" + request.GET['start_date'] + "' AND date(is4c_timestamp) <= '" + request.GET['end_date'] + "' ORDER BY id")
+  if 'date' in request.GET:
+    is4c_trans = a_models.Transaction.objects.raw("SELECT id, is4c_cashier_id || '-' || register_no || '-' || trans_no as trans, date(is4c_timestamp) as is4c_date FROM accounting_transaction WHERE date(is4c_timestamp) = '" + request.GET['date'] + "' ORDER BY id")
 
     is4c_trans_array = []
 
     for t in is4c_trans:
-      is4c_trans_array.append({'trans': t.trans, 'is4c_date': str(t.is4c_date)}) 
+      is4c_trans_array.append(t.trans) 
 
     result = json.dumps(is4c_trans_array)
     return HttpResponse(result, mimetype='application/json')
   else:
-    return HttpResponse("Request must contain 'start_date' and 'end_date' GET values")
+    return HttpResponse("Request must contain 'date' GET values")
 
 
