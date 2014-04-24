@@ -19,6 +19,7 @@ import datetime
 import urllib2
 import time
 import md5
+import json
 from decimal import Decimal 
 
 def wrong_secret(request):
@@ -248,13 +249,25 @@ def gotois4c(request):
     return render_to_response('is4c/gotois4c.html', locals(),
             context_instance=RequestContext(request))
 
-def users(request):
+def members_by_group(request):
   if not 'secret' in request.GET or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
     return wrong_secret(request)
 
-  users = [getuserdict(user) for user in auth_models.User.objects.all()]
-  result = simplejson.dumps(users)
-  return HttpResponse(result, mimetype='application/json')
+  if 'group' in request.GET:
+    group = request.GET['group']
+
+    users = []
+  
+    for user in auth_models.User.objects.filter(is_active=True):
+      for g in user.groups.all():
+        if g.name == group:
+          users.append(getuserdict(user))
+          break
+  
+    result = simplejson.dumps(users)
+    return HttpResponse(result, mimetype='application/json')
+  else:
+    return HttpResponse("Request must contain 'group' GET value")
     
 def groups(request):
   if not 'secret' in request.GET or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
@@ -264,6 +277,21 @@ def groups(request):
   result = simplejson.dumps(groups)
   return HttpResponse(result, mimetype='application/json')
     
+def is4c_transactions_by_day(request):
+  if not 'secret' in request.GET or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
+    return wrong_secret(request)
+  
+  if 'date' in request.GET:
+    is4c_trans = a_models.Transaction.objects.raw("SELECT DISTINCT id, is4c_cashier_id || '-' || register_no || '-' || trans_no as trans FROM accounting_transaction WHERE date(is4c_timestamp) = '" + request.GET['date'] + "'")
 
-  
-  
+    is4c_trans_array = []
+
+    for t in is4c_trans:
+      is4c_trans_array.append([{"trans" : t.trans}]) 
+
+    result = json.dumps(is4c_trans_array)
+    return HttpResponse(result, mimetype='application/json')
+  else:
+    return HttpResponse("Request must contain 'date' GET value")
+
+
