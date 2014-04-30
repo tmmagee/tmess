@@ -98,9 +98,9 @@
             <option value="2500.00">2500.00</option>
           </select>
           {% if member.is_organization %}
-            <input type="submit" value="increase deposit via PayPal">
+            <input type="submit" value="increase DEPOSIT via PayPal">
           {% else %}
-          <input type="submit" value="add equity via PayPal"><br/><br/>
+          <input type="submit" value="add EQUITY via PayPal"><br/><br/>
             <strong>NOTE</strong>: Equity added will be attributed to the member
             making the payment. A member may not pay off equity owed by another 
             member of the account through PayPal, but they may do so at the register.
@@ -141,7 +141,7 @@
           <input type="hidden" name="notify_url" value="https://mess.mariposa.coop/accounting/listen_to_paypal">
           <input type="hidden" name="return" value="https://mess.mariposa.coop">
           <input type="hidden" name="rm" value="1">
-          <input type="submit" value="add credit via PayPal">
+          <input type="submit" value="add CREDIT via PayPal">
         </form>
       </li>
       <li><b>Discount:</b> {{ account.discount }}%</li>
