@@ -277,17 +277,24 @@ def groups(request):
   result = simplejson.dumps(groups)
   return HttpResponse(result, mimetype='application/json')
     
-def is4c_transactions_list(request):
+def is4c_transaction_details(request):
   if not 'secret' in request.GET or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
     return wrong_secret(request)
   
   if 'date' in request.GET:
-    is4c_trans = a_models.Transaction.objects.raw("SELECT id, is4c_cashier_id || '-' || register_no || '-' || trans_no as trans, date(is4c_timestamp) as is4c_date FROM accounting_transaction WHERE date(is4c_timestamp) = '" + request.GET['date'] + "' ORDER BY id")
+    d = request.GET['date'];
+
+    is4c_trans = a_models.Transaction.objects.raw("SELECT id, is4c_cashier_id || '-' || register_no || '-' || trans_no as is4c_trans, purchase_amount, payment_type, payment_amount FROM accounting_transaction WHERE date(timestamp) = '" + d + "' and trans_no is not null and (purchase_type='P' or (payment_amount > 0 OR payment_amount < 0)) ORDER BY is4c_trans")
 
     is4c_trans_array = []
 
     for t in is4c_trans:
-      is4c_trans_array.append(t.trans) 
+      is4c_trans_array.append({
+            "is4c_trans": str(t.is4c_trans), 
+            "purchase_amount": str(t.purchase_amount),
+            "payment_type": str(t.payment_type),
+            "payment_amount": str(t.payment_amount)
+          }) 
 
     result = json.dumps(is4c_trans_array)
     return HttpResponse(result, mimetype='application/json')
