@@ -82,7 +82,7 @@
     </tr></table>
     {% if list_transactions %}
     {% if transactions_limit %}
-    <h2>Too many transactions have been returned. Only displaying {{ transactions_limit }} transactions.</h2>
+    <h3 class="error-message">Too many transactions have been returned. Only displaying {{ transactions_limit }} transactions. Please refine your query if the transaction you are looking for is not listed.</h3>
     {% endif %}
       <div id="transactions">
         {% include "accounting/snippets/transactions.html" %}
