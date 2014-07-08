@@ -16,7 +16,7 @@ from django.utils.http import urlencode
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
 from django.db.models import Q
-from django.db.models.aggregates import Sum, Max
+from django.db.models.aggregates import Sum, Max, Count
 from django.contrib.auth.models import User
 from django.contrib.admin.models import LogEntry
 from django.core import mail
@@ -29,6 +29,7 @@ from mess.scheduling.views import old_rotations
 #from mess.accounting.models import get_credit_choices, get_debit_choices
 #from mess.accounting.models import get_trans_total
 from mess.reporting import forms
+from mess.settings import TRANS_SUMMARY_REPORT_TRANSACTION_LIMIT 
 
 from mess.utils.search import list_usernames_from_fullname
 
@@ -669,7 +670,7 @@ def trans_summary(request):
     filter_type = form.cleaned_data.get('type')
     note = form.cleaned_data.get('note')
 
-    transactions = a_models.Transaction.objects.filter(timestamp__range=(start, end))
+    transactions = a_models.Transaction.objects.filter(timestamp__range=(start, end)).order_by('-id')
 
     if account:
         transactions = transactions.filter(account=account)
@@ -710,6 +711,20 @@ def trans_summary(request):
     # by default, show the transactions that have notes
     if list_transactions == 'N' and filter_type == '' and note == '':
         transactions = transactions.filter(note__gt='')
+
+    '''
+    We limit the transaction to just TRANS_SUMMARY_REPORT_TRANSACTION_LIMIT here just in case the transactions
+    will be displayed in MESS > TRANS_SUMMARY_REPORT_TRANSACTION_LIMIT is too many too look through anyway.
+
+    If the query returned more than TRANS_SUMMARY_REPORT_TRANSACTION_LIMIT transactions, the template should
+    inform the user so that they can narrow their query down.
+    '''
+    transaction_count = transactions.aggregate(Count('id')).values()[0]
+    if (transaction_count > TRANS_SUMMARY_REPORT_TRANSACTION_LIMIT):
+      transactions = transactions[:TRANS_SUMMARY_REPORT_TRANSACTION_LIMIT]
+      transactions_limit = TRANS_SUMMARY_REPORT_TRANSACTION_LIMIT
+    else:
+      transactions_limit = 0
 
     return render_to_response('reporting/transactions_summary.html', locals(),
             context_instance=RequestContext(request))

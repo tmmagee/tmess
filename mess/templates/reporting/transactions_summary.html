@@ -81,9 +81,12 @@
     
     </tr></table>
     {% if list_transactions %}
-    <div id="transactions">
-      {% include "accounting/snippets/transactions.html" %}
-    </div>
+    {% if transactions_limit %}
+    <h2>Too many transactions have been returned. Only displaying {{ transactions_limit }} transactions.</h2>
+    {% endif %}
+      <div id="transactions">
+        {% include "accounting/snippets/transactions.html" %}
+      </div>
     {% endif %}
   </div>
 </div>

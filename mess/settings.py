@@ -255,6 +255,8 @@ AUTHENTICATION_BACKENDS = (
 GOTOFORUM_SECRET = 'The real secret should be specified under settings_local.py'
 IS4C_SECRET = 'fakesecret'
 
+TRANS_SUMMARY_REPORT_TRANSACTION_LIMIT = 5000
+
 try:
     from settings_local import *
 except ImportError:
