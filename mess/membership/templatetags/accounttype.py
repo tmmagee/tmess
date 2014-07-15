@@ -8,5 +8,7 @@ def accounttype(value, arg=''):
     return 'Member'
   elif value == 'o':
     return 'Organization'
+  elif value == 'n':
+    return 'Non-Member'
   else:
     return 'Unknown'
