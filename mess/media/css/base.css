@@ -59,7 +59,7 @@ h2 {font-size: 1.6em;
 		#primary-content-wrapper > h2:first-child {
 		margin-top:1em;
 		}
-h2.accountmembersection {margin-top:0.8em;}
+h2.accountmembersection {margin-top:0.8em; clear: both;}
 	h3 {
 		font-size: 1.4em;
 		color:#666;
