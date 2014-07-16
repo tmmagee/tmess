@@ -25,9 +25,23 @@
             <td>{{ x.total }}</td>
           </tr>
         {% endfor %}
-        <tr class="odd">
+        <tr class="even">
           <td>Start+Sales:</td><td>{{ start_plus_purchases|messmoney }}</td>
         </tr>
+      </table>
+      <table>
+
+      <table style="width:80%;">
+        <tr class="even">
+          <th>Sales by Account Type</th>
+          <th></th>
+        </tr>
+        {% for x in sales_details %}
+          <tr class="{% cycle 'odd' 'even' %}">
+            <td>{{ x.type }}</td>
+            <td>{{ x.total }}</td>
+          </tr>
+        {% endfor %}
       </table>
     </td><td>
       <table style="width:80%;">      
@@ -37,10 +51,10 @@
             <td>{{ x.total }}</td>
           </tr>
         {% endfor %}
-        <tr class="odd">
+        <tr class="even">
           <td>End Balance:</td><td>{{ ending_total|messmoney }}</td>
         </tr>
-        <tr class="even">
+        <tr class="odd">
           <td>End+Payments:</td><td>{{ end_plus_payments|messmoney }}</td>
         </tr>
       </table>

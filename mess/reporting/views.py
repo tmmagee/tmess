@@ -696,6 +696,13 @@ def trans_summary(request):
         purchases_by_type.append({'type':type, 'total':total_by_type})
         purchases_total += total_by_type or 0
 
+    sales_details = []
+    for (code, type) in m_models.ACCOUNT_TYPE:
+        total_by_type = transactions.filter(purchase_type='P').filter(
+                        account__account_type=code).aggregate(
+                        Sum('purchase_amount')).values()[0]
+        sales_details.append({'type':type, 'total':total_by_type})
+
     payments_by_type = []
     payments_total = 0
     for (code, type) in a_models.PAYMENT_CHOICES:
