@@ -284,6 +284,10 @@ def is4c_transaction_details(request):
   if 'date' in request.GET:
     d = request.GET['date'];
 
+    # If the date is empty just return nothing
+    if d.strip() == "":
+      return HttpResponse("Date must not be a nil string");
+
     is4c_trans = a_models.Transaction.objects.raw("SELECT id, is4c_cashier_id || '-' || register_no || '-' || trans_no as is4c_trans, purchase_amount, payment_type, payment_amount FROM accounting_transaction WHERE date(timestamp) = '" + d + "' and trans_no is not null and (purchase_type='P' or (payment_amount > 0 OR payment_amount < 0)) ORDER BY is4c_trans")
 
     is4c_trans_array = []
