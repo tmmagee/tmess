@@ -664,6 +664,7 @@ def trans_summary(request):
 #   else form.is_valid():
     account = form.cleaned_data.get('account')
     member = form.cleaned_data.get('member')
+    account_type = form.cleaned_data.get('account_type')
     start = form.cleaned_data.get('start')
     end = form.cleaned_data.get('end')
     list_transactions = form.cleaned_data.get('list_transactions')
@@ -677,6 +678,9 @@ def trans_summary(request):
 
     if member:
         transactions = transactions.filter(member=member)
+
+    if account_type:
+        transactions = transactions.filter(account__account_type=account_type)
 
     if filter_type:
         transactions = transactions.filter(Q(purchase_type=filter_type) | 
@@ -702,6 +706,17 @@ def trans_summary(request):
                         account__account_type=code).aggregate(
                         Sum('purchase_amount')).values()[0]
         sales_details.append({'type':type, 'total':total_by_type})
+
+    unique_transactions_by_account_type = []
+    for (code, type) in m_models.ACCOUNT_TYPE:
+        total_by_type = transactions.filter(purchase_type='P').filter(
+                        account__account_type=code).count()
+        unique_transactions_by_account_type.append({'type':type, 'total':total_by_type})
+
+    unique_member_visits = transactions.filter(
+                        purchase_type='P').filter(
+                        account__account_type='m').distinct(
+                        'member').count()
 
     payments_by_type = []
     payments_total = 0

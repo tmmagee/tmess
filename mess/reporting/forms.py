@@ -35,6 +35,8 @@ class TransactionFilterForm(forms.Form):
         widget=AutoCompleteWidget('member_spiffy',
             view_name='membership-autocomplete', canroundtrip=True),
         required=False)
+    account_type = forms.ChoiceField(required=False, 
+                                     choices=(('','All'),) + m_models.ACCOUNT_TYPE); 
     start = forms.DateTimeField(initial=datetime.date.today())
     end = forms.DateTimeField(initial=datetime.date.today()+datetime.timedelta(1))
     list_transactions = forms.ChoiceField(required=False, choices =

@@ -29,8 +29,8 @@
           <td>Start+Sales:</td><td>{{ start_plus_purchases|messmoney }}</td>
         </tr>
       </table>
-      <table>
 
+      {% if transactions|length %}
       <table style="width:80%;">
         <tr class="even">
           <th>Sales by Account Type</th>
@@ -43,6 +43,33 @@
           </tr>
         {% endfor %}
       </table>
+
+      <table style="width:80%;">
+        <tr class="even">
+          <th>Unique Transactions by Account Type</th>
+          <th></th>
+        </tr>
+        {% for x in unique_transactions_by_account_type %}
+          <tr class="{% cycle 'odd' 'even' %}">
+            <td>{{ x.type }}</td>
+            <td>{{ x.total }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+
+      <table style="width:80%;">
+        <tr class="even">
+          <th>Miscellaneous</th>
+          <th></th>
+        </tr>
+        <tr class="odd">
+          <td>Unique Member Visits</td>
+          <td>{{ unique_member_visits }}</td>
+        </tr>
+      </table>
+
+    {% endif %}
+
     </td><td>
       <table style="width:80%;">      
         {% for x in payments_by_type %}
