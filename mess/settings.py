@@ -236,6 +236,7 @@ USER_PASSES_TEST_URLS = (
     (r'^/logout/$', None),
     (r'^/media/', None),
     (r'^/passwordreset/', None),
+    (r'^/passwordchange/', None),
     (r'^/accounting/listen_to_paypal', None),
     (r'^/is4c/', None),
     (r'^/membership/signup/member/$', None),
