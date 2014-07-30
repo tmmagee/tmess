@@ -17,7 +17,7 @@ from mess.utils.dateutils import quarter_diff, round_to_quarter
 ACCOUNT_TYPE = (
     ('m', 'Member'),
     ('o', 'Organization'),
-    ('s', 'Staff'),
+    ('s', 'Store'),
     ('n', 'Non-Member'),
 )
 
