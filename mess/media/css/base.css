@@ -470,10 +470,14 @@ ul li {margin-bottom:.5em;}
 				padding:.75em .25em .75em .5em;
 				}
 			#primary-content-wrapper table.data td {
-				padding:.75em .25em 1em .5em;
+				padding:.75em .5em 1em .5em;
 				font-size:1em;
 				border-bottom:1px solid #ddd;
 				}
+			#primary-content-wrapper table.data td.numeric {
+        text-align: right;
+      }
+
 				#primary-content-wrapper table.data td.last-row {
 					border-top:2px solid #999;
 					background:beige;/*#EFF0F9;*/
@@ -912,7 +916,6 @@ td {
     padding: 5px;
     font-family: "Arial",times,sans-serif;
 }
-*/
 
 ul.ceasefire, table.ceasefire ul {
   list-style: none;
