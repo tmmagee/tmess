@@ -17,16 +17,16 @@
     </tr><tr><td>
       <table style="width:80%;">
         <tr class="even">
-          <td>Start Balance:</td><td>{{ starting_total|messmoney }}</td>
+          <td>Start Balance:</td><td class="numeric">{{ starting_total|messmoney }}</td>
         </tr>
         {% for x in purchases_by_type %}
           <tr class="{% cycle 'odd' 'even' %}">
             <td>{{ x.type }}</td>
-            <td>{{ x.total }}</td>
+            <td class="numeric">{{ x.total }}</td>
           </tr>
         {% endfor %}
         <tr class="even">
-          <td>Start+Sales:</td><td>{{ start_plus_purchases|messmoney }}</td>
+          <td>Start+Sales:</td><td class="numeric">{{ start_plus_purchases|messmoney }}</td>
         </tr>
       </table>
 
@@ -39,7 +39,7 @@
         {% for x in sales_details %}
           <tr class="{% cycle 'odd' 'even' %}">
             <td>{{ x.type }}</td>
-            <td>{{ x.total }}</td>
+            <td class="numeric">{{ x.total }}</td>
           </tr>
         {% endfor %}
       </table>
@@ -52,7 +52,7 @@
         {% for x in unique_transactions_by_account_type %}
           <tr class="{% cycle 'odd' 'even' %}">
             <td>{{ x.type }}</td>
-            <td>{{ x.total }}</td>
+            <td class="numeric">{{ x.total }}</td>
           </tr>
         {% endfor %}
       </table>
@@ -64,7 +64,7 @@
         </tr>
         <tr class="odd">
           <td>Unique Member Visits</td>
-          <td>{{ unique_member_visits }}</td>
+          <td class="numeric">{{ unique_member_visits }}</td>
         </tr>
       </table>
 
@@ -75,14 +75,14 @@
         {% for x in payments_by_type %}
           <tr class="{% cycle 'odd' 'even' %}">
             <td>{{ x.type }}</td>
-            <td>{{ x.total }}</td>
+            <td class="numeric">{{ x.total }}</td>
           </tr>
         {% endfor %}
         <tr class="even">
-          <td>End Balance:</td><td>{{ ending_total|messmoney }}</td>
+          <td>End Balance:</td><td class="numeric">{{ ending_total|messmoney }}</td>
         </tr>
         <tr class="odd">
-          <td>End+Payments:</td><td>{{ end_plus_payments|messmoney }}</td>
+          <td>End+Payments:</td><td class="numeric">{{ end_plus_payments|messmoney }}</td>
         </tr>
       </table>
     </td><td>
