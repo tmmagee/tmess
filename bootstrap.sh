@@ -3,7 +3,8 @@
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
 # Don't apt-get upgrade http://stackoverflow.com/a/15093460/589391
-apt-get install -y gunicorn nginx postgresql python-dateutil python-feedparser python-psycopg2
+apt-get install -y gunicorn nginx postgresql python-dateutil \
+  python-feedparser python-psycopg2
 
 echo 'Installing Django...'
 cd /tmp
@@ -18,7 +19,6 @@ echo 'Configuring nginx...'
 cat > /etc/nginx/sites-available/mess << 'EOF'
 server {
   listen 80;
-  server_name mess.mariposa.coop;
   client_max_body_size 10m;
   client_body_buffer_size 128k;
     
@@ -45,6 +45,7 @@ server {
   }
 }
 EOF
+ln -s /etc/nginx/sites-available/mess /etc/nginx/sites-enabled/mess
 /etc/init.d/nginx restart
 
 echo 'Configuring gunicorn...'
@@ -110,3 +111,4 @@ cd /vagrant/mess
 python manage.py syncdb --noinput
 
 echo 'MESS box provisioned!'
+echo 'Visit The MESS at http://127.0.0.1:8080'
