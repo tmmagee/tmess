@@ -1,0 +1,2610 @@
+[
+  {
+    "pk": 20,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "account",
+      "name": "account",
+      "app_label": "membership"
+    }
+  },
+  {
+    "pk": 21,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "accountmember",
+      "name": "account member",
+      "app_label": "membership"
+    }
+  },
+  {
+    "pk": 37,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "accountrevision",
+      "name": "account revision",
+      "app_label": "revision"
+    }
+  },
+  {
+    "pk": 23,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "address",
+      "name": "address",
+      "app_label": "membership"
+    }
+  },
+  {
+    "pk": 15,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "attachment",
+      "name": "attachment",
+      "app_label": "forum"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "contenttype",
+      "name": "content type",
+      "app_label": "contenttypes"
+    }
+  },
+  {
+    "pk": 11,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "ebtbulkorder",
+      "name": "ebt bulk order",
+      "app_label": "accounting"
+    }
+  },
+  {
+    "pk": 33,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "event",
+      "name": "event",
+      "app_label": "events"
+    }
+  },
+  {
+    "pk": 29,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "exclusion",
+      "name": "exclusion",
+      "app_label": "scheduling"
+    }
+  },
+  {
+    "pk": 14,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "forum",
+      "name": "forum",
+      "app_label": "forum"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "group",
+      "name": "group",
+      "app_label": "auth"
+    }
+  },
+  {
+    "pk": 8,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "hourstransaction",
+      "name": "hours transaction",
+      "app_label": "accounting"
+    }
+  },
+  {
+    "pk": 27,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "job",
+      "name": "job",
+      "app_label": "scheduling"
+    }
+  },
+  {
+    "pk": 18,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "leaveofabsence",
+      "name": "leave of absence",
+      "app_label": "membership"
+    }
+  },
+  {
+    "pk": 32,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "location",
+      "name": "location",
+      "app_label": "events"
+    }
+  },
+  {
+    "pk": 7,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "logentry",
+      "name": "log entry",
+      "app_label": "admin"
+    }
+  },
+  {
+    "pk": 17,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "member",
+      "name": "member",
+      "app_label": "membership"
+    }
+  },
+  {
+    "pk": 9,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "memberhourstransaction",
+      "name": "member hours transaction",
+      "app_label": "accounting"
+    }
+  },
+  {
+    "pk": 36,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "memberrevision",
+      "name": "member revision",
+      "app_label": "revision"
+    }
+  },
+  {
+    "pk": 25,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "membersignup",
+      "name": "member sign up",
+      "app_label": "membership"
+    }
+  },
+  {
+    "pk": 34,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "orientation",
+      "name": "orientation",
+      "app_label": "events"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "permission",
+      "name": "permission",
+      "app_label": "auth"
+    }
+  },
+  {
+    "pk": 24,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "phone",
+      "name": "phone",
+      "app_label": "membership"
+    }
+  },
+  {
+    "pk": 16,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "post",
+      "name": "post",
+      "app_label": "forum"
+    }
+  },
+  {
+    "pk": 13,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "reconciliation",
+      "name": "reconciliation",
+      "app_label": "accounting"
+    }
+  },
+  {
+    "pk": 28,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "recurrule",
+      "name": "recur rule",
+      "app_label": "scheduling"
+    }
+  },
+  {
+    "pk": 35,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "revisionmodel",
+      "name": "revision model",
+      "app_label": "revision"
+    }
+  },
+  {
+    "pk": 5,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "session",
+      "name": "session",
+      "app_label": "sessions"
+    }
+  },
+  {
+    "pk": 6,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "site",
+      "name": "site",
+      "app_label": "sites"
+    }
+  },
+  {
+    "pk": 26,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "skill",
+      "name": "skill",
+      "app_label": "scheduling"
+    }
+  },
+  {
+    "pk": 12,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "storeday",
+      "name": "store day",
+      "app_label": "accounting"
+    }
+  },
+  {
+    "pk": 30,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "task",
+      "name": "task",
+      "app_label": "scheduling"
+    }
+  },
+  {
+    "pk": 22,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "temporarybalancelimit",
+      "name": "temporary balance limit",
+      "app_label": "membership"
+    }
+  },
+  {
+    "pk": 31,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "timecard",
+      "name": "timecard",
+      "app_label": "scheduling"
+    }
+  },
+  {
+    "pk": 10,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "transaction",
+      "name": "transaction",
+      "app_label": "accounting"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "user",
+      "name": "user",
+      "app_label": "auth"
+    }
+  },
+  {
+    "pk": 19,
+    "model": "contenttypes.contenttype",
+    "fields": {
+      "model": "workexemption",
+      "name": "work exemption",
+      "app_label": "membership"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "sites.site",
+    "fields": {
+      "domain": "example.com",
+      "name": "example.com"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "membership.account",
+    "fields": {
+      "ebt_only": false,
+      "name": "Asgard",
+      "hours_balance": "0",
+      "account_type": "m",
+      "balance_limit": "5",
+      "note": "One of the Nine Worlds and home to the \u00c6sir tribe of gods.",
+      "can_shop": true,
+      "deposit": "0",
+      "shared_address": false,
+      "balance": "0"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "membership.account",
+    "fields": {
+      "ebt_only": false,
+      "name": "Foxes of Theabrook",
+      "hours_balance": "0",
+      "account_type": "o",
+      "balance_limit": "5",
+      "note": "",
+      "can_shop": true,
+      "deposit": "0",
+      "shared_address": false,
+      "balance": "0"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "membership.account",
+    "fields": {
+      "ebt_only": false,
+      "name": "Rocksblow",
+      "hours_balance": "0",
+      "account_type": "m",
+      "balance_limit": "5",
+      "note": "",
+      "can_shop": true,
+      "deposit": "0",
+      "shared_address": false,
+      "balance": "0"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "membership.accountmember",
+    "fields": {
+      "member": 3,
+      "account": 2,
+      "account_contact": true,
+      "primary_account": true,
+      "shopper": false
+    }
+  },
+  {
+    "pk": 4,
+    "model": "membership.accountmember",
+    "fields": {
+      "member": 4,
+      "account": 2,
+      "account_contact": true,
+      "primary_account": true,
+      "shopper": false
+    }
+  },
+  {
+    "pk": 2,
+    "model": "membership.accountmember",
+    "fields": {
+      "member": 2,
+      "account": 3,
+      "account_contact": true,
+      "primary_account": true,
+      "shopper": false
+    }
+  },
+  {
+    "pk": 1,
+    "model": "membership.accountmember",
+    "fields": {
+      "member": 1,
+      "account": 1,
+      "account_contact": true,
+      "primary_account": true,
+      "shopper": false
+    }
+  },
+  {
+    "pk": 1,
+    "model": "membership.address",
+    "fields": {
+      "city": "Asgard",
+      "address1": "1 Rainbow Bridge Drive",
+      "address2": "",
+      "member": 3,
+      "state": "UV",
+      "postal_code": "10101",
+      "country": "USA",
+      "type": "h"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "membership.address",
+    "fields": {
+      "city": "Asgard",
+      "address1": "1 Rainbow Bridge Drive",
+      "address2": "",
+      "member": 4,
+      "state": "UV",
+      "postal_code": "10101",
+      "country": "USA",
+      "type": "h"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "membership.address",
+    "fields": {
+      "city": "Asgard",
+      "address1": "1 Rainbow Bridge Drive",
+      "address2": "",
+      "member": 5,
+      "state": "UV",
+      "postal_code": "10101",
+      "country": "USA",
+      "type": "h"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "membership.phone",
+    "fields": {
+      "member": 3,
+      "type": "h",
+      "number": "215-555-5555"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "membership.phone",
+    "fields": {
+      "member": 4,
+      "type": "h",
+      "number": "215-555-5555"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "membership.phone",
+    "fields": {
+      "member": 5,
+      "type": "h",
+      "number": "215-555-5555"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "scheduling.skill",
+    "fields": {
+      "type": "o",
+      "name": "Archery"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "scheduling.skill",
+    "fields": {
+      "type": "o",
+      "name": "Target Practice"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "scheduling.job",
+    "fields": {
+      "skills_required": [
+        1
+      ],
+      "name": "Arrow Shooting",
+      "skills_trained": [
+        2
+      ],
+      "hours_multiplier": 1,
+      "freeze_days": 7,
+      "deadline": false,
+      "type": "o",
+      "description": ""
+    }
+  },
+  {
+    "pk": 1,
+    "model": "revision.revisionmodel",
+    "fields": {}
+  },
+  {
+    "pk": 2,
+    "model": "revision.revisionmodel",
+    "fields": {}
+  },
+  {
+    "pk": 3,
+    "model": "revision.revisionmodel",
+    "fields": {}
+  },
+  {
+    "pk": 4,
+    "model": "revision.revisionmodel",
+    "fields": {}
+  },
+  {
+    "pk": 5,
+    "model": "revision.revisionmodel",
+    "fields": {}
+  },
+  {
+    "pk": 6,
+    "model": "revision.revisionmodel",
+    "fields": {}
+  },
+  {
+    "pk": 7,
+    "model": "revision.revisionmodel",
+    "fields": {}
+  },
+  {
+    "pk": 8,
+    "model": "revision.revisionmodel",
+    "fields": {}
+  },
+  {
+    "pk": 9,
+    "model": "revision.revisionmodel",
+    "fields": {}
+  },
+  {
+    "pk": 10,
+    "model": "revision.revisionmodel",
+    "fields": {}
+  },
+  {
+    "pk": 11,
+    "model": "revision.revisionmodel",
+    "fields": {}
+  },
+  {
+    "pk": 12,
+    "model": "revision.revisionmodel",
+    "fields": {}
+  },
+  {
+    "pk": 13,
+    "model": "revision.revisionmodel",
+    "fields": {}
+  },
+  {
+    "pk": 14,
+    "model": "revision.revisionmodel",
+    "fields": {}
+  },
+  {
+    "pk": 15,
+    "model": "revision.revisionmodel",
+    "fields": {}
+  },
+  {
+    "pk": 16,
+    "model": "revision.revisionmodel",
+    "fields": {}
+  },
+  {
+    "pk": 1,
+    "model": "revision.accountrevision",
+    "fields": {
+      "account": 1,
+      "ebt_only": false,
+      "name": "Rocksblow",
+      "hours_balance": "0",
+      "timestamp": "2014-06-16T20:07:31.542",
+      "balance_limit": "5",
+      "note": "",
+      "can_shop": true,
+      "deposit": "0",
+      "members": [],
+      "shared_address": false
+    }
+  },
+  {
+    "pk": 2,
+    "model": "revision.accountrevision",
+    "fields": {
+      "account": 2,
+      "ebt_only": false,
+      "name": "Asgard",
+      "hours_balance": "0",
+      "timestamp": "2014-06-16T20:10:04.319",
+      "balance_limit": "5",
+      "note": "One of the Nine Worlds and home to the \u00c6sir tribe of gods.",
+      "can_shop": true,
+      "deposit": "0",
+      "members": [],
+      "shared_address": false
+    }
+  },
+  {
+    "pk": 4,
+    "model": "revision.accountrevision",
+    "fields": {
+      "account": 3,
+      "ebt_only": false,
+      "name": "Foxes of Theabrook",
+      "hours_balance": "0",
+      "timestamp": "2014-06-16T20:26:15.465",
+      "balance_limit": "5",
+      "note": "",
+      "can_shop": true,
+      "deposit": "0",
+      "members": [],
+      "shared_address": false
+    }
+  },
+  {
+    "pk": 7,
+    "model": "revision.accountrevision",
+    "fields": {
+      "account": 3,
+      "ebt_only": false,
+      "name": "Foxes of Theabrook",
+      "hours_balance": "0",
+      "timestamp": "2014-06-16T20:29:47.675",
+      "balance_limit": "5",
+      "note": "",
+      "can_shop": true,
+      "deposit": "0",
+      "members": [
+        2
+      ],
+      "shared_address": false
+    }
+  },
+  {
+    "pk": 11,
+    "model": "revision.accountrevision",
+    "fields": {
+      "account": 2,
+      "ebt_only": false,
+      "name": "Asgard",
+      "hours_balance": "0",
+      "timestamp": "2014-06-29T11:27:05.311",
+      "balance_limit": "5",
+      "note": "One of the Nine Worlds and home to the \u00c6sir tribe of gods.",
+      "can_shop": true,
+      "deposit": "0",
+      "members": [
+        3,
+        4
+      ],
+      "shared_address": false
+    }
+  },
+  {
+    "pk": 12,
+    "model": "revision.accountrevision",
+    "fields": {
+      "account": 1,
+      "ebt_only": false,
+      "name": "Rocksblow",
+      "hours_balance": "0",
+      "timestamp": "2014-07-27T12:49:53.690",
+      "balance_limit": "5",
+      "note": "",
+      "can_shop": true,
+      "deposit": "0",
+      "members": [
+        1
+      ],
+      "shared_address": false
+    }
+  },
+  {
+    "pk": 31,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_ebtbulkorder",
+      "name": "Can add ebt bulk order",
+      "content_type": 11
+    }
+  },
+  {
+    "pk": 32,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_ebtbulkorder",
+      "name": "Can change ebt bulk order",
+      "content_type": 11
+    }
+  },
+  {
+    "pk": 33,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_ebtbulkorder",
+      "name": "Can delete ebt bulk order",
+      "content_type": 11
+    }
+  },
+  {
+    "pk": 22,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_hourstransaction",
+      "name": "Can add hours transaction",
+      "content_type": 8
+    }
+  },
+  {
+    "pk": 23,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_hourstransaction",
+      "name": "Can change hours transaction",
+      "content_type": 8
+    }
+  },
+  {
+    "pk": 24,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_hourstransaction",
+      "name": "Can delete hours transaction",
+      "content_type": 8
+    }
+  },
+  {
+    "pk": 25,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_memberhourstransaction",
+      "name": "Can add member hours transaction",
+      "content_type": 9
+    }
+  },
+  {
+    "pk": 26,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_memberhourstransaction",
+      "name": "Can change member hours transaction",
+      "content_type": 9
+    }
+  },
+  {
+    "pk": 27,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_memberhourstransaction",
+      "name": "Can delete member hours transaction",
+      "content_type": 9
+    }
+  },
+  {
+    "pk": 37,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_reconciliation",
+      "name": "Can add reconciliation",
+      "content_type": 13
+    }
+  },
+  {
+    "pk": 38,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_reconciliation",
+      "name": "Can change reconciliation",
+      "content_type": 13
+    }
+  },
+  {
+    "pk": 39,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_reconciliation",
+      "name": "Can delete reconciliation",
+      "content_type": 13
+    }
+  },
+  {
+    "pk": 34,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_storeday",
+      "name": "Can add store day",
+      "content_type": 12
+    }
+  },
+  {
+    "pk": 35,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_storeday",
+      "name": "Can change store day",
+      "content_type": 12
+    }
+  },
+  {
+    "pk": 36,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_storeday",
+      "name": "Can delete store day",
+      "content_type": 12
+    }
+  },
+  {
+    "pk": 28,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_transaction",
+      "name": "Can add transaction",
+      "content_type": 10
+    }
+  },
+  {
+    "pk": 29,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_transaction",
+      "name": "Can change transaction",
+      "content_type": 10
+    }
+  },
+  {
+    "pk": 30,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_transaction",
+      "name": "Can delete transaction",
+      "content_type": 10
+    }
+  },
+  {
+    "pk": 19,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_logentry",
+      "name": "Can add log entry",
+      "content_type": 7
+    }
+  },
+  {
+    "pk": 20,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_logentry",
+      "name": "Can change log entry",
+      "content_type": 7
+    }
+  },
+  {
+    "pk": 21,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_logentry",
+      "name": "Can delete log entry",
+      "content_type": 7
+    }
+  },
+  {
+    "pk": 4,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_group",
+      "name": "Can add group",
+      "content_type": 2
+    }
+  },
+  {
+    "pk": 5,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_group",
+      "name": "Can change group",
+      "content_type": 2
+    }
+  },
+  {
+    "pk": 6,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_group",
+      "name": "Can delete group",
+      "content_type": 2
+    }
+  },
+  {
+    "pk": 1,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_permission",
+      "name": "Can add permission",
+      "content_type": 1
+    }
+  },
+  {
+    "pk": 2,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_permission",
+      "name": "Can change permission",
+      "content_type": 1
+    }
+  },
+  {
+    "pk": 3,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_permission",
+      "name": "Can delete permission",
+      "content_type": 1
+    }
+  },
+  {
+    "pk": 7,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_user",
+      "name": "Can add user",
+      "content_type": 3
+    }
+  },
+  {
+    "pk": 8,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_user",
+      "name": "Can change user",
+      "content_type": 3
+    }
+  },
+  {
+    "pk": 9,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_user",
+      "name": "Can delete user",
+      "content_type": 3
+    }
+  },
+  {
+    "pk": 10,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_contenttype",
+      "name": "Can add content type",
+      "content_type": 4
+    }
+  },
+  {
+    "pk": 11,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_contenttype",
+      "name": "Can change content type",
+      "content_type": 4
+    }
+  },
+  {
+    "pk": 12,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_contenttype",
+      "name": "Can delete content type",
+      "content_type": 4
+    }
+  },
+  {
+    "pk": 97,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_event",
+      "name": "Can add event",
+      "content_type": 33
+    }
+  },
+  {
+    "pk": 98,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_event",
+      "name": "Can change event",
+      "content_type": 33
+    }
+  },
+  {
+    "pk": 99,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_event",
+      "name": "Can delete event",
+      "content_type": 33
+    }
+  },
+  {
+    "pk": 94,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_location",
+      "name": "Can add location",
+      "content_type": 32
+    }
+  },
+  {
+    "pk": 95,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_location",
+      "name": "Can change location",
+      "content_type": 32
+    }
+  },
+  {
+    "pk": 96,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_location",
+      "name": "Can delete location",
+      "content_type": 32
+    }
+  },
+  {
+    "pk": 100,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_orientation",
+      "name": "Can add orientation",
+      "content_type": 34
+    }
+  },
+  {
+    "pk": 101,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_orientation",
+      "name": "Can change orientation",
+      "content_type": 34
+    }
+  },
+  {
+    "pk": 102,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_orientation",
+      "name": "Can delete orientation",
+      "content_type": 34
+    }
+  },
+  {
+    "pk": 43,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_attachment",
+      "name": "Can add attachment",
+      "content_type": 15
+    }
+  },
+  {
+    "pk": 44,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_attachment",
+      "name": "Can change attachment",
+      "content_type": 15
+    }
+  },
+  {
+    "pk": 45,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_attachment",
+      "name": "Can delete attachment",
+      "content_type": 15
+    }
+  },
+  {
+    "pk": 40,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_forum",
+      "name": "Can add forum",
+      "content_type": 14
+    }
+  },
+  {
+    "pk": 41,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_forum",
+      "name": "Can change forum",
+      "content_type": 14
+    }
+  },
+  {
+    "pk": 42,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_forum",
+      "name": "Can delete forum",
+      "content_type": 14
+    }
+  },
+  {
+    "pk": 46,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_post",
+      "name": "Can add post",
+      "content_type": 16
+    }
+  },
+  {
+    "pk": 47,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_post",
+      "name": "Can change post",
+      "content_type": 16
+    }
+  },
+  {
+    "pk": 48,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_post",
+      "name": "Can delete post",
+      "content_type": 16
+    }
+  },
+  {
+    "pk": 58,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_account",
+      "name": "Can add account",
+      "content_type": 20
+    }
+  },
+  {
+    "pk": 59,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_account",
+      "name": "Can change account",
+      "content_type": 20
+    }
+  },
+  {
+    "pk": 60,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_account",
+      "name": "Can delete account",
+      "content_type": 20
+    }
+  },
+  {
+    "pk": 61,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_accountmember",
+      "name": "Can add account member",
+      "content_type": 21
+    }
+  },
+  {
+    "pk": 62,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_accountmember",
+      "name": "Can change account member",
+      "content_type": 21
+    }
+  },
+  {
+    "pk": 63,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_accountmember",
+      "name": "Can delete account member",
+      "content_type": 21
+    }
+  },
+  {
+    "pk": 67,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_address",
+      "name": "Can add address",
+      "content_type": 23
+    }
+  },
+  {
+    "pk": 68,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_address",
+      "name": "Can change address",
+      "content_type": 23
+    }
+  },
+  {
+    "pk": 69,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_address",
+      "name": "Can delete address",
+      "content_type": 23
+    }
+  },
+  {
+    "pk": 52,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_leaveofabsence",
+      "name": "Can add leave of absence",
+      "content_type": 18
+    }
+  },
+  {
+    "pk": 53,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_leaveofabsence",
+      "name": "Can change leave of absence",
+      "content_type": 18
+    }
+  },
+  {
+    "pk": 54,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_leaveofabsence",
+      "name": "Can delete leave of absence",
+      "content_type": 18
+    }
+  },
+  {
+    "pk": 49,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_member",
+      "name": "Can add member",
+      "content_type": 17
+    }
+  },
+  {
+    "pk": 50,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_member",
+      "name": "Can change member",
+      "content_type": 17
+    }
+  },
+  {
+    "pk": 51,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_member",
+      "name": "Can delete member",
+      "content_type": 17
+    }
+  },
+  {
+    "pk": 73,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_membersignup",
+      "name": "Can add member sign up",
+      "content_type": 25
+    }
+  },
+  {
+    "pk": 74,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_membersignup",
+      "name": "Can change member sign up",
+      "content_type": 25
+    }
+  },
+  {
+    "pk": 75,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_membersignup",
+      "name": "Can delete member sign up",
+      "content_type": 25
+    }
+  },
+  {
+    "pk": 70,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_phone",
+      "name": "Can add phone",
+      "content_type": 24
+    }
+  },
+  {
+    "pk": 71,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_phone",
+      "name": "Can change phone",
+      "content_type": 24
+    }
+  },
+  {
+    "pk": 72,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_phone",
+      "name": "Can delete phone",
+      "content_type": 24
+    }
+  },
+  {
+    "pk": 64,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_temporarybalancelimit",
+      "name": "Can add temporary balance limit",
+      "content_type": 22
+    }
+  },
+  {
+    "pk": 65,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_temporarybalancelimit",
+      "name": "Can change temporary balance limit",
+      "content_type": 22
+    }
+  },
+  {
+    "pk": 66,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_temporarybalancelimit",
+      "name": "Can delete temporary balance limit",
+      "content_type": 22
+    }
+  },
+  {
+    "pk": 55,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_workexemption",
+      "name": "Can add work exemption",
+      "content_type": 19
+    }
+  },
+  {
+    "pk": 56,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_workexemption",
+      "name": "Can change work exemption",
+      "content_type": 19
+    }
+  },
+  {
+    "pk": 57,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_workexemption",
+      "name": "Can delete work exemption",
+      "content_type": 19
+    }
+  },
+  {
+    "pk": 109,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_accountrevision",
+      "name": "Can add account revision",
+      "content_type": 37
+    }
+  },
+  {
+    "pk": 110,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_accountrevision",
+      "name": "Can change account revision",
+      "content_type": 37
+    }
+  },
+  {
+    "pk": 111,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_accountrevision",
+      "name": "Can delete account revision",
+      "content_type": 37
+    }
+  },
+  {
+    "pk": 106,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_memberrevision",
+      "name": "Can add member revision",
+      "content_type": 36
+    }
+  },
+  {
+    "pk": 107,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_memberrevision",
+      "name": "Can change member revision",
+      "content_type": 36
+    }
+  },
+  {
+    "pk": 108,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_memberrevision",
+      "name": "Can delete member revision",
+      "content_type": 36
+    }
+  },
+  {
+    "pk": 103,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_revisionmodel",
+      "name": "Can add revision model",
+      "content_type": 35
+    }
+  },
+  {
+    "pk": 104,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_revisionmodel",
+      "name": "Can change revision model",
+      "content_type": 35
+    }
+  },
+  {
+    "pk": 105,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_revisionmodel",
+      "name": "Can delete revision model",
+      "content_type": 35
+    }
+  },
+  {
+    "pk": 85,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_exclusion",
+      "name": "Can add exclusion",
+      "content_type": 29
+    }
+  },
+  {
+    "pk": 86,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_exclusion",
+      "name": "Can change exclusion",
+      "content_type": 29
+    }
+  },
+  {
+    "pk": 87,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_exclusion",
+      "name": "Can delete exclusion",
+      "content_type": 29
+    }
+  },
+  {
+    "pk": 79,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_job",
+      "name": "Can add job",
+      "content_type": 27
+    }
+  },
+  {
+    "pk": 80,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_job",
+      "name": "Can change job",
+      "content_type": 27
+    }
+  },
+  {
+    "pk": 81,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_job",
+      "name": "Can delete job",
+      "content_type": 27
+    }
+  },
+  {
+    "pk": 82,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_recurrule",
+      "name": "Can add recur rule",
+      "content_type": 28
+    }
+  },
+  {
+    "pk": 83,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_recurrule",
+      "name": "Can change recur rule",
+      "content_type": 28
+    }
+  },
+  {
+    "pk": 84,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_recurrule",
+      "name": "Can delete recur rule",
+      "content_type": 28
+    }
+  },
+  {
+    "pk": 76,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_skill",
+      "name": "Can add skill",
+      "content_type": 26
+    }
+  },
+  {
+    "pk": 77,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_skill",
+      "name": "Can change skill",
+      "content_type": 26
+    }
+  },
+  {
+    "pk": 78,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_skill",
+      "name": "Can delete skill",
+      "content_type": 26
+    }
+  },
+  {
+    "pk": 88,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_task",
+      "name": "Can add task",
+      "content_type": 30
+    }
+  },
+  {
+    "pk": 89,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_task",
+      "name": "Can change task",
+      "content_type": 30
+    }
+  },
+  {
+    "pk": 90,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_task",
+      "name": "Can delete task",
+      "content_type": 30
+    }
+  },
+  {
+    "pk": 91,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_timecard",
+      "name": "Can add timecard",
+      "content_type": 31
+    }
+  },
+  {
+    "pk": 92,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_timecard",
+      "name": "Can change timecard",
+      "content_type": 31
+    }
+  },
+  {
+    "pk": 93,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_timecard",
+      "name": "Can delete timecard",
+      "content_type": 31
+    }
+  },
+  {
+    "pk": 13,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_session",
+      "name": "Can add session",
+      "content_type": 5
+    }
+  },
+  {
+    "pk": 14,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_session",
+      "name": "Can change session",
+      "content_type": 5
+    }
+  },
+  {
+    "pk": 15,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_session",
+      "name": "Can delete session",
+      "content_type": 5
+    }
+  },
+  {
+    "pk": 16,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_site",
+      "name": "Can add site",
+      "content_type": 6
+    }
+  },
+  {
+    "pk": 17,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_site",
+      "name": "Can change site",
+      "content_type": 6
+    }
+  },
+  {
+    "pk": 18,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_site",
+      "name": "Can delete site",
+      "content_type": 6
+    }
+  },
+  {
+    "pk": 1,
+    "model": "auth.user",
+    "fields": {
+      "username": "anna",
+      "first_name": "Bresys",
+      "last_name": "Arroway",
+      "is_active": true,
+      "is_superuser": true,
+      "is_staff": true,
+      "last_login": "2014-07-14T20:24:22.225",
+      "groups": [],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$10000$AEZiU8BWGege$2fDhvWqkI/+d8Jeh9nF+uuX6rCBgVAyoIGY+9bTBP5I=",
+      "email": "anna3lc@gmail.com",
+      "date_joined": "2014-06-16T19:55:11"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "auth.user",
+    "fields": {
+      "username": "thor",
+      "first_name": "Thor",
+      "last_name": "Odinson",
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": "2014-06-16T20:11:41",
+      "groups": [],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$10000$3rEaRbLmLJE4$/7qnHZKWNNEvvnsazNqppUQaSWIcnDepzJnZPdVfre4=",
+      "email": "thor.odinson@asgard.realm",
+      "date_joined": "2014-06-16T20:11:41"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "auth.user",
+    "fields": {
+      "username": "loki",
+      "first_name": "Loki",
+      "last_name": "Odinson",
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": "2014-06-16T20:14:24",
+      "groups": [],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$10000$hgDLGHkMM5HU$CGqUihOUhjclzeKkQamZaOx8KfnvkMkznMPhJi4DClA=",
+      "email": "loki.odinson@asgard.realm",
+      "date_joined": "2014-06-16T20:14:24"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "auth.user",
+    "fields": {
+      "username": "MadoBanksi",
+      "first_name": "Mado",
+      "last_name": "Banksi",
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": "2014-06-16T20:28:13.453",
+      "groups": [],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$10000$SegMOiNPBGHG$yYqzQt7g/SMmtFsGcPIo6IvmdYteYEVnJ5xs/VpKdVs=",
+      "email": "",
+      "date_joined": "2014-06-16T20:28:13.453"
+    }
+  },
+  {
+    "pk": 5,
+    "model": "auth.user",
+    "fields": {
+      "username": "odin",
+      "first_name": "Odin",
+      "last_name": "Allfather",
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": "2014-06-29T11:18:30",
+      "groups": [],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$10000$qqrClyCKCkJH$D21gyLpIYx72bDRxAWF0kNNTwji8AFzFOMLV9QSIyC0=",
+      "email": "odin@asgard.realm",
+      "date_joined": "2014-06-29T11:18:30"
+    }
+  },
+  {
+    "pk": 24,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 1,
+      "action_time": "2014-06-29T11:27:05.305",
+      "object_repr": "membership.AccountMember",
+      "object_id": "4",
+      "change_message": "New record added",
+      "user": 1,
+      "content_type": 21
+    }
+  },
+  {
+    "pk": 23,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 1,
+      "action_time": "2014-06-29T11:27:05.303",
+      "object_repr": "membership.AccountMember",
+      "object_id": "3",
+      "change_message": "New record added",
+      "user": 1,
+      "content_type": 21
+    }
+  },
+  {
+    "pk": 22,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 1,
+      "action_time": "2014-06-29T11:25:34.780",
+      "object_repr": "Loki Odinson",
+      "object_id": "5",
+      "change_message": "",
+      "user": 1,
+      "content_type": 17
+    }
+  },
+  {
+    "pk": 21,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 1,
+      "action_time": "2014-06-29T11:24:01.686",
+      "object_repr": "Thor Odinson",
+      "object_id": "4",
+      "change_message": "",
+      "user": 1,
+      "content_type": 17
+    }
+  },
+  {
+    "pk": 20,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 1,
+      "action_time": "2014-06-29T11:22:36.094",
+      "object_repr": "Odin Allfather",
+      "object_id": "3",
+      "change_message": "",
+      "user": 1,
+      "content_type": 17
+    }
+  },
+  {
+    "pk": 19,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 2,
+      "action_time": "2014-06-29T11:19:27.730",
+      "object_repr": "odin",
+      "object_id": "5",
+      "change_message": "Changed password, first_name, last_name and email.",
+      "user": 1,
+      "content_type": 3
+    }
+  },
+  {
+    "pk": 18,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 1,
+      "action_time": "2014-06-29T11:18:30.116",
+      "object_repr": "odin",
+      "object_id": "5",
+      "change_message": "",
+      "user": 1,
+      "content_type": 3
+    }
+  },
+  {
+    "pk": 17,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 2,
+      "action_time": "2014-06-29T11:18:09.323",
+      "object_repr": "thor",
+      "object_id": "2",
+      "change_message": "Changed password and email.",
+      "user": 1,
+      "content_type": 3
+    }
+  },
+  {
+    "pk": 16,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 2,
+      "action_time": "2014-06-29T11:17:59.355",
+      "object_repr": "loki",
+      "object_id": "3",
+      "change_message": "Changed password, first_name, last_name and email.",
+      "user": 1,
+      "content_type": 3
+    }
+  },
+  {
+    "pk": 15,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 1,
+      "action_time": "2014-06-16T20:29:47.669",
+      "object_repr": "membership.AccountMember",
+      "object_id": "2",
+      "change_message": "New record added",
+      "user": 1,
+      "content_type": 21
+    }
+  },
+  {
+    "pk": 14,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 1,
+      "action_time": "2014-06-16T20:28:13.551",
+      "object_repr": "membership.Member",
+      "object_id": "2",
+      "change_message": "New record added",
+      "user": 1,
+      "content_type": 17
+    }
+  },
+  {
+    "pk": 13,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 1,
+      "action_time": "2014-06-16T20:28:13.549",
+      "object_repr": "auth.User",
+      "object_id": "4",
+      "change_message": "New record added",
+      "user": 1,
+      "content_type": 3
+    }
+  },
+  {
+    "pk": 12,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 1,
+      "action_time": "2014-06-16T20:26:15.476",
+      "object_repr": "membership.Account",
+      "object_id": "3",
+      "change_message": "New record added",
+      "user": 1,
+      "content_type": 20
+    }
+  },
+  {
+    "pk": 11,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 1,
+      "action_time": "2014-06-16T20:20:32.212",
+      "object_repr": "Rocksblow: Bresys Arroway",
+      "object_id": "1",
+      "change_message": "",
+      "user": 1,
+      "content_type": 21
+    }
+  },
+  {
+    "pk": 10,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 1,
+      "action_time": "2014-06-16T20:14:25.046",
+      "object_repr": "loki",
+      "object_id": "3",
+      "change_message": "",
+      "user": 1,
+      "content_type": 3
+    }
+  },
+  {
+    "pk": 9,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 2,
+      "action_time": "2014-06-16T20:14:03.180",
+      "object_repr": "thor",
+      "object_id": "2",
+      "change_message": "Changed password, first_name, last_name and email.",
+      "user": 1,
+      "content_type": 3
+    }
+  },
+  {
+    "pk": 8,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 2,
+      "action_time": "2014-06-16T20:12:51.571",
+      "object_repr": "anna",
+      "object_id": "1",
+      "change_message": "Changed password, first_name and last_name.",
+      "user": 1,
+      "content_type": 3
+    }
+  },
+  {
+    "pk": 7,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 1,
+      "action_time": "2014-06-16T20:11:51.632",
+      "object_repr": "",
+      "object_id": "1",
+      "change_message": "",
+      "user": 1,
+      "content_type": 17
+    }
+  },
+  {
+    "pk": 6,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 1,
+      "action_time": "2014-06-16T20:11:41.651",
+      "object_repr": "thor",
+      "object_id": "2",
+      "change_message": "",
+      "user": 1,
+      "content_type": 3
+    }
+  },
+  {
+    "pk": 5,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 1,
+      "action_time": "2014-06-16T20:10:44.027",
+      "object_repr": "Arrow Shooting",
+      "object_id": "1",
+      "change_message": "",
+      "user": 1,
+      "content_type": 27
+    }
+  },
+  {
+    "pk": 4,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 1,
+      "action_time": "2014-06-16T20:10:42.432",
+      "object_repr": "Target Practice",
+      "object_id": "2",
+      "change_message": "",
+      "user": 1,
+      "content_type": 26
+    }
+  },
+  {
+    "pk": 3,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 1,
+      "action_time": "2014-06-16T20:10:04.324",
+      "object_repr": "Asgard",
+      "object_id": "2",
+      "change_message": "",
+      "user": 1,
+      "content_type": 20
+    }
+  },
+  {
+    "pk": 2,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 1,
+      "action_time": "2014-06-16T20:09:55.056",
+      "object_repr": "Archery",
+      "object_id": "1",
+      "change_message": "",
+      "user": 1,
+      "content_type": 26
+    }
+  },
+  {
+    "pk": 1,
+    "model": "admin.logentry",
+    "fields": {
+      "action_flag": 1,
+      "action_time": "2014-06-16T20:07:31.568",
+      "object_repr": "Rocksblow",
+      "object_id": "1",
+      "change_message": "",
+      "user": 1,
+      "content_type": 20
+    }
+  },
+  {
+    "pk": 2,
+    "model": "membership.member",
+    "fields": {
+      "member_card": "",
+      "equity_increment": "25",
+      "referring_member": null,
+      "job_interests": [],
+      "referral_source": null,
+      "card_facility_code": null,
+      "date_missing": null,
+      "has_key": false,
+      "member_owner_equity_held": "0",
+      "availability": 0,
+      "orientation": null,
+      "membership_fund_equity_held": "0",
+      "equity_due": "25",
+      "extra_info": "",
+      "status": "a",
+      "hours_balance": "0",
+      "date_joined": "2014-06-16",
+      "user": 4,
+      "skills": [],
+      "date_departed": null,
+      "card_type": null,
+      "work_status": "n",
+      "card_number": null,
+      "date_turns_18": null
+    }
+  },
+  {
+    "pk": 1,
+    "model": "membership.member",
+    "fields": {
+      "member_card": "",
+      "equity_increment": "25",
+      "referring_member": null,
+      "job_interests": [
+        1
+      ],
+      "referral_source": null,
+      "card_facility_code": "",
+      "date_missing": null,
+      "has_key": false,
+      "member_owner_equity_held": "0",
+      "availability": 1,
+      "orientation": null,
+      "membership_fund_equity_held": "0",
+      "equity_due": "25",
+      "extra_info": "",
+      "status": "a",
+      "hours_balance": "0",
+      "date_joined": "2014-06-16",
+      "user": 1,
+      "skills": [
+        1
+      ],
+      "date_departed": null,
+      "card_type": "",
+      "work_status": "w",
+      "card_number": "",
+      "date_turns_18": null
+    }
+  },
+  {
+    "pk": 5,
+    "model": "membership.member",
+    "fields": {
+      "member_card": "",
+      "equity_increment": "25",
+      "referring_member": 3,
+      "job_interests": [
+        1
+      ],
+      "referral_source": "Current Member",
+      "card_facility_code": "",
+      "date_missing": "2013-01-01",
+      "has_key": false,
+      "member_owner_equity_held": "25",
+      "availability": 0,
+      "orientation": null,
+      "membership_fund_equity_held": "0",
+      "equity_due": "25",
+      "extra_info": "",
+      "status": "a",
+      "hours_balance": "0",
+      "date_joined": "2014-06-29",
+      "user": 3,
+      "skills": [
+        1
+      ],
+      "date_departed": null,
+      "card_type": "",
+      "work_status": "w",
+      "card_number": "",
+      "date_turns_18": null
+    }
+  },
+  {
+    "pk": 3,
+    "model": "membership.member",
+    "fields": {
+      "member_card": "",
+      "equity_increment": "25",
+      "referring_member": null,
+      "job_interests": [
+        1
+      ],
+      "referral_source": "Walked By",
+      "card_facility_code": "",
+      "date_missing": null,
+      "has_key": false,
+      "member_owner_equity_held": "1000",
+      "availability": 0,
+      "orientation": null,
+      "membership_fund_equity_held": "0",
+      "equity_due": "25",
+      "extra_info": "",
+      "status": "a",
+      "hours_balance": "0",
+      "date_joined": "1001-01-12",
+      "user": 5,
+      "skills": [
+        1
+      ],
+      "date_departed": null,
+      "card_type": "",
+      "work_status": "w",
+      "card_number": "",
+      "date_turns_18": null
+    }
+  },
+  {
+    "pk": 4,
+    "model": "membership.member",
+    "fields": {
+      "member_card": "",
+      "equity_increment": "25",
+      "referring_member": 3,
+      "job_interests": [
+        1
+      ],
+      "referral_source": "Current Member",
+      "card_facility_code": "",
+      "date_missing": null,
+      "has_key": false,
+      "member_owner_equity_held": "200",
+      "availability": 0,
+      "orientation": null,
+      "membership_fund_equity_held": "0",
+      "equity_due": "25",
+      "extra_info": "",
+      "status": "a",
+      "hours_balance": "0",
+      "date_joined": "2014-06-29",
+      "user": 2,
+      "skills": [
+        2
+      ],
+      "date_departed": null,
+      "card_type": "",
+      "work_status": "w",
+      "card_number": "",
+      "date_turns_18": null
+    }
+  },
+  {
+    "pk": 3,
+    "model": "revision.memberrevision",
+    "fields": {
+      "equity_increment": "25",
+      "referring_member": null,
+      "job_interests": [],
+      "referral_source": null,
+      "card_facility_code": "",
+      "date_missing": null,
+      "has_key": false,
+      "member_owner_equity_held": "0",
+      "availability": 1,
+      "orientation": null,
+      "member": 1,
+      "membership_fund_equity_held": "0",
+      "equity_due": "25",
+      "extra_info": "",
+      "status": "a",
+      "timestamp": "2014-06-16T20:11:51.617",
+      "date_joined": "2014-06-16",
+      "user": 1,
+      "skills": [],
+      "date_departed": null,
+      "card_type": "",
+      "work_status": "w",
+      "card_number": "",
+      "date_turns_18": null
+    }
+  },
+  {
+    "pk": 5,
+    "model": "revision.memberrevision",
+    "fields": {
+      "equity_increment": "25",
+      "referring_member": null,
+      "job_interests": [],
+      "referral_source": null,
+      "card_facility_code": null,
+      "date_missing": null,
+      "has_key": false,
+      "member_owner_equity_held": "0",
+      "availability": null,
+      "orientation": null,
+      "member": 2,
+      "membership_fund_equity_held": "0",
+      "equity_due": "25",
+      "extra_info": null,
+      "status": "a",
+      "timestamp": "2014-06-16T20:28:13.541",
+      "date_joined": "2014-06-16",
+      "user": 4,
+      "skills": [],
+      "date_departed": null,
+      "card_type": null,
+      "work_status": "n",
+      "card_number": null,
+      "date_turns_18": null
+    }
+  },
+  {
+    "pk": 6,
+    "model": "revision.memberrevision",
+    "fields": {
+      "equity_increment": "25",
+      "referring_member": null,
+      "job_interests": [],
+      "referral_source": null,
+      "card_facility_code": null,
+      "date_missing": null,
+      "has_key": false,
+      "member_owner_equity_held": "0",
+      "availability": 0,
+      "orientation": null,
+      "member": 2,
+      "membership_fund_equity_held": "0",
+      "equity_due": "25",
+      "extra_info": "",
+      "status": "a",
+      "timestamp": "2014-06-16T20:28:13.592",
+      "date_joined": "2014-06-16",
+      "user": 4,
+      "skills": [],
+      "date_departed": null,
+      "card_type": null,
+      "work_status": "n",
+      "card_number": null,
+      "date_turns_18": null
+    }
+  },
+  {
+    "pk": 8,
+    "model": "revision.memberrevision",
+    "fields": {
+      "equity_increment": "25",
+      "referring_member": null,
+      "job_interests": [],
+      "referral_source": "Walked By",
+      "card_facility_code": "",
+      "date_missing": null,
+      "has_key": false,
+      "member_owner_equity_held": "1000",
+      "availability": 0,
+      "orientation": null,
+      "member": 3,
+      "membership_fund_equity_held": "0",
+      "equity_due": "25",
+      "extra_info": "",
+      "status": "a",
+      "timestamp": "2014-06-29T11:22:36.067",
+      "date_joined": "1001-01-12",
+      "user": 5,
+      "skills": [],
+      "date_departed": null,
+      "card_type": "",
+      "work_status": "w",
+      "card_number": "",
+      "date_turns_18": null
+    }
+  },
+  {
+    "pk": 9,
+    "model": "revision.memberrevision",
+    "fields": {
+      "equity_increment": "25",
+      "referring_member": 3,
+      "job_interests": [],
+      "referral_source": "Current Member",
+      "card_facility_code": "",
+      "date_missing": null,
+      "has_key": false,
+      "member_owner_equity_held": "200",
+      "availability": 0,
+      "orientation": null,
+      "member": 4,
+      "membership_fund_equity_held": "0",
+      "equity_due": "25",
+      "extra_info": "",
+      "status": "a",
+      "timestamp": "2014-06-29T11:24:01.671",
+      "date_joined": "2014-06-29",
+      "user": 2,
+      "skills": [],
+      "date_departed": null,
+      "card_type": "",
+      "work_status": "w",
+      "card_number": "",
+      "date_turns_18": null
+    }
+  },
+  {
+    "pk": 10,
+    "model": "revision.memberrevision",
+    "fields": {
+      "equity_increment": "25",
+      "referring_member": 3,
+      "job_interests": [],
+      "referral_source": "Current Member",
+      "card_facility_code": "",
+      "date_missing": "2013-01-01",
+      "has_key": false,
+      "member_owner_equity_held": "25",
+      "availability": 0,
+      "orientation": null,
+      "member": 5,
+      "membership_fund_equity_held": "0",
+      "equity_due": "25",
+      "extra_info": "",
+      "status": "a",
+      "timestamp": "2014-06-29T11:25:34.766",
+      "date_joined": "2014-06-29",
+      "user": 3,
+      "skills": [],
+      "date_departed": null,
+      "card_type": "",
+      "work_status": "w",
+      "card_number": "",
+      "date_turns_18": null
+    }
+  },
+  {
+    "pk": 13,
+    "model": "revision.memberrevision",
+    "fields": {
+      "equity_increment": "25",
+      "referring_member": null,
+      "job_interests": [
+        1
+      ],
+      "referral_source": null,
+      "card_facility_code": "",
+      "date_missing": null,
+      "has_key": false,
+      "member_owner_equity_held": "0",
+      "availability": 1,
+      "orientation": null,
+      "member": 1,
+      "membership_fund_equity_held": "0",
+      "equity_due": "25",
+      "extra_info": "",
+      "status": "a",
+      "timestamp": "2014-07-27T12:49:54.048",
+      "date_joined": "2014-06-16",
+      "user": 1,
+      "skills": [
+        1
+      ],
+      "date_departed": null,
+      "card_type": "",
+      "work_status": "w",
+      "card_number": "",
+      "date_turns_18": null
+    }
+  },
+  {
+    "pk": 14,
+    "model": "revision.memberrevision",
+    "fields": {
+      "equity_increment": "25",
+      "referring_member": 3,
+      "job_interests": [
+        1
+      ],
+      "referral_source": "Current Member",
+      "card_facility_code": "",
+      "date_missing": "2013-01-01",
+      "has_key": false,
+      "member_owner_equity_held": "25",
+      "availability": 0,
+      "orientation": null,
+      "member": 5,
+      "membership_fund_equity_held": "0",
+      "equity_due": "25",
+      "extra_info": "",
+      "status": "a",
+      "timestamp": "2014-07-27T12:49:54.082",
+      "date_joined": "2014-06-29",
+      "user": 3,
+      "skills": [
+        1
+      ],
+      "date_departed": null,
+      "card_type": "",
+      "work_status": "w",
+      "card_number": "",
+      "date_turns_18": null
+    }
+  },
+  {
+    "pk": 15,
+    "model": "revision.memberrevision",
+    "fields": {
+      "equity_increment": "25",
+      "referring_member": null,
+      "job_interests": [
+        1
+      ],
+      "referral_source": "Walked By",
+      "card_facility_code": "",
+      "date_missing": null,
+      "has_key": false,
+      "member_owner_equity_held": "1000",
+      "availability": 0,
+      "orientation": null,
+      "member": 3,
+      "membership_fund_equity_held": "0",
+      "equity_due": "25",
+      "extra_info": "",
+      "status": "a",
+      "timestamp": "2014-07-27T12:49:54.117",
+      "date_joined": "1001-01-12",
+      "user": 5,
+      "skills": [
+        1
+      ],
+      "date_departed": null,
+      "card_type": "",
+      "work_status": "w",
+      "card_number": "",
+      "date_turns_18": null
+    }
+  },
+  {
+    "pk": 16,
+    "model": "revision.memberrevision",
+    "fields": {
+      "equity_increment": "25",
+      "referring_member": 3,
+      "job_interests": [
+        1
+      ],
+      "referral_source": "Current Member",
+      "card_facility_code": "",
+      "date_missing": null,
+      "has_key": false,
+      "member_owner_equity_held": "200",
+      "availability": 0,
+      "orientation": null,
+      "member": 4,
+      "membership_fund_equity_held": "0",
+      "equity_due": "25",
+      "extra_info": "",
+      "status": "a",
+      "timestamp": "2014-07-27T12:49:54.150",
+      "date_joined": "2014-06-29",
+      "user": 2,
+      "skills": [
+        2
+      ],
+      "date_departed": null,
+      "card_type": "",
+      "work_status": "w",
+      "card_number": "",
+      "date_turns_18": null
+    }
+  }
+]
